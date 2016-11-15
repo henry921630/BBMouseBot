@@ -15,7 +15,8 @@ def handle(msg):
     chat_id = msg['chat']['id']
     command = msg['text']
 
-
+    戀人絮語
+    lrsy{1:"V: 請用一個字來形容我！ H: 好！",2:"V：聽說埃及沒有郵局，如果埃及的人民想要寄信，必須出埃及寄。H：聽說有舌頭味覺不靈光的人，如果想要得嚐美食，必須服用利味劑。",3:"[神魔之塔轉珠中]H: 別人轉珠都好強喔！V: 所以別人是神轉珠，你是豬轉珠囉～H: 甚麼！好歹說我是神豬轉珠吧！V: 神豬轉珠不就是神豬他爸轉珠嗎～哈哈哈哈！"}
 
     #生日快樂
 
@@ -27,7 +28,7 @@ def handle(msg):
     print 'Got command: %s' % command
 
     if command == '/roll':
-        bot.sendMessage(chat_id, random.randint(1,6))
+        bot.sendMessage(chat_id, lrsy[random.randint(1,3)])
     elif command == '/start':
         bot.sendMessage(chat_id, u"嗨！媽媽！我是嗶嗶鼠機器人。不是嗶嗶鼠，是嗶嗶鼠機器人！智能大概是嗶嗶鼠的二十π分之一。")
     elif command == '/time':
