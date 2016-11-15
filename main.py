@@ -16,8 +16,7 @@ def handle(msg):
 
     #生日快樂
 
-    if datetime.datetime.today().month==11 and datetime.datetime.today().day==16:
-        
+    if comman != "/start" and datetime.datetime.today().month==11 and datetime.datetime.today().day==16:
         bot.sendMessage(chat_id, u"耶～今天是媽媽生日，生日快樂！")
         
 
@@ -26,6 +25,8 @@ def handle(msg):
 
     if command == '/roll':
         bot.sendMessage(chat_id, random.randint(1,6))
+    elif command == '/start':
+        bot.sendMessage(chat_id, u"嗨！媽媽！我是嗶嗶鼠機器人。不是嗶嗶鼠，是嗶嗶鼠機器人！智能大概是嗶嗶鼠的二十π分之一。")
     elif command == '/time':
         bot.sendMessage(chat_id, str(datetime.datetime.now()))
     elif command == '/marrydays':
