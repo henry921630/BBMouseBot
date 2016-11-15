@@ -1,33 +1,56 @@
+# -*- coding: utf8 -*-
+# coding: utf8
+
 import time
 import random
 import datetime
 import telepot
 
-"""
-A simple bot that accepts two commands:
-- /roll : reply with a random integer between 1 and 6, like rolling a dice.
-- /time : reply with the current time, like a clock.
-INSERT TOKEN below in the code, and run:
-$ python diceyclock.py
-Ctrl-C to kill.
-"""
 
 def handle(msg):
+        
     chat_id = msg['chat']['id']
     command = msg['text']
 
+
+
+    #生日快樂
+
+    if datetime.datetime.today().month==11 and datetime.datetime.today().day==16:
+        
+        bot.sendMessage(chat_id, u"耶～今天是媽媽生日，生日快樂！")
+        
+
+    print msg['chat']['id']
     print 'Got command: %s' % command
 
     if command == '/roll':
         bot.sendMessage(chat_id, random.randint(1,6))
-    elif command == '/timetime':
+    elif command == '/time':
         bot.sendMessage(chat_id, str(datetime.datetime.now()))
     elif command == '/marrydays':
-        bot.sendMessage(chat_id,  str((datetime.datetime(2008,10,1)-datetime.datetime(2008,1,1)).days))
+        bot.sendMessage(chat_id, u"報告媽媽：你已經結婚" + str((datetime.datetime.now() -datetime.datetime(2013,7,21)).days) + u"天囉！")
+    elif ( command[0:7] == '/google'):
+        bot.sendMessage(chat_id, u"好的媽媽，讓我來為你Google:"+"\n https://www.google.com.tw/search?q=" + command[8:])
+    elif( u"這個" in command):
+        bot.sendMessage(chat_id, u"哇姆災哦～")
+    elif( u"嗎" in command):
+        bot.sendMessage(chat_id, u"哇姆災哦～")
+    elif( u"呢" in command):
+        bot.sendMessage(chat_id, u"哇姆災哦～")
+    elif( u"?" in command):
+        bot.sendMessage(chat_id, u"哇姆災哦～")
 
-bot = telepot.Bot('273076901:AAGKlscu0NUU5J-hmQ4DGBv8YfsfUfRz1OA')
+    
+    else:
+        bot.sendMessage(chat_id, u"……嗯這句話對我來說太難了，你還是直接找爸爸好了！ https://telegram.me/yhlhenry")
+    
+    
+bot = telepot.Bot('293749176:AAFUwX1PMi-FtFnorDJga3l3vKRcCBuwHTo')
 bot.message_loop(handle)
 print 'I am listening ...'
+
+
 
 while 1:
     time.sleep(10)
