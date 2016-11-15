@@ -23,7 +23,7 @@ def handle(msg):
     elif command == '/timetime':
         bot.sendMessage(chat_id, str(datetime.datetime.now()))
     elif command == '/marrydays':
-        bot.sendMessage(chat_id,  str(datetime.datetime(2008,10,1)-datetime.datetime(2008,1,1)).days)
+        bot.sendMessage(chat_id,  str((datetime.datetime(2008,10,1)-datetime.datetime(2008,1,1)).days)
 
 bot = telepot.Bot('273076901:AAGKlscu0NUU5J-hmQ4DGBv8YfsfUfRz1OA')
 bot.message_loop(handle)
