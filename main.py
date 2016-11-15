@@ -16,7 +16,21 @@ def handle(msg):
     command = msg['text']
 
     
-    lrsy = {1:"V: 請用一個字來形容我！ H: 好！",2:"V：聽說埃及沒有郵局，如果埃及的人民想要寄信，必須出埃及寄。H：聽說有舌頭味覺不靈光的人，如果想要得嚐美食，必須服用利味劑。",3:"[神魔之塔轉珠中]H: 別人轉珠都好強喔！V: 所以別人是神轉珠，你是豬轉珠囉～H: 甚麼！好歹說我是神豬轉珠吧！V: 神豬轉珠不就是神豬他爸轉珠嗎～哈哈哈哈！"}
+    lrsy = {1:"V: 請用一個字來形容我！ H: 好！",\
+            2:"V：聽說埃及沒有郵局，如果埃及的人民想要寄信，必須出埃及寄。\nH：聽說有舌頭味覺不靈光的人，如果想要得嚐美食，必須服用利味劑。",\
+            3:"[神魔之塔轉珠中]H: 別人轉珠都好強喔！\nV: 所以別人是神轉珠，你是豬轉珠囉～\nH: 甚麼！好歹說我是神豬轉珠吧！\nV: 神豬轉珠不就是神豬他爸轉珠嗎～哈哈哈哈！",\
+            4:"V: 那些蛋糕看起來都好好吃，我要吃一百個！ \nH: 蛤…妳要不要改成吃95個就好，妳都那麼胖了…",\
+            5:"[在床上翻來翻去的小酥餅]\nV: 睡不著耶\nH: 對不起～我太吵了嗎？都是我在心中不斷的大叫「我愛小酥餅」！",\
+            6:"我在浴室，小羴羊敲了敲門才走進來。\nV: 小羴羊都會敲門才進來耶，真有禮貌。\nH: 我怕打到小酥餅的頭嘛。\nV: (暗自竊喜，老公真疼我)\nH: 其實我不怕打到酥餅的頭，我是怕酥餅罵我。"}
+
+    bbmouse = { 1:"哇姆災喔！",\
+                2:"好想念跳跳喔！",\
+                3:"(揮舞大棒棒)",\
+                4:"真拿媽媽沒有辦法！",\
+                5:"(探頭)讓我來尋找矮胖國的新成員",\
+                6:"(敲擊肚子)咚咚咚~~~"}
+
+
 
     #生日快樂
 
@@ -28,9 +42,11 @@ def handle(msg):
     print 'Got command: %s' % command
 
     if command == '/story':
-        bot.sendMessage(chat_id, lrsy[random.randint(1,3)])
+        bot.sendMessage(chat_id, u"讓嗶鼠我來講笑話給媽媽舔舔： \n" + str(lrsy[random.randint(1,6)]))
     elif command == '/start':
         bot.sendMessage(chat_id, u"嗨！媽媽！我是嗶嗶鼠機器人。不是嗶嗶鼠，是嗶嗶鼠機器人！智能大概是嗶嗶鼠的二十π分之一。")
+    elif command == '/bbmouse':
+        bot.sendMessage(chat_id, str(bbmouse[random.randint(1,6)]))
     elif command == '/time':
         bot.sendMessage(chat_id, str(datetime.datetime.now()))
     elif command == '/marrydays':
