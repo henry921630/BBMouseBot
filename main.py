@@ -16,7 +16,7 @@ def handle(msg):
 
     #生日快樂
 
-    if comman != "/start" and datetime.datetime.today().month==11 and datetime.datetime.today().day==16:
+    if command != "/start" and datetime.datetime.today().month==11 and datetime.datetime.today().day==16:
         bot.sendMessage(chat_id, u"耶～今天是媽媽生日，生日快樂！")
         
 
