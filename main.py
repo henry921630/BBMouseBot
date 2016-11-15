@@ -9,6 +9,7 @@ import sys
 reload(sys)  
 sys.setdefaultencoding('utf8')  
 
+
 def handle(msg):
         
     chat_id = msg['chat']['id']
@@ -43,7 +44,8 @@ def handle(msg):
         bot.sendMessage(chat_id, u"哇姆災哦～")
     elif( u"?" in command):
         bot.sendMessage(chat_id, u"哇姆災哦～")
-
+    elif( len(command)<5 ):
+        bot.sendMessage(chat_id, command)
     
     else:
         bot.sendMessage(chat_id, u"……嗯這句話對我來說太難了，你還是直接找爸爸好了！ https://telegram.me/yhlhenry")
