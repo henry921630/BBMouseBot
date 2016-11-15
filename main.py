@@ -5,7 +5,9 @@ import time
 import random
 import datetime
 import telepot
-
+import sys  
+reload(sys)  
+sys.setdefaultencoding('utf8')  
 
 def handle(msg):
         
