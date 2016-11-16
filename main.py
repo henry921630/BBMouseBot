@@ -15,9 +15,11 @@ def handle(msg):
     chat_id = msg['chat']['id']
     command = msg['text']
 
-    if command[0:2] == "/v":
-        'bot.sendMessage(288200245, msg['text'][4:])
-        bot.sendMessage(271383530, msg['text'][4:])
+    if (command[0:2] == "/v" ):
+        bot.sendMessage(288200245, msg['text'][3:])
+        bot.sendMessage(271383530, msg['text'][3:])
+    elif (chat_id == 288200245):
+        bot.sendMessage(271383530, msg['text'])
     else:
         lrsy = {1:"V: 請用一個字來形容我！ H: 好！",\
                 2:"V：聽說埃及沒有郵局，如果埃及的人民想要寄信，必須出埃及寄。\nH：聽說有舌頭味覺不靈光的人，如果想要得嚐美食，必須服用利味劑。",\
