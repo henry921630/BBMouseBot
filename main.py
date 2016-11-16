@@ -14,13 +14,17 @@ def handle(msg):
         
     chat_id = msg['chat']['id']
     command = msg['text']
+    print msg['chat']['id']
+    print 'Got command: %s' % command    
 
     if (command[0:2] == "/v" ):
         bot.sendMessage(288200245, msg['text'][3:])
         bot.sendMessage(271383530, msg['text'][3:])
-    elif (chat_id == 288200245):
-        bot.sendMessage(271383530, msg['text'])
+
     else:
+        
+        #elif (chat_id == 288200245):
+        bot.sendMessage(271383530, u"酥熊跟嗶鼠機器人說了: \n" + str(msg['text']))
         lrsy = {1:"V: 請用一個字來形容我！ H: 好！",\
                 2:"V：聽說埃及沒有郵局，如果埃及的人民想要寄信，必須出埃及寄。\nH：聽說有舌頭味覺不靈光的人，如果想要得嚐美食，必須服用利味劑。",\
                 3:"[神魔之塔轉珠中]H: 別人轉珠都好強喔！\nV: 所以別人是神轉珠，你是豬轉珠囉～\nH: 甚麼！好歹說我是神豬轉珠吧！\nV: 神豬轉珠不就是神豬他爸轉珠嗎～哈哈哈哈！",\
@@ -43,8 +47,7 @@ def handle(msg):
             bot.sendMessage(chat_id, u"耶～今天是媽媽生日，生日快樂！")
             
 
-        print msg['chat']['id']
-        print 'Got command: %s' % command
+
 
         if command == '/story':
             bot.sendMessage(chat_id, u"讓嗶鼠我來講笑話給媽媽舔舔： \n" + str(lrsy[random.randint(1,6)]))
