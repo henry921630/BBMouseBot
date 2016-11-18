@@ -66,13 +66,13 @@ def handle(msg):
 
             if command == '/story':
                 n=random.randint(1,len(lrsy))
-                bot.sendMessage(chat_id, u"讓嗶鼠我來講笑話給媽媽舔舔： \n" + str(lrsy[n]) + "\n\n(" + n + "//" + len(lrsy) + ")" )
+                bot.sendMessage(chat_id, u"讓嗶鼠我來講笑話給媽媽舔舔： \n" + str(lrsy[n]) + "\n\n(" + n + "//" + str(len(lrsy)) + ")" )
             #版本宣告 version
             elif command == '/start':
-                bot.sendMessage(chat_id, u"嗨！媽媽！我是嗶嗶鼠機器人v1118.1745版！智能大概是嗶嗶鼠的二十π分之一。")
+                bot.sendMessage(chat_id, u"嗨！媽媽！我是嗶嗶鼠機器人v1118.1600版！智能大概是嗶嗶鼠的二十π分之一。")
             elif command == '/bbmouse':
                 n=random.randint(1,len(bbmousescripts))
-                bot.sendMessage(chat_id, str(bbmousescripts[random.randint(1,len(bbmousescripts))]) + "\n\n(" + n + "//" + len(bbmousescripts) + ")" )
+                bot.sendMessage(chat_id, str(bbmousescripts[random.randint(1,len(bbmousescripts))]) + "\n\n(" + n + "//" + str(len(bbmousescripts)) + ")" )
             elif command == '/time':
                 bot.sendMessage(chat_id, str(datetime.datetime.now()))
             elif command == '/marrydays':
