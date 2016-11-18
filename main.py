@@ -69,7 +69,7 @@ def handle(msg):
                 bot.sendMessage(chat_id, u"讓嗶鼠我來講笑話給媽媽舔舔： \n" + str(lrsy[n]) + "\n\n(" + str(n) + "/" + str(len(lrsy)) + ")" )
             #版本宣告 version
             elif command == '/start':
-                bot.sendMessage(chat_id, u"嗨！媽媽！我是嗶嗶鼠機器人v1118.1810版！智能大概是嗶嗶鼠的二十π分之一。")
+                bot.sendMessage(chat_id, u"嗨！媽媽！我是嗶嗶鼠機器人v1118.1815版！智能大概是嗶嗶鼠的二十π分之一。")
             elif command == '/bbmouse':
                 n=random.randint(1,len(bbmousescripts))
                 bot.sendMessage(chat_id, str(bbmousescripts[random.randint(1,len(bbmousescripts))]) + "\n\n(" + str(n) + "/" + str(len(bbmousescripts)) + ")" )
@@ -87,10 +87,12 @@ def handle(msg):
                 bot.sendMessage(chat_id, u"哇姆災哦～")
             elif( u"?" in command):
                 bot.sendMessage(chat_id, u"哇姆災哦～")
-            elif( len(command)<8 ):
-                bot.sendMessage(chat_id, command)
             elif( "你幾歲" in command or  "嗶鼠幾歲" in command or "你多大了" in command):
                 bot.sendMessage(chat_id, u"嗯……這是個好問題！我存在這個世界上應該十多年了，可是爸爸如果是五歲的話，那我應該是三歲之類的吧。")
+
+            elif( len(command)<8 ):
+                bot.sendMessage(chat_id, command)
+
             else:
                 bot.sendMessage(chat_id, u"……嗯這句話對我來說太難了，你還是直接找爸爸好了！ https://telegram.me/yhlhenry")
             
