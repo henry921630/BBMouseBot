@@ -23,8 +23,8 @@ def handle(msg):
 
     else:
         
-        #elif (chat_id == 288200245):
-        bot.sendMessage(271383530, u"酥熊跟嗶鼠機器人說了: \n" + str(msg['text']))
+        if (chat_id == 288200245):
+            bot.sendMessage(271383530, u"酥熊跟嗶鼠機器人說了: \n" + str(msg['text']))
         #lrsy就是戀人絮語的意思
         lrsy = {1:"V: 請用一個字來形容我！ H: 好！",\
                 2:"V：聽說埃及沒有郵局，如果埃及的人民想要寄信，必須出埃及寄。\nH：聽說有舌頭味覺不靈光的人，如果想要得嚐美食，必須服用利味劑。",\
@@ -60,7 +60,7 @@ def handle(msg):
         if command == '/story':
             bot.sendMessage(chat_id, u"讓嗶鼠我來講笑話給媽媽舔舔： \n" + str(lrsy[random.randint(1,len(lrsy))]))
         elif command == '/start':
-            bot.sendMessage(chat_id, u"嗨！媽媽！我是嗶嗶鼠機器人。不是嗶嗶鼠，是嗶嗶鼠機器人！智能大概是嗶嗶鼠的二十π分之一。")
+            bot.sendMessage(chat_id, u"嗨！媽媽！我是嗶嗶鼠機器人v1118.1717版！智能大概是嗶嗶鼠的二十π分之一。")
         elif command == '/bbmouse':
             bot.sendMessage(chat_id, str(bbmousescripts[random.randint(1,len(bbmousescripts))]))
         elif command == '/time':
