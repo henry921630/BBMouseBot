@@ -52,7 +52,10 @@ def handle(msg):
                         4:"真拿媽媽沒有辦法！",\
                         5:"(探頭)讓我來尋找矮胖國的新成員",\
                         6:"(敲擊肚子)咚咚咚~~~",\
-                        7:"(昏倒！)"}
+                        7:"(昏倒！)",\
+                        8:"(跑來跑去跑來跑去)",\
+                        9:"(飛～起來～)",\
+                               }
 
 
 
@@ -69,10 +72,10 @@ def handle(msg):
                 bot.sendMessage(chat_id, u"讓嗶鼠我來講笑話給媽媽舔舔： \n" + str(lrsy[n]) + "\n\n(" + str(n) + "/" + str(len(lrsy)) + ")" )
             #版本宣告 version
             elif command == '/start':
-                bot.sendMessage(chat_id, u"嗨！媽媽！我是嗶嗶鼠機器人v1118.1815版！智能大概是嗶嗶鼠的二十π分之一。")
+                bot.sendMessage(chat_id, u"嗨！媽媽！我是嗶嗶鼠機器人v1119.1540版！智能大概是嗶嗶鼠的二十π分之一。")
             elif command == '/bbmouse':
                 n=random.randint(1,len(bbmousescripts))
-                bot.sendMessage(chat_id, str(bbmousescripts[random.randint(1,len(bbmousescripts))]) + "\n\n(" + str(n) + "/" + str(len(bbmousescripts)) + ")" )
+                bot.sendMessage(chat_id, str(bbmousescripts[n]) + "\n\n(" + str(n) + "/" + str(len(bbmousescripts)) + ")" )
             elif command == '/time':
                 bot.sendMessage(chat_id, str(datetime.datetime.now()))
             elif command == '/marrydays':
