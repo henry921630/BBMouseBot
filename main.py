@@ -82,16 +82,16 @@ def handle(msg):
                 bot.sendMessage(chat_id, u"報告媽媽：你已經結婚" + str((datetime.datetime.now() -datetime.datetime(2013,7,21)).days) + u"天囉！")
             elif ( command[0:7] == '/google'):
                 bot.sendMessage(chat_id, u"好的媽媽，讓我來為你Google:"+"\n https://www.google.com.tw/search?q=" + command[8:])
-            elif( u"這個" in command):
-                bot.sendMessage(chat_id, u"這個媽媽這個媽媽！")
-            elif( u"嗎" in command):
-                bot.sendMessage(chat_id, u"哇姆災哦～")
-            elif( u"呢" in command):
-                bot.sendMessage(chat_id, u"哇姆災哦～")
-            elif( u"?" in command):
-                bot.sendMessage(chat_id, u"哇姆災哦～")
             elif( "你幾歲" in command or  "嗶鼠幾歲" in command or "你多大了" in command):
                 bot.sendMessage(chat_id, u"嗯……這是個好問題！我存在這個世界上應該十多年了，可是爸爸如果是五歲的話，那我應該是三歲之類的吧。")
+            elif( "太強" in command or  "厲害" in command or "好棒" in command or "有大棒棒" in command):
+                bot.sendMessage(chat_id, "(抓頭)這樣稱讚我，我會不好意思啦～")
+                
+            elif( u"這個" in command):
+                bot.sendMessage(chat_id, u"這個媽媽這個媽媽！")
+            elif( u"嗎" in command or  u"呢" in command or u"呢" in command):
+                bot.sendMessage(chat_id, u"哇姆災哦～")
+            
 
             elif( len(command)<8 ):
                 bot.sendMessage(chat_id, command)
