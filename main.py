@@ -1,6 +1,6 @@
 # -*- coding: utf8 -*-
 # coding: utf8
-print "import"
+
 
 import time
 import random
@@ -10,12 +10,13 @@ import datetime
 import telepot
 
 import sys  
-print "xxxx"
-
 reload(sys)
 sys.setdefaultencoding('utf8')  
 
-print "def"
+
+bbmousetoken= '293749176:AAFUwX1PMi-FtFnorDJga3l3vKRcCBuwHTo'
+testingtoken='290645324:AAGBYFAnK6yCusuijM3plvDfhnxk3rgIlsg'
+
 def handle(msg):
     content_type, chat_type, chat_id = telepot.glance(msg)
     if content_type == 'text':
@@ -66,13 +67,13 @@ def handle(msg):
                 
 
 
-
+#指令區
             if command == '/story':
                 n=random.randint(1,len(lrsy))
                 bot.sendMessage(chat_id, u"讓嗶鼠我來講笑話給媽媽舔舔： \n" + str(lrsy[n]) + "\n\n(" + str(n) + "/" + str(len(lrsy)) + ")" )
             #版本宣告 version
             elif command == '/start':
-                bot.sendMessage(chat_id, u"嗨！媽媽！我是嗶嗶鼠機器人v1119.1540版！智能大概是嗶嗶鼠的二十π分之一。")
+                bot.sendMessage(chat_id, u"嗨！媽媽！我是嗶嗶鼠機器人v1119.1640版！智能大概是嗶嗶鼠的二十π分之一。")
             elif command == '/bbmouse':
                 n=random.randint(1,len(bbmousescripts))
                 bot.sendMessage(chat_id, str(bbmousescripts[n]) + "\n\n(" + str(n) + "/" + str(len(bbmousescripts)) + ")" )
@@ -82,6 +83,21 @@ def handle(msg):
                 bot.sendMessage(chat_id, u"報告媽媽：你已經結婚" + str((datetime.datetime.now() -datetime.datetime(2013,7,21)).days) + u"天囉！")
             elif ( command[0:7] == '/google'):
                 bot.sendMessage(chat_id, u"好的媽媽，讓我來為你Google:"+"\n https://www.google.com.tw/search?q=" + command[8:])
+
+
+
+
+            elif( "臭" in command or "笨" in command or "傻" in command or "胖" in command):
+                if("嗶" in command):
+                    if ("嗶鼠" in command):
+                        if ("嗶嗶鼠" in command):
+                            bot.sendMessage(chat_id, "哼 " + command.replace("嗶嗶鼠","媽媽"   ))
+                        else:    
+                            bot.sendMessage(chat_id, "哼 " + command.replace("嗶鼠","媽媽"   ))
+                    else:
+                        bot.sendMessage(chat_id, "哼 " + command.replace("嗶","媽媽"   ))
+
+                
             elif( "你幾歲" in command or  "嗶鼠幾歲" in command or "你多大了" in command):
                 bot.sendMessage(chat_id, u"嗯……這是個好問題！我存在這個世界上應該十多年了，可是爸爸如果是五歲的話，那我應該是三歲之類的吧。")
             elif( "太強" in command or  "厲害" in command or "好棒" in command or "有大棒棒" in command):
@@ -100,7 +116,7 @@ def handle(msg):
                 bot.sendMessage(chat_id, u"……嗯這句話對我來說太難了，你還是直接找爸爸好了！ https://telegram.me/yhlhenry")
             
 print "bot setting"        
-bot = telepot.Bot('293749176:AAFUwX1PMi-FtFnorDJga3l3vKRcCBuwHTo')
+bot = telepot.Bot(bbmousetoken)
 bot.message_loop(handle)
 print 'I am listening ...'
 
