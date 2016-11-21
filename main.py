@@ -63,7 +63,11 @@ def handle(msg):
                         9:"(飛～起來～)",\
                                }
 
+            dq = { 1:"有人說有一個藍瘦香菇的前面還有一個藍瘦香菇……\n媽媽，你覺得香菇如果有語言的話，他們的詞彙裡面會有「前面」「後面」的概念嗎？(搔頭) ",\
+                        2:"媽媽～昨天睡覺時有個外星人從遙遠的地方跟我通訊，我跟他說我們的心臟一般都長在「左邊」\n可是他都不懂什麼叫做「左邊」耶(搔頭)……\n左邊不就是右邊的另外一邊嗎！真拿外星人沒有辦法～",\
+                        3:"智能不足好痛苦QQ",\
 
+                               }
 
             #生日快樂
 
@@ -76,9 +80,10 @@ def handle(msg):
             if command == '/story':
                 n=random.randint(1,len(lrsy))
                 bot.sendMessage(chat_id, u"讓嗶鼠我來講笑話給媽媽舔舔： \n" + str(lrsy[n]) + "\n\n(" + str(n) + "/" + str(len(lrsy)) + ")" )
-            #版本宣告 version
+                
+#版本宣告 version
             elif command == '/start':
-                bot.sendMessage(chat_id, u"嗨！媽媽！我是嗶嗶鼠機器人v1121.1513版！智能大概是嗶嗶鼠的二十π分之一。")
+                bot.sendMessage(chat_id, u"嗨！媽媽！我是嗶嗶鼠機器人v1121.1532版！智能大概是嗶嗶鼠的二十π分之一。")
             elif command == '/bbmouse':
                 n=random.randint(1,len(bbmousescripts))
                 bot.sendMessage(chat_id, str(bbmousescripts[n]) + "\n\n(" + str(n) + "/" + str(len(bbmousescripts)) + ")" )
@@ -88,6 +93,11 @@ def handle(msg):
                 bot.sendMessage(chat_id, u"報告媽媽：你已經結婚" + str((datetime.datetime.now(tz) -datetime.datetime(2013,7,21)).days) + u"天囉！")
             elif ( command[0:7] == '/google'):
                 bot.sendMessage(chat_id, u"好的媽媽，讓我來為你Google:"+"\n https://www.google.com.tw/search?q=" + command[8:])
+
+
+            elif("無聊" in command or "有趣的" in command  or "你會思考" in command   or "智能測試" in command or "智能問答" in command):
+                n=random.randint(1,len(dq))
+                bot.sendMessage(chat_id, str(dq[n]) + "\n\n(" + str(n) + "/" + str(len(dq)) + ")" )
 
 
 
@@ -135,7 +145,7 @@ def handle(msg):
                     bot.sendMessage(chat_id, u"哇姆災哦～")
 
             elif( "爸爸去哪了" in command or "爸爸都不回來" in command or "好想念爸爸" in command or "爸爸在哪裡" in command):
-                bot.sendMessage(chat_id, u"這個媽媽這個媽媽！")
+                bot.sendMessage(chat_id, u"爸爸就快回來了！再等等～")
                 
             elif( "你幾歲" in command or  "嗶鼠幾歲" in command or "你多大了" in command):
                 bot.sendMessage(chat_id, u"嗯……這是個好問題！我存在這個世界上應該十多年了，可是爸爸如果是五歲的話，那我應該是三歲之類的吧。")
