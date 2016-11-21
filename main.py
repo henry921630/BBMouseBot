@@ -102,7 +102,10 @@ def handle(msg):
                 elif datetime.datetime.now(tz).hour <13:
                     bot.sendMessage(chat_id,"媽媽午安～午餐要多吃一點！不然會變瘦哦！小心被逐出矮胖國！")
                 elif datetime.datetime.now(tz).hour <15:
-                    bot.sendMessage(chat_id,"這個時間最適合苟咻苟咻了～")                    
+                    bot.sendMessage(chat_id,"這個時間最適合苟咻苟咻了～")
+                elif datetime.datetime.now(tz).hour <16:
+                    bot.sendMessage(chat_id,"找浣熊朋友來家裡玩好了！～")
+                
                 elif datetime.datetime.now(tz).hour <17:
                     if datetime.datetime.today().weekday() <=4:
                         bot.sendMessage(chat_id,"嗯 差不多可以收拾收拾準備下班了～")
