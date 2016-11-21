@@ -180,7 +180,7 @@ def handle(msg):
                 bot.sendMessage(chat_id, u"……嗯這句話對我來說太難了，你還是直接找爸爸好了！ https://telegram.me/yhlhenry")
             
 print "bot setting"        
-bot = telepot.Bot(testingtoken)
+bot = telepot.Bot(bbmousetoken)
 bot.message_loop(handle)
 print 'I am listening ...'
 
