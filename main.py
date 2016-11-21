@@ -78,7 +78,7 @@ def handle(msg):
                 bot.sendMessage(chat_id, u"讓嗶鼠我來講笑話給媽媽舔舔： \n" + str(lrsy[n]) + "\n\n(" + str(n) + "/" + str(len(lrsy)) + ")" )
             #版本宣告 version
             elif command == '/start':
-                bot.sendMessage(chat_id, u"嗨！媽媽！我是嗶嗶鼠機器人v1121.1024版！智能大概是嗶嗶鼠的二十π分之一。")
+                bot.sendMessage(chat_id, u"嗨！媽媽！我是嗶嗶鼠機器人v1121.1453版！智能大概是嗶嗶鼠的二十π分之一。")
             elif command == '/bbmouse':
                 n=random.randint(1,len(bbmousescripts))
                 bot.sendMessage(chat_id, str(bbmousescripts[n]) + "\n\n(" + str(n) + "/" + str(len(bbmousescripts)) + ")" )
@@ -91,7 +91,7 @@ def handle(msg):
 
 
 
-            elif(command =="早" or "早安" in command or "早 " in command  or "早!" in command   or "早！" in command or "午安" in command or "晚安" in command  or "下午好" in command  or "晚上好" in command ):
+            elif(command =="早" or "早安" in command or "早 " in command  or "早!" in command   or "早！" in command or "午安" in command or "晚安" in command  or "下午好" in command  or "晚上好" in command or "報時" in command):
                 bot.sendMessage(chat_id, "(低頭看錶) 噢 現在是" + str(datetime.datetime.now(tz).hour) + "點" + str(datetime.datetime.now(tz).minute) + "分")
                 if datetime.datetime.now(tz).hour <2:
                     bot.sendMessage(chat_id,"這個媽媽，怎麼還不睡覺！這樣要怎麼教小孩呢！")
@@ -134,7 +134,7 @@ def handle(msg):
                 
             elif( "你幾歲" in command or  "嗶鼠幾歲" in command or "你多大了" in command):
                 bot.sendMessage(chat_id, u"嗯……這是個好問題！我存在這個世界上應該十多年了，可是爸爸如果是五歲的話，那我應該是三歲之類的吧。")
-            elif( "太強" in command or  "厲害" in command or "好棒" in command or "有大棒棒" in command):
+            elif( "太強" in command or  "厲害" in command or "好棒" in command or "有大棒棒" in command or "聰明" in command or "智能好" in command):
                 bot.sendMessage(chat_id, "(抓頭)這樣稱讚我，我會不好意思啦～")
                 
             elif( u"這個" in command):
