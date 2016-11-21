@@ -83,7 +83,7 @@ def handle(msg):
                 
 #版本宣告 version
             elif command == '/start':
-                bot.sendMessage(chat_id, u"嗨！媽媽！我是嗶嗶鼠機器人v1121.1719版！智能大概是嗶嗶鼠的二十π分之一。")
+                bot.sendMessage(chat_id, u"嗨！媽媽！我是嗶嗶鼠機器人v1121.1731版！智能大概是嗶嗶鼠的二十π分之一。")
             elif command == '/bbmouse':
                 n=random.randint(1,len(bbmousescripts))
                 bot.sendMessage(chat_id, str(bbmousescripts[n]) + "\n\n(" + str(n) + "/" + str(len(bbmousescripts)) + ")" )
@@ -152,14 +152,7 @@ def handle(msg):
             elif( "太強" in command or  "厲害" in command or "好棒" in command or "有大棒棒" in command or "聰明" in command or "智能好" in command):
                 bot.sendMessage(chat_id, "(抓頭)這樣稱讚我，我會不好意思啦～")
                 
-            elif( u"這個" in command):
-                bot.sendMessage(chat_id, u"這個媽媽這個媽媽！")
-            elif( u"嗎" in command or  u"呢" in command or u"呢" in command or "吧" in command):
-                bot.sendMessage(chat_id, u"哇姆災哦～")
-            
 
-            elif( len(command)<4 ):
-                bot.sendMessage(chat_id, command)
 
 #特例
             elif( "今天放假" in command or  "不用上班" in command or "放假" in command):
@@ -171,7 +164,14 @@ def handle(msg):
             elif( "認識阿仙" in command and  ("嗎" in command or "?" in command or "？" in command)):
                 bot.sendMessage(chat_id, "哦！是你熱衷於兒子的好友是吧？")
 
+            elif( u"這個嗶鼠" in command):
+                bot.sendMessage(chat_id, u"這個媽媽這個媽媽！")
+            elif( u"嗎" in command or  u"呢" in command or u"呢" in command or "吧" in command):
+                bot.sendMessage(chat_id, u"哇姆災哦～")
+            
 
+            elif( len(command)<4 ):
+                bot.sendMessage(chat_id, command)
 
 
                 
