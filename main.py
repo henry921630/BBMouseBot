@@ -83,7 +83,7 @@ def handle(msg):
                 
 #版本宣告 version
             elif command == '/start':
-                bot.sendMessage(chat_id, u"嗨！媽媽！我是嗶嗶鼠機器人v1121.1737版！智能大概是嗶嗶鼠的二十π分之一。")
+                bot.sendMessage(chat_id, u"嗨！媽媽！我是嗶嗶鼠機器人v1121.1827版！智能大概是嗶嗶鼠的二十π分之一。")
             elif command == '/bbmouse':
                 n=random.randint(1,len(bbmousescripts))
                 bot.sendMessage(chat_id, str(bbmousescripts[n]) + "\n\n(" + str(n) + "/" + str(len(bbmousescripts)) + ")" )
@@ -93,8 +93,8 @@ def handle(msg):
                 bot.sendMessage(chat_id, u"報告媽媽：你已經結婚" + str((datetime.datetime.now(tz) -datetime.datetime(2013,7,21)).days) + u"天囉！")
             elif ( command[0:7] == '/google'):
                 bot.sendMessage(chat_id, u"好的媽媽，讓我來為你Google:"+"\n https://www.google.com.tw/search?q=" + command[8:])
-
-
+            elif("智能升級" in command or "智能進化" in command  or "什麼智能" in command   or "學會了什麼" in command or "有升級嗎" in command):
+                bot.sendMessage(chat_id, "智慧毛說過：「智能沒有奇蹟，只有累積。」\n智能升級是一個漫長的路程，而且你永遠不知道就在媽媽一回頭間，小孩又學會了什麼奇怪的東西。")
             elif("無聊" in command or "有趣的" in command  or "你會思考" in command   or "智能測試" in command or "智能問答" in command):
                 n=random.randint(1,len(dq))
                 bot.sendMessage(chat_id, str(dq[n]) + "\n\n(" + str(n) + "/" + str(len(dq)) + ")" )
@@ -129,11 +129,23 @@ def handle(msg):
                     bot.sendMessage(chat_id,"該刷牙睡覺囉媽媽～")
                 else:
                     bot.sendMessage(chat_id,"這是什麼時間！？")
+                elif( "再見" in command):
+                    bot.sendMessage(chat_id,"媽媽再見" )
+                elif( "你好" in command):
+                    bot.sendMessage(chat_id,"媽媽你好" )
+
+
                     
+#動詞替代
+            elif( len(command)>=4 and (command[0:2]=="嗶鼠" or command[0:2]=="嗶嗶" ):
+                  bot.sendMessage(chat_id,"嗶鼠想跟媽媽一起" + command[3:])
             elif( "臭" in command or "笨" in command or "傻" in command or "胖" in command):
                 if("嗶" in command):
                     if ("嗶嗶" in command):
-                        bot.sendMessage(chat_id, "哼 " + command.replace("嗶嗶","媽媽"   ))
+                        if ("嗶嗶鼠" in command):
+                            bot.sendMessage(chat_id, "哼 " + command.replace("嗶嗶鼠","媽媽"   ))
+                        else:    
+                            bot.sendMessage(chat_id, "哼 " + command.replace("嗶嗶","媽媽"   ))
                     if ("嗶鼠" in command):
                         if ("嗶嗶鼠" in command):
                             bot.sendMessage(chat_id, "哼 " + command.replace("嗶嗶鼠","媽媽"   ))
@@ -144,7 +156,12 @@ def handle(msg):
                 else:
                     bot.sendMessage(chat_id, u"哇姆災哦～")
 
-            elif( "爸爸去哪了" in command or "爸爸都不回來" in command or "好想念爸爸" in command or "爸爸在哪裡" in command):
+            elif(command is "小酥熊" or command is "酥熊" or "胖胖熊" in command):
+                bot.sendMessage(chat_id, u"媽媽你是小酥熊！\n\n但是不要被小酥熊的「小」字給騙了！～")
+            
+
+
+            elif( "爸爸去哪了" in command or "爸爸都不回來" in command or "好想念爸爸" in command or "爸爸在哪裡" in command or "我愛爸爸" in command):
                 bot.sendMessage(chat_id, u"爸爸就快回來了！再等等～")
                 
             elif( "你幾歲" in command or  "嗶鼠幾歲" in command or "你多大了" in command):
