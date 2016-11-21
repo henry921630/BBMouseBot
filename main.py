@@ -129,10 +129,10 @@ def handle(msg):
                     bot.sendMessage(chat_id,"該刷牙睡覺囉媽媽～")
                 else:
                     bot.sendMessage(chat_id,"這是什麼時間！？")
-                elif( "再見" in command):
-                    bot.sendMessage(chat_id,"媽媽再見" )
-                elif( "你好" in command):
-                    bot.sendMessage(chat_id,"媽媽你好" )
+            elif( "再見" in command):
+                bot.sendMessage(chat_id,"媽媽再見" )
+            elif( "你好" in command):
+                bot.sendMessage(chat_id,"媽媽你好" )
 
 
                     
