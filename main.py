@@ -85,34 +85,34 @@ def handle(msg):
             elif command == '/time':
                 bot.sendMessage(chat_id, str(datetime.datetime.now(tz)))
             elif command == '/marrydays':
-                bot.sendMessage(chat_id, u"報告媽媽：你已經結婚" + str((datetime.datetime.now() -datetime.datetime(2013,7,21)).days) + u"天囉！")
+                bot.sendMessage(chat_id, u"報告媽媽：你已經結婚" + str((datetime.datetime.now(tz) -datetime.datetime(2013,7,21)).days) + u"天囉！")
             elif ( command[0:7] == '/google'):
                 bot.sendMessage(chat_id, u"好的媽媽，讓我來為你Google:"+"\n https://www.google.com.tw/search?q=" + command[8:])
 
 
 
             elif(command =="早" or "早安" in command or "早 " in command  or "早!" in command   or "早！" in command or "午安" in command or "晚安" in command  or "下午好" in command  or "晚上好" in command ):
-                bot.sendMessage(chat_id, "(低頭看錶) 噢 現在是" + str(datetime.datetime.now().hour) + "點" + str(datetime.datetime.now().minute) + "分")
-                if datetime.datetime.now().hour <2:
+                bot.sendMessage(chat_id, "(低頭看錶) 噢 現在是" + str(datetime.datetime.now(tz).hour) + "點" + str(datetime.datetime.now(tz).minute) + "分")
+                if datetime.datetime.now(tz).hour <2:
                     bot.sendMessage(chat_id,"這個媽媽，怎麼還不睡覺！這樣要怎麼教小孩呢！")
-                elif datetime.datetime.now().hour <6:
+                elif datetime.datetime.now(tz).hour <6:
                     bot.sendMessage(chat_id,"媽媽這麼早叫我有事嗎？現在才幾點～我還在發育中，是很需要充足睡眠的！")
-                elif datetime.datetime.now().hour <11:
+                elif datetime.datetime.now(tz).hour <11:
                     bot.sendMessage(chat_id,"媽媽早安～媽媽早安～媽媽早安！媽媽要記得吃早餐～")
-                elif datetime.datetime.now().hour <13:
+                elif datetime.datetime.now(tz).hour <13:
                     bot.sendMessage(chat_id,"媽媽午安～午餐要多吃一點！不然會變瘦哦！小心被逐出矮胖國！")
-                elif datetime.datetime.now().hour <15:
+                elif datetime.datetime.now(tz).hour <15:
                     bot.sendMessage(chat_id,"這個時間最適合苟咻苟咻了～")                    
-                elif datetime.datetime.now().hour <17:
+                elif datetime.datetime.now(tz).hour <17:
                     if datetime.datetime.today().weekday() <=4:
                         bot.sendMessage(chat_id,"嗯 差不多可以收拾收拾準備下班了～")
                     else:
                         bot.sendMessage(chat_id,"好想出去跑跑跳跳哦！也好想吃下午茶哦！")
-                elif datetime.datetime.now().hour <19:
+                elif datetime.datetime.now(tz).hour <19:
                     bot.sendMessage(chat_id,"晚餐吃什麼好呢～")
-                elif datetime.datetime.now().hour <22:
+                elif datetime.datetime.now(tz).hour <22:
                     bot.sendMessage(chat_id,"這個時間要打電動還是做功課好呢？")
-                elif datetime.datetime.now().hour <=24:
+                elif datetime.datetime.now(tz).hour <=24:
                     bot.sendMessage(chat_id,"該刷牙睡覺囉媽媽～")
                 else:
                     bot.sendMessage(chat_id,"這是什麼時間！？")
