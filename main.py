@@ -139,7 +139,7 @@ def handle(msg):
 #動詞替代
             elif( len(command)>=4 and (command[0:2]=="嗶鼠" or command[0:2]=="嗶嗶" )):
                   bot.sendMessage(chat_id,"嗶鼠想跟媽媽一起" + command[3:])
-            elif( "臭" in command or "笨" in command or "傻" in command or "胖" in command):
+            elif( "臭" in command or "笨" in command or "傻" in command or ("胖" in command and not("阿胖" in command))):
                 if("嗶" in command):
                     if ("嗶嗶" in command):
                         if ("嗶嗶鼠" in command):
@@ -176,7 +176,7 @@ def handle(msg):
                 bot.sendMessage(chat_id, u"咦！真的嗎？哇姆災耶～")
             elif( "認識阿胖" in command and  ("嗎" in command or "?" in command or "？" in command)):
                 bot.sendMessage(chat_id, "哦！是你的好友姜子晴是吧？")
-                bot.sendMessage(chat_id, "媽媽已經活了" + str((datetime.datetime.now(tz) -datetime.datetime(1987,11,16)).days) + "天了\n而阿胖比你還多活一天呢！\n算得這麼精確，我可真是智能嗶鼠啊！" )
+                bot.sendMessage(chat_id, "媽媽已經活了"  + str((datetime.datetime.now(tz) - datetime.datetime(1987,11,16)).days) + "天了\n而阿胖比你還多活一天呢！\n算得這麼精確，我可真是智能嗶鼠啊！")
             elif( ("認識喜波" in command or "認識波波" in command )and  ("嗎" in command or "?" in command or "？" in command)):
                 bot.sendMessage(chat_id, "哦！是你的好友江喜波是吧？\n波波嘛！河馬界有誰不認識波波的！")
             elif( ( "阿仙" in command or "語萱" in command)and  ("嗎" in command or "?" in command or "？" in command)):
