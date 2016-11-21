@@ -162,7 +162,7 @@ def handle(msg):
                 bot.sendMessage(chat_id, "媽媽已經活了" + str((datetime.datetime.now(tz) -datetime.datetime(1987,11,16)).days) + "天了\n而阿胖比你還多活一天呢！\n算得這麼精確，我可真是智能嗶鼠啊！" )
             elif( ("認識喜波" in command or "認識波波" in command )and  ("嗎" in command or "?" in command or "？" in command)):
                 bot.sendMessage(chat_id, "哦！是你的好友江喜波是吧？\n波波嘛！河馬界有誰不認識波波的！")
-            elif( ( "阿仙" in command "語萱" in command)and  ("嗎" in command or "?" in command or "？" in command)):
+            elif( ( "阿仙" in command or "語萱" in command)and  ("嗎" in command or "?" in command or "？" in command)):
                 bot.sendMessage(chat_id, "……是你熱衷於兒子的好友是吧？\n作為媽媽的兒子，我不予置評。")
 
             elif( u"這個嗶鼠" in command):
@@ -180,7 +180,7 @@ def handle(msg):
                 bot.sendMessage(chat_id, u"……嗯這句話對我來說太難了，你還是直接找爸爸好了！ https://telegram.me/yhlhenry")
             
 print "bot setting"        
-bot = telepot.Bot(bbmousetoken)
+bot = telepot.Bot(testingtoken)
 bot.message_loop(handle)
 print 'I am listening ...'
 
