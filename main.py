@@ -83,7 +83,7 @@ def handle(msg):
                 
 #版本宣告 version
             elif command == '/start':
-                bot.sendMessage(chat_id, u"嗨！媽媽！我是嗶嗶鼠機器人v1121.1731版！智能大概是嗶嗶鼠的二十π分之一。")
+                bot.sendMessage(chat_id, u"嗨！媽媽！我是嗶嗶鼠機器人v1121.1737版！智能大概是嗶嗶鼠的二十π分之一。")
             elif command == '/bbmouse':
                 n=random.randint(1,len(bbmousescripts))
                 bot.sendMessage(chat_id, str(bbmousescripts[n]) + "\n\n(" + str(n) + "/" + str(len(bbmousescripts)) + ")" )
@@ -159,10 +159,11 @@ def handle(msg):
                 bot.sendMessage(chat_id, u"咦！真的嗎？哇姆災耶～")
             elif( "認識阿胖" in command and  ("嗎" in command or "?" in command or "？" in command)):
                 bot.sendMessage(chat_id, "哦！是你的好友姜子晴是吧？")
+                bot.sendMessage(chat_id, "媽媽已經活了" + str((datetime.datetime.now(tz) -datetime.datetime(1987,11,16)).days) + "天了\n而阿胖比你還多活一天呢！\n算得這麼精確，我可真是智能嗶鼠啊！" )
             elif( ("認識喜波" in command or "認識波波" in command )and  ("嗎" in command or "?" in command or "？" in command)):
-                bot.sendMessage(chat_id, "哦！是你的好友江喜波是吧？")
-            elif( "認識阿仙" in command and  ("嗎" in command or "?" in command or "？" in command)):
-                bot.sendMessage(chat_id, "哦！是你熱衷於兒子的好友是吧？")
+                bot.sendMessage(chat_id, "哦！是你的好友江喜波是吧？\n波波嘛！河馬界有誰不認識波波的！")
+            elif( ( "阿仙" in command "語萱" in command)and  ("嗎" in command or "?" in command or "？" in command)):
+                bot.sendMessage(chat_id, "……是你熱衷於兒子的好友是吧？\n作為媽媽的兒子，我不予置評。")
 
             elif( u"這個嗶鼠" in command):
                 bot.sendMessage(chat_id, u"這個媽媽這個媽媽！")
