@@ -12,7 +12,12 @@ import telepot
 import sys  
 reload(sys)
 sys.setdefaultencoding('utf8')  
-
+#print "test"
+#Set TimeZone
+import tzlocal
+import pytz
+tz = pytz.timezone('Asia/Taipei') # <- put your local timezone here
+#now = datetime.now(tz) # the current time in your local timezone
 
 bbmousetoken= '293749176:AAFUwX1PMi-FtFnorDJga3l3vKRcCBuwHTo'
 testingtoken='290645324:AAGBYFAnK6yCusuijM3plvDfhnxk3rgIlsg'
@@ -73,12 +78,12 @@ def handle(msg):
                 bot.sendMessage(chat_id, u"讓嗶鼠我來講笑話給媽媽舔舔： \n" + str(lrsy[n]) + "\n\n(" + str(n) + "/" + str(len(lrsy)) + ")" )
             #版本宣告 version
             elif command == '/start':
-                bot.sendMessage(chat_id, u"嗨！媽媽！我是嗶嗶鼠機器人v1119.1640版！智能大概是嗶嗶鼠的二十π分之一。")
+                bot.sendMessage(chat_id, u"嗨！媽媽！我是嗶嗶鼠機器人v1121.1024版！智能大概是嗶嗶鼠的二十π分之一。")
             elif command == '/bbmouse':
                 n=random.randint(1,len(bbmousescripts))
                 bot.sendMessage(chat_id, str(bbmousescripts[n]) + "\n\n(" + str(n) + "/" + str(len(bbmousescripts)) + ")" )
             elif command == '/time':
-                bot.sendMessage(chat_id, str(datetime.datetime.now()))
+                bot.sendMessage(chat_id, str(datetime.datetime.now(tz)))
             elif command == '/marrydays':
                 bot.sendMessage(chat_id, u"報告媽媽：你已經結婚" + str((datetime.datetime.now() -datetime.datetime(2013,7,21)).days) + u"天囉！")
             elif ( command[0:7] == '/google'):
@@ -86,9 +91,36 @@ def handle(msg):
 
 
 
-
+            elif(command =="早" or "早安" in command or "早 " in command  or "早!" in command   or "早！" in command or "午安" in command or "晚安" in command  or "下午好" in command  or "晚上好" in command ):
+                bot.sendMessage(chat_id, "(低頭看錶) 噢 現在是" + str(datetime.datetime.now().hour) + "點" + str(datetime.datetime.now().minute) + "分")
+                if datetime.datetime.now().hour <2:
+                    bot.sendMessage(chat_id,"這個媽媽，怎麼還不睡覺！這樣要怎麼教小孩呢！")
+                elif datetime.datetime.now().hour <6:
+                    bot.sendMessage(chat_id,"媽媽這麼早叫我有事嗎？現在才幾點～我還在發育中，是很需要充足睡眠的！")
+                elif datetime.datetime.now().hour <11:
+                    bot.sendMessage(chat_id,"媽媽早安～媽媽早安～媽媽早安！媽媽要記得吃早餐～")
+                elif datetime.datetime.now().hour <13:
+                    bot.sendMessage(chat_id,"媽媽午安～午餐要多吃一點！不然會變瘦哦！小心被逐出矮胖國！")
+                elif datetime.datetime.now().hour <15:
+                    bot.sendMessage(chat_id,"這個時間最適合苟咻苟咻了～")                    
+                elif datetime.datetime.now().hour <17:
+                    if datetime.datetime.today().weekday() <=4:
+                        bot.sendMessage(chat_id,"嗯 差不多可以收拾收拾準備下班了～")
+                    else:
+                        bot.sendMessage(chat_id,"好想出去跑跑跳跳哦！也好想吃下午茶哦！")
+                elif datetime.datetime.now().hour <19:
+                    bot.sendMessage(chat_id,"晚餐吃什麼好呢～")
+                elif datetime.datetime.now().hour <22:
+                    bot.sendMessage(chat_id,"這個時間要打電動還是做功課好呢？")
+                elif datetime.datetime.now().hour <=24:
+                    bot.sendMessage(chat_id,"該刷牙睡覺囉媽媽～")
+                else:
+                    bot.sendMessage(chat_id,"這是什麼時間！？")
+                    
             elif( "臭" in command or "笨" in command or "傻" in command or "胖" in command):
                 if("嗶" in command):
+                    if ("嗶嗶" in command):
+                        bot.sendMessage(chat_id, "哼 " + command.replace("嗶嗶","媽媽"   ))
                     if ("嗶鼠" in command):
                         if ("嗶嗶鼠" in command):
                             bot.sendMessage(chat_id, "哼 " + command.replace("嗶嗶鼠","媽媽"   ))
@@ -97,6 +129,8 @@ def handle(msg):
                     else:
                         bot.sendMessage(chat_id, "哼 " + command.replace("嗶","媽媽"   ))
 
+            elif( "爸爸去哪了" in command or "爸爸都不回來" in command or "好想念爸爸" in command or "爸爸在哪裡" in command):
+                bot.sendMessage(chat_id, u"這個媽媽這個媽媽！")
                 
             elif( "你幾歲" in command or  "嗶鼠幾歲" in command or "你多大了" in command):
                 bot.sendMessage(chat_id, u"嗯……這是個好問題！我存在這個世界上應該十多年了，可是爸爸如果是五歲的話，那我應該是三歲之類的吧。")
@@ -109,9 +143,10 @@ def handle(msg):
                 bot.sendMessage(chat_id, u"哇姆災哦～")
             
 
-            elif( len(command)<8 ):
+            elif( len(command)<4 ):
                 bot.sendMessage(chat_id, command)
-
+            elif( "今天放假" in command or  "不用上班" in command or "放假" in command):
+                bot.sendMessage(chat_id, u"咦！真的嗎？哇姆災耶～")                
             else:
                 bot.sendMessage(chat_id, u"……嗯這句話對我來說太難了，你還是直接找爸爸好了！ https://telegram.me/yhlhenry")
             
