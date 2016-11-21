@@ -137,7 +137,7 @@ def handle(msg):
 
                     
 #動詞替代
-            elif( len(command)>=4 and (command[0:2]=="嗶鼠" or command[0:2]=="嗶嗶" ):
+            elif( len(command)>=4 and (command[0:2]=="嗶鼠" or command[0:2]=="嗶嗶" )):
                   bot.sendMessage(chat_id,"嗶鼠想跟媽媽一起" + command[3:])
             elif( "臭" in command or "笨" in command or "傻" in command or "胖" in command):
                 if("嗶" in command):
