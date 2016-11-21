@@ -83,7 +83,7 @@ def handle(msg):
                 
 #版本宣告 version
             elif command == '/start':
-                bot.sendMessage(chat_id, u"嗨！媽媽！我是嗶嗶鼠機器人v1121.1532版！智能大概是嗶嗶鼠的二十π分之一。")
+                bot.sendMessage(chat_id, u"嗨！媽媽！我是嗶嗶鼠機器人v1121.1719版！智能大概是嗶嗶鼠的二十π分之一。")
             elif command == '/bbmouse':
                 n=random.randint(1,len(bbmousescripts))
                 bot.sendMessage(chat_id, str(bbmousescripts[n]) + "\n\n(" + str(n) + "/" + str(len(bbmousescripts)) + ")" )
@@ -160,8 +160,21 @@ def handle(msg):
 
             elif( len(command)<4 ):
                 bot.sendMessage(chat_id, command)
+
+#特例
             elif( "今天放假" in command or  "不用上班" in command or "放假" in command):
-                bot.sendMessage(chat_id, u"咦！真的嗎？哇姆災耶～")                
+                bot.sendMessage(chat_id, u"咦！真的嗎？哇姆災耶～")
+            elif( "認識阿胖" in command and  ("嗎" in command or "?" in command or "？" in command)):
+                bot.sendMessage(chat_id, "哦！是你的好友姜子晴是吧？")
+            elif( ("認識喜波" in command or "認識波波" in command )and  ("嗎" in command or "?" in command or "？" in command)):
+                bot.sendMessage(chat_id, "哦！是你的好友江喜波是吧？")
+            elif( "認識阿仙" in command and  ("嗎" in command or "?" in command or "？" in command)):
+                bot.sendMessage(chat_id, "哦！是你熱衷於兒子的好友是吧？")
+
+
+
+
+                
             else:
                 bot.sendMessage(chat_id, u"……嗯這句話對我來說太難了，你還是直接找爸爸好了！ https://telegram.me/yhlhenry")
             
