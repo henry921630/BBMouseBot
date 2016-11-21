@@ -78,7 +78,7 @@ def handle(msg):
                 bot.sendMessage(chat_id, u"讓嗶鼠我來講笑話給媽媽舔舔： \n" + str(lrsy[n]) + "\n\n(" + str(n) + "/" + str(len(lrsy)) + ")" )
             #版本宣告 version
             elif command == '/start':
-                bot.sendMessage(chat_id, u"嗨！媽媽！我是嗶嗶鼠機器人v1121.1453版！智能大概是嗶嗶鼠的二十π分之一。")
+                bot.sendMessage(chat_id, u"嗨！媽媽！我是嗶嗶鼠機器人v1121.1513版！智能大概是嗶嗶鼠的二十π分之一。")
             elif command == '/bbmouse':
                 n=random.randint(1,len(bbmousescripts))
                 bot.sendMessage(chat_id, str(bbmousescripts[n]) + "\n\n(" + str(n) + "/" + str(len(bbmousescripts)) + ")" )
@@ -128,6 +128,8 @@ def handle(msg):
                             bot.sendMessage(chat_id, "哼 " + command.replace("嗶鼠","媽媽"   ))
                     else:
                         bot.sendMessage(chat_id, "哼 " + command.replace("嗶","媽媽"   ))
+                else:
+                    bot.sendMessage(chat_id, u"哇姆災哦～")
 
             elif( "爸爸去哪了" in command or "爸爸都不回來" in command or "好想念爸爸" in command or "爸爸在哪裡" in command):
                 bot.sendMessage(chat_id, u"這個媽媽這個媽媽！")
@@ -139,7 +141,7 @@ def handle(msg):
                 
             elif( u"這個" in command):
                 bot.sendMessage(chat_id, u"這個媽媽這個媽媽！")
-            elif( u"嗎" in command or  u"呢" in command or u"呢" in command):
+            elif( u"嗎" in command or  u"呢" in command or u"呢" in command or "吧" in command):
                 bot.sendMessage(chat_id, u"哇姆災哦～")
             
 
