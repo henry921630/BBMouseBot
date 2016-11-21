@@ -83,7 +83,7 @@ def handle(msg):
                 
 #版本宣告 version
             elif command == '/start':
-                bot.sendMessage(chat_id, u"嗨！媽媽！我是嗶嗶鼠機器人v1121.1827版！智能大概是嗶嗶鼠的二十π分之一。")
+                bot.sendMessage(chat_id, u"嗨！媽媽！我是嗶嗶鼠機器人v1121.2327版！智能大概是嗶嗶鼠的二十π分之一。")
             elif command == '/bbmouse':
                 n=random.randint(1,len(bbmousescripts))
                 bot.sendMessage(chat_id, str(bbmousescripts[n]) + "\n\n(" + str(n) + "/" + str(len(bbmousescripts)) + ")" )
@@ -91,6 +91,8 @@ def handle(msg):
                 bot.sendMessage(chat_id, str(datetime.datetime.now(tz)))
             elif command == '/marrydays':
                 bot.sendMessage(chat_id, u"報告媽媽：你已經結婚" + str((datetime.datetime.now() -datetime.datetime(2013,7,21)).days) + u"天囉！")
+
+                
             elif ( command[0:7] == '/google'):
                 bot.sendMessage(chat_id, u"好的媽媽，讓我來為你Google:"+"\n https://www.google.com.tw/search?q=" + command[8:])
             elif("智能升級" in command or "智能進化" in command  or "什麼智能" in command   or "學會了什麼" in command or "有升級嗎" in command):
@@ -156,7 +158,7 @@ def handle(msg):
                 else:
                     bot.sendMessage(chat_id, u"哇姆災哦～")
 
-            elif(command is "小酥熊" or command is "酥熊" or "胖胖熊" in command):
+            elif(command == "小酥熊" or command == "酥熊" or "胖胖熊" in command or "我是小" in command):
                 bot.sendMessage(chat_id, u"媽媽你是小酥熊！\n\n但是不要被小酥熊的「小」字給騙了！～")
             
 
@@ -187,7 +189,7 @@ def handle(msg):
             elif( u"嗎" in command or  u"呢" in command or u"呢" in command or "吧" in command):
                 bot.sendMessage(chat_id, u"哇姆災哦～")
             
-
+#ECHO
             elif( len(command)<4 ):
                 bot.sendMessage(chat_id, command)
 
