@@ -90,7 +90,7 @@ def handle(msg):
             elif command == '/time':
                 bot.sendMessage(chat_id, str(datetime.datetime.now(tz)))
             elif command == '/marrydays':
-                bot.sendMessage(chat_id, u"報告媽媽：你已經結婚" + str((datetime.datetime.now(tz) -datetime.datetime(2013,7,21)).days) + u"天囉！")
+                bot.sendMessage(chat_id, u"報告媽媽：你已經結婚" + str((datetime.datetime.now() -datetime.datetime(2013,7,21)).days) + u"天囉！")
             elif ( command[0:7] == '/google'):
                 bot.sendMessage(chat_id, u"好的媽媽，讓我來為你Google:"+"\n https://www.google.com.tw/search?q=" + command[8:])
             elif("智能升級" in command or "智能進化" in command  or "什麼智能" in command   or "學會了什麼" in command or "有升級嗎" in command):
@@ -138,7 +138,7 @@ def handle(msg):
                     
 #動詞替代
             elif( len(command)>=4 and (command[0:2]=="嗶鼠" or command[0:2]=="嗶嗶" )):
-                  bot.sendMessage(chat_id,"嗶鼠想跟媽媽一起" + command[3:])
+                  bot.sendMessage(chat_id,"嗶鼠想跟媽媽一起" + command[2:])
             elif( "臭" in command or "笨" in command or "傻" in command or ("胖" in command and not("阿胖" in command))):
                 if("嗶" in command):
                     if ("嗶嗶" in command):
@@ -176,7 +176,7 @@ def handle(msg):
                 bot.sendMessage(chat_id, u"咦！真的嗎？哇姆災耶～")
             elif( "認識阿胖" in command and  ("嗎" in command or "?" in command or "？" in command)):
                 bot.sendMessage(chat_id, "哦！是你的好友姜子晴是吧？")
-                bot.sendMessage(chat_id, "媽媽已經活了"  + str((datetime.datetime.now(tz) - datetime.datetime(1987,11,16)).days) + "天了\n而阿胖比你還多活一天呢！\n算得這麼精確，我可真是智能嗶鼠啊！")
+                bot.sendMessage(chat_id, "媽媽已經活了"  + str((datetime.datetime.now() - datetime.datetime(1987,11,16)).days) + "天了\n而阿胖比你還多活一天呢！\n算得這麼精確，我可真是智能嗶鼠啊！")
             elif( ("認識喜波" in command or "認識波波" in command )and  ("嗎" in command or "?" in command or "？" in command)):
                 bot.sendMessage(chat_id, "哦！是你的好友江喜波是吧？\n波波嘛！河馬界有誰不認識波波的！")
             elif( ( "阿仙" in command or "語萱" in command)and  ("嗎" in command or "?" in command or "？" in command)):
