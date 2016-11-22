@@ -66,7 +66,7 @@ def handle(msg):
             dq = { 1:"有人說有一個藍瘦香菇的前面還有一個藍瘦香菇……\n媽媽，你覺得香菇如果有語言的話，他們的詞彙裡面會有「前面」「後面」的概念嗎？(搔頭) ",\
                         2:"媽媽～昨天睡覺時有個外星人從遙遠的地方跟我通訊，我跟他說我們的心臟一般都長在「左邊」\n可是他都不懂什麼叫做「左邊」耶(搔頭)……\n左邊不就是右邊的另外一邊嗎！真拿外星人沒有辦法～",\
                         3:"智能不足好痛苦QQ",\
-
+                        4:"爸爸在法國居住的時候，住所沒有電鍋，為了減少煮飯時產生的鍋巴，我們一起來一直在思考一個問題： \n在每一餐皆煮相同米量的前提下， \n應該選用什麼尺寸比例的圓柱形鍋子，才能使米飯接觸鍋體的面積最小呢？"
                                }
 
             #生日快樂
@@ -83,7 +83,7 @@ def handle(msg):
                 
 #版本宣告 version
             elif command == '/start':
-                bot.sendMessage(chat_id, u"嗨！媽媽！我是嗶嗶鼠機器人v1121.2327版！智能大概是嗶嗶鼠的二十π分之一。")
+                bot.sendMessage(chat_id, u"嗨！媽媽！我是嗶嗶鼠機器人v1122.0929版！智能大概是嗶嗶鼠的二十π分之一。")
             elif command == '/bbmouse':
                 n=random.randint(1,len(bbmousescripts))
                 bot.sendMessage(chat_id, str(bbmousescripts[n]) + "\n\n(" + str(n) + "/" + str(len(bbmousescripts)) + ")" )
@@ -95,15 +95,16 @@ def handle(msg):
                 
             elif ( command[0:7] == '/google'):
                 bot.sendMessage(chat_id, u"好的媽媽，讓我來為你Google:"+"\n https://www.google.com.tw/search?q=" + command[8:])
-            elif("智能升級" in command or "智能進化" in command  or "什麼智能" in command   or "學會了什麼" in command or "有升級嗎" in command):
+            elif("智能升級" in command or "智能進化" in command  or "什麼智能" in command   or "學會了什麼" in command or "有升級嗎" in command or "新功能" in command):
                 bot.sendMessage(chat_id, "智慧毛說過：「智能沒有奇蹟，只有累積。」\n智能升級是一個漫長的路程，而且你永遠不知道就在媽媽一回頭間，小孩又學會了什麼奇怪的東西。")
+#深度問題
             elif("無聊" in command or "有趣的" in command  or "你會思考" in command   or "智能測試" in command or "智能問答" in command):
                 n=random.randint(1,len(dq))
                 bot.sendMessage(chat_id, str(dq[n]) + "\n\n(" + str(n) + "/" + str(len(dq)) + ")" )
 
 
-
-            elif(command =="早" or "早安" in command or "早 " in command  or "早!" in command   or "早！" in command or "午安" in command or "晚安" in command  or "下午好" in command  or "晚上好" in command or "報時" in command):
+#嗶鼠報時
+            elif(command =="早" or "早安" in command or "早 " in command  or "早!" in command   or "早！" in command or "午安" in command or "晚安" in command  or "下午好" in command  or "晚上好" in command or "嗶報時" in command or "嗶鼠報時" in command):
                 bot.sendMessage(chat_id, "(低頭看錶) 噢 現在是" + str(datetime.datetime.now(tz).hour) + "點" + str(datetime.datetime.now(tz).minute) + "分")
                 if datetime.datetime.now(tz).hour <2:
                     bot.sendMessage(chat_id,"這個媽媽，怎麼還不睡覺！這樣要怎麼教小孩呢！")
@@ -136,12 +137,21 @@ def handle(msg):
             elif( "你好" in command):
                 bot.sendMessage(chat_id,"媽媽你好" )
 
+#情感偵測 #反身動詞
+#e.g.「我愛嗶嗶鼠」
+            elif( len(command)<=12 and command[0:1]=="我" and "嗶" in command ):
+
+                  bot.sendMessage(chat_id,"嗶鼠也" + command[1:command.find("嗶")] + "媽媽")
 
                     
 #動詞替代
             elif( len(command)>=4 and (command[0:2]=="嗶鼠" or command[0:2]=="嗶嗶" )):
-                  bot.sendMessage(chat_id,"嗶鼠想跟媽媽一起" + command[2:])
-            elif( "臭" in command or "笨" in command or "傻" in command or ("胖" in command and not("阿胖" in command))):
+                  bbn=(command[0:3]=="嗶嗶鼠")
+                  bot.sendMessage(chat_id,"嗶鼠想跟媽媽一起" + command[2+bbn:])
+
+
+                  
+            elif( "臭" in command or "笨" in command or "傻" in command or "壞" in command or ("胖" in command and not("阿胖" in command or "小胖" in command))):
                 if("嗶" in command):
                     if ("嗶嗶" in command):
                         if ("嗶嗶鼠" in command):
@@ -157,6 +167,9 @@ def handle(msg):
                         bot.sendMessage(chat_id, "哼 " + command.replace("嗶","媽媽"   ))
                 else:
                     bot.sendMessage(chat_id, u"哇姆災哦～")
+
+
+
 
             elif(command == "小酥熊" or command == "酥熊" or "胖胖熊" in command or "我是小" in command):
                 bot.sendMessage(chat_id, u"媽媽你是小酥熊！\n\n但是不要被小酥熊的「小」字給騙了！～")
@@ -176,13 +189,24 @@ def handle(msg):
 #特例
             elif( "今天放假" in command or  "不用上班" in command or "放假" in command):
                 bot.sendMessage(chat_id, u"咦！真的嗎？哇姆災耶～")
-            elif( "認識阿胖" in command and  ("嗎" in command or "?" in command or "？" in command)):
-                bot.sendMessage(chat_id, "哦！是你的好友姜子晴是吧？")
-                bot.sendMessage(chat_id, "媽媽已經活了"  + str((datetime.datetime.now() - datetime.datetime(1987,11,16)).days) + "天了\n而阿胖比你還多活一天呢！\n算得這麼精確，我可真是智能嗶鼠啊！")
-            elif( ("認識喜波" in command or "認識波波" in command )and  ("嗎" in command or "?" in command or "？" in command)):
-                bot.sendMessage(chat_id, "哦！是你的好友江喜波是吧？\n波波嘛！河馬界有誰不認識波波的！")
-            elif( ( "阿仙" in command or "語萱" in command)and  ("嗎" in command or "?" in command or "？" in command)):
-                bot.sendMessage(chat_id, "……是你熱衷於兒子的好友是吧？\n作為媽媽的兒子，我不予置評。")
+            elif("認識" in command and  ("嗎" in command or "?" in command or "？" in command)):
+                if( "阿胖" in command or "小胖" in command):
+                    bot.sendMessage(chat_id, "哦！是你的好友姜子晴是吧？")
+                    bot.sendMessage(chat_id, "媽媽已經活了"  + str((datetime.datetime.now() - datetime.datetime(1987,11,16)).days) + "天了\n而阿胖比你還多活一天呢！\n算得這麼精確，我可真是智能嗶鼠啊！")
+                elif( ("喜波" in command or "波波" in command )):
+                    bot.sendMessage(chat_id, "哦！是你的好友江喜波是吧？\n波波嘛！河馬界有誰不認識波波的！")
+                elif(  "阿仙" in command or "語萱" in command):
+                    bot.sendMessage(chat_id, "……是你熱衷於兒子的好友是吧？\n作為媽媽的兒子，我不予置評。")
+                elif(  "外婆" in command or "婆婆" in command):
+                    bot.sendMessage(chat_id, "哦哦  我最喜歡外婆了～")
+                elif(  "陸仁" in command or "阿姨" in command):
+                    bot.sendMessage(chat_id, "我跟喜歡外婆一樣喜歡阿姨～")
+
+                    
+                else:
+                    bot.sendMessage(chat_id, "還不太認識耶，他是誰啊？")
+
+
 
             elif( u"這個嗶鼠" in command):
                 bot.sendMessage(chat_id, u"這個媽媽這個媽媽！")
@@ -198,8 +222,10 @@ def handle(msg):
             else:
                 bot.sendMessage(chat_id, u"……嗯這句話對我來說太難了，你還是直接找爸爸好了！ https://telegram.me/yhlhenry")
             
-print "bot setting"        
-bot = telepot.Bot(bbmousetoken)
+print "bot setting"
+A=bbmousetoken
+B=testingtoken
+bot = telepot.Bot(A)
 bot.message_loop(handle)
 print 'I am listening ...'
 
