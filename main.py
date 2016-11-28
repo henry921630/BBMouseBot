@@ -19,6 +19,9 @@ import pytz
 tz = pytz.timezone('Asia/Taipei') # <- put your local timezone here
 #now = datetime.now(tz) # the current time in your local timezone
 
+
+from telepot.namedtuple import InlineKeyboardMarkup, InlineKeyboardButton
+
 bbmousetoken= '293749176:AAFUwX1PMi-FtFnorDJga3l3vKRcCBuwHTo'
 testingtoken='290645324:AAGBYFAnK6yCusuijM3plvDfhnxk3rgIlsg'
 
@@ -97,6 +100,22 @@ def handle(msg):
                 bot.sendMessage(chat_id, u"好的媽媽，讓我來為你Google:"+"\n https://www.google.com.tw/search?q=" + command[8:])
             elif("智能升級" in command or "智能進化" in command  or "什麼智能" in command   or "學會了什麼" in command or "有升級嗎" in command or "新功能" in command):
                 bot.sendMessage(chat_id, "智慧毛說過：「智能沒有奇蹟，只有累積。」\n智能升級是一個漫長的路程，而且你永遠不知道就在媽媽一回頭間，小孩又學會了什麼奇怪的東西。")
+
+
+#猜拳
+            elif '猜拳' in command :
+                keyboard = InlineKeyboardMarkup(inline_keyboard=[
+                   [InlineKeyboardButton(text='剪刀', callback_data='scissors')],
+                   [InlineKeyboardButton(text='石頭', callback_data='rock')],
+                   [InlineKeyboardButton(text='布', callback_data='paper')],
+               ])
+                
+
+                bot.sendMessage(chat_id, '媽媽我們來猜拳吧！', reply_markup=keyboard)
+
+
+
+
 #深度問題
             elif("無聊" in command or "有趣的" in command  or "你會思考" in command   or "智能測試" in command or "智能問答" in command):
                 n=random.randint(1,len(dq))
@@ -222,11 +241,30 @@ def handle(msg):
             else:
                 bot.sendMessage(chat_id, u"……嗯這句話對我來說太難了，你還是直接找爸爸好了！ https://telegram.me/yhlhenry")
             
+
+
+def on_callback_query(msg):
+    query_id, from_id, query_data = telepot.glance(msg, flavor='callback_query')
+    print('Callback Query:', query_id, from_id, query_data)
+    if query_data=='scissors':
+        result='我贏媽媽了！'
+    elif query_data=='rock':
+        result='嘿～不分勝敗'
+    elif query_data=='paper':
+        result='唔，我輸了。再來一把！'
+    bot.answerCallbackQuery(query_id, text='(嗶鼠出了石頭！)   ' + result)
+    
+
+
+
 print "bot setting"
 A=bbmousetoken
 B=testingtoken
 bot = telepot.Bot(A)
-bot.message_loop(handle)
+#bot.message_loop(handle)
+bot.message_loop({'chat': handle,
+                  'callback_query': on_callback_query})
+
 print 'I am listening ...'
 
 
