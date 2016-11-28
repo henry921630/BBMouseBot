@@ -165,7 +165,7 @@ def handle(msg):
                     
 #動詞替代
             elif ( len(command)>=4 and (command[0:3]=="嗶鼠我")):
-                  bot.sendMessage(chat_id,"哦 媽媽你" + command[2:] + '  啊不就好棒棒XD')
+                  bot.sendMessage(chat_id,"哦 媽媽你" + command[3:] + '  啊不就好棒棒XD')
 
             elif( len(command)>=4 and (command[0:2]=="嗶鼠" or command[0:2]=="嗶嗶" )):
                   bbn=(command[0:3]=="嗶嗶鼠")
