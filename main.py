@@ -167,7 +167,10 @@ def handle(msg):
             elif ( len(command)>=4 and (command[0:3]=="嗶鼠我")):
                   bot.sendMessage(chat_id,"哦 媽媽你" + command[3:] + '  啊不就好棒棒XD')
             elif ( len(command)>=4 and (command[0:3]=="嗶鼠你")):
-                  bot.sendMessage(chat_id,"咦 真的嗎！？ 我" + command[3:] + '？')
+                if( u"嗎" in command or  u"呢" in command or u"呢" in command or "吧" in command):
+                    bot.sendMessage(chat_id, u"哇姆災哦～～")
+                else:
+                    bot.sendMessage(chat_id,"咦 真的嗎！？ 我" + command[3:] + '？')
 
             elif( len(command)>=4 and (command[0:2]=="嗶鼠" or command[0:2]=="嗶嗶" )):
                   bbn=(command[0:3]=="嗶嗶鼠")
