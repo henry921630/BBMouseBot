@@ -86,7 +86,7 @@ def handle(msg):
                 
 #版本宣告 version
             elif command == '/start':
-                bot.sendMessage(chat_id, u"嗨！媽媽！我是嗶嗶鼠機器人v1122.0929版！智能大概是嗶嗶鼠的二十π分之一。")
+                bot.sendMessage(chat_id, u"嗨！媽媽！我是嗶嗶鼠機器人v1128.1605版！智能大概是嗶嗶鼠的二十π分之一。")
             elif command == '/bbmouse':
                 n=random.randint(1,len(bbmousescripts))
                 bot.sendMessage(chat_id, str(bbmousescripts[n]) + "\n\n(" + str(n) + "/" + str(len(bbmousescripts)) + ")" )
@@ -164,6 +164,9 @@ def handle(msg):
 
                     
 #動詞替代
+            elif ( len(command)>=4 and (command[0:3]=="嗶鼠我")):
+                  bot.sendMessage(chat_id,"哦 媽媽你" + command[2:] + '  啊不就好棒棒XD')
+
             elif( len(command)>=4 and (command[0:2]=="嗶鼠" or command[0:2]=="嗶嗶" )):
                   bbn=(command[0:3]=="嗶嗶鼠")
                   bot.sendMessage(chat_id,"嗶鼠想跟媽媽一起" + command[2+bbn:])
