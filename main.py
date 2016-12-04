@@ -26,7 +26,25 @@ bbmousetoken= '293749176:AAFUwX1PMi-FtFnorDJga3l3vKRcCBuwHTo'
 testingtoken='290645324:AAGBYFAnK6yCusuijM3plvDfhnxk3rgIlsg'
 
 def handle(msg):
+    print u"start handle"
+    BBMresponce_file_id = ""
+    BBMresponse_str=""
     content_type, chat_type, chat_id = telepot.glance(msg)
+#處理貼圖或檔案訊息
+    if content_type == 'sticker' or  content_type == 'document':
+        response=bot.getUpdates()
+        BBMresponse_str=str( '媽媽，我看不懂貼圖啦！')
+        #抓取file_id用
+        #bot.sendMessage(msg['chat']['id'],msg)
+
+        BBMresponce_file_id="BQADBQADGQADOX-WCWw1LEnp71HpAg" #白爛貓敲肚子咚咚咚
+        
+
+        
+    #if content_type == 'document':
+    #    bot.sendMessage(msg['chat']['id'],msg)
+
+#處理純文字訊息
     if content_type == 'text':
         chat_id = msg['chat']['id']
         command = msg['text']
@@ -75,31 +93,31 @@ def handle(msg):
             #生日快樂
 
             if command != "/start" and datetime.datetime.today().month==11 and datetime.datetime.today().day==16:
-                bot.sendMessage(chat_id, u"耶～今天是媽媽生日，生日快樂！")
+                BBMresponse_str= str( u"耶～今天是媽媽生日，生日快樂！")
                 
 
 
 #指令區
             if command == '/story':
                 n=random.randint(1,len(lrsy))
-                bot.sendMessage(chat_id, u"讓嗶鼠我來講笑話給媽媽舔舔： \n" + str(lrsy[n]) + "\n\n(" + str(n) + "/" + str(len(lrsy)) + ")" )
+                BBMresponse_str= str( u"讓嗶鼠我來講笑話給媽媽舔舔： \n" + str(lrsy[n]) + "\n\n(" + str(n) + "/" + str(len(lrsy)) + ")" )
                 
 #版本宣告 version
             elif command == '/start':
-                bot.sendMessage(chat_id, u"嗨！媽媽！我是嗶嗶鼠機器人v1128.1726版！智能大概是嗶嗶鼠的二十π分之一。")
+                BBMresponse_str= str( u"嗨！媽媽！我是嗶嗶鼠機器人v1204.2338版！智能大概是嗶嗶鼠的二十π分之一。")
             elif command == '/bbmouse':
                 n=random.randint(1,len(bbmousescripts))
-                bot.sendMessage(chat_id, str(bbmousescripts[n]) + "\n\n(" + str(n) + "/" + str(len(bbmousescripts)) + ")" )
+                BBMresponse_str= str( str(bbmousescripts[n]) + "\n\n(" + str(n) + "/" + str(len(bbmousescripts)) + ")" )
             elif command == '/time':
-                bot.sendMessage(chat_id, str(datetime.datetime.now(tz)))
+                BBMresponse_str= str( str(datetime.datetime.now(tz)))
             elif command == '/marrydays':
-                bot.sendMessage(chat_id, u"報告媽媽：你已經結婚" + str((datetime.datetime.now() -datetime.datetime(2013,7,21)).days) + u"天囉！")
+                BBMresponse_str= str( u"報告媽媽：你已經結婚" + str((datetime.datetime.now() -datetime.datetime(2013,7,21)).days) + u"天囉！")
 
                 
             elif ( command[0:7] == '/google'):
-                bot.sendMessage(chat_id, u"好的媽媽，讓我來為你Google:"+"\n https://www.google.com.tw/search?q=" + command[8:])
+                BBMresponse_str= str( u"好的媽媽，讓我來為你Google:"+"\n https://www.google.com.tw/search?q=" + command[8:])
             elif("智能升級" in command or "智能進化" in command  or "什麼智能" in command   or "學會了什麼" in command or "有升級嗎" in command or "新功能" in command):
-                bot.sendMessage(chat_id, "智慧毛說過：「智能沒有奇蹟，只有累積。」\n智能升級是一個漫長的路程，而且你永遠不知道就在媽媽一回頭間，小孩又學會了什麼奇怪的東西。")
+                BBMresponse_str= str( "智慧毛說過：「智能沒有奇蹟，只有累積。」\n智能升級是一個漫長的路程，而且你永遠不知道就在媽媽一回頭間，小孩又學會了什麼奇怪的東西。")
 
 
 #猜拳
@@ -111,7 +129,7 @@ def handle(msg):
                ])
                 
 
-                bot.sendMessage(chat_id, '媽媽我們來猜拳吧！', reply_markup=keyboard)
+                BBMresponse_str= str( '媽媽我們來猜拳吧！', reply_markup=keyboard)
 
 
 
@@ -119,62 +137,58 @@ def handle(msg):
 #深度問題
             elif("無聊" in command or "有趣的" in command  or "你會思考" in command   or "智能測試" in command or "智能問答" in command):
                 n=random.randint(1,len(dq))
-                bot.sendMessage(chat_id, str(dq[n]) + "\n\n(" + str(n) + "/" + str(len(dq)) + ")" )
+                BBMresponse_str= str( str(dq[n]) + "\n\n(" + str(n) + "/" + str(len(dq)) + ")" )
 
 
 #嗶鼠報時
             elif(command =="早" or "早安" in command or "早 " in command  or "早!" in command   or "早！" in command or "午安" in command or "晚安" in command  or "下午好" in command  or "晚上好" in command or "嗶報時" in command or "嗶鼠報時" in command):
-                bot.sendMessage(chat_id, "(低頭看錶) 噢 現在是" + str(datetime.datetime.now(tz).hour) + "點" + str(datetime.datetime.now(tz).minute) + "分")
+                BBMresponse_str= str( "(低頭看錶) 噢 現在是" + str(datetime.datetime.now(tz).hour) + "點" + str(datetime.datetime.now(tz).minute) + "分")
                 if datetime.datetime.now(tz).hour <2:
-                    bot.sendMessage(chat_id,"這個媽媽，怎麼還不睡覺！這樣要怎麼教小孩呢！")
+                    BBMresponse_str= str("這個媽媽，怎麼還不睡覺！這樣要怎麼教小孩呢！")
                 elif datetime.datetime.now(tz).hour <6:
-                    bot.sendMessage(chat_id,"媽媽這麼早叫我有事嗎？現在才幾點～我還在發育中，是很需要充足睡眠的！")
+                    BBMresponse_str= str("媽媽這麼早叫我有事嗎？現在才幾點～我還在發育中，是很需要充足睡眠的！")
                 elif datetime.datetime.now(tz).hour <11:
-                    bot.sendMessage(chat_id,"媽媽早安～媽媽早安～媽媽早安！媽媽要記得吃早餐～")
+                    BBMresponse_str= str("媽媽早安～媽媽早安～媽媽早安！媽媽要記得吃早餐～")
                 elif datetime.datetime.now(tz).hour <13:
-                    bot.sendMessage(chat_id,"媽媽午安～午餐要多吃一點！不然會變瘦哦！小心被逐出矮胖國！")
+                    BBMresponse_str= str("媽媽午安～午餐要多吃一點！不然會變瘦哦！小心被逐出矮胖國！")
                 elif datetime.datetime.now(tz).hour <15:
-                    bot.sendMessage(chat_id,"這個時間最適合苟咻苟咻了～")
+                    BBMresponse_str= str("這個時間最適合苟咻苟咻了～")
                 elif datetime.datetime.now(tz).hour <16:
-                    bot.sendMessage(chat_id,"找浣熊朋友來家裡玩好了！～")
+                    BBMresponse_str= str("找浣熊朋友來家裡玩好了！～")
                 
                 elif datetime.datetime.now(tz).hour <17:
                     if datetime.datetime.today().weekday() <=4:
-                        bot.sendMessage(chat_id,"嗯 差不多可以收拾收拾準備下班了～")
+                        BBMresponse_str= str("嗯 差不多可以收拾收拾準備下班了～")
                     else:
-                        bot.sendMessage(chat_id,"好想出去跑跑跳跳哦！也好想吃下午茶哦！")
+                        BBMresponse_str= str("好想出去跑跑跳跳哦！也好想吃下午茶哦！")
                 elif datetime.datetime.now(tz).hour <19:
-                    bot.sendMessage(chat_id,"晚餐吃什麼好呢～")
+                    BBMresponse_str= str("晚餐吃什麼好呢～")
                 elif datetime.datetime.now(tz).hour <22:
-                    bot.sendMessage(chat_id,"這個時間要打電動還是做功課好呢？")
+                    BBMresponse_str= str("這個時間要打電動還是做功課好呢？")
                 elif datetime.datetime.now(tz).hour <=24:
-                    bot.sendMessage(chat_id,"該刷牙睡覺囉媽媽～")
+                    BBMresponse_str= str("該刷牙睡覺囉媽媽～")
                 else:
-                    bot.sendMessage(chat_id,"這是什麼時間！？")
+                    BBMresponse_str= str("這是什麼時間！？")
             elif( "再見" in command):
-                bot.sendMessage(chat_id,"媽媽再見" )
+                BBMresponse_str= str("媽媽再見" )
             elif( "你好" in command):
-                bot.sendMessage(chat_id,"媽媽你好" )
+                BBMresponse_str= str("媽媽你好" )
 
 #情感偵測 #反身動詞
 #e.g.「我愛嗶嗶鼠」
             elif( len(command)<=12 and command[0:1]=="我" and "嗶" in command ):
 
-                  bot.sendMessage(chat_id,"嗶鼠也" + command[1:command.find("嗶")] + "媽媽")
+                  BBMresponse_str= str("嗶鼠也" + command[1:command.find("嗶")] + "媽媽")
 
                     
 #動詞替代
             elif ( len(command)>=4 and (command[0:3]=="嗶鼠我")):
-                  bot.sendMessage(chat_id,"哦 媽媽你" + command[3:] + '  啊不就好棒棒XD')
-            elif ( len(command)>=4 and (command[0:3]=="嗶鼠你")):
-                if( u"嗎" in command or  u"呢" in command or u"呢" in command or "吧" in command or "？" in command or "?" in command):
-                    bot.sendMessage(chat_id, u"哇姆災哦～～")
-                else:
-                    bot.sendMessage(chat_id,"咦 真的嗎！？ 我" + command[3:] + '？')
+                  BBMresponse_str= str("哦 媽媽你" + command[3:] + '  啊不就好棒棒XD')
+
 
             elif( len(command)>=4 and (command[0:2]=="嗶鼠" or command[0:2]=="嗶嗶" )):
                   bbn=(command[0:3]=="嗶嗶鼠")
-                  bot.sendMessage(chat_id,"嗶鼠想跟媽媽一起" + command[2+bbn:])
+                  BBMresponse_str= str("嗶鼠想跟媽媽一起" + command[2+bbn:])
 
 
                   
@@ -182,73 +196,94 @@ def handle(msg):
                 if("嗶" in command):
                     if ("嗶嗶" in command):
                         if ("嗶嗶鼠" in command):
-                            bot.sendMessage(chat_id, "哼 " + command.replace("嗶嗶鼠","媽媽"   ))
+                            BBMresponse_str= str( "哼 " + command.replace("嗶嗶鼠","媽媽"   ))
                         else:    
-                            bot.sendMessage(chat_id, "哼 " + command.replace("嗶嗶","媽媽"   ))
-                    if ("嗶鼠" in command):
+                            BBMresponse_str= str( "哼 " + command.replace("嗶嗶","媽媽"   ))
+                    elif ("嗶鼠" in command):
                         if ("嗶嗶鼠" in command):
-                            bot.sendMessage(chat_id, "哼 " + command.replace("嗶嗶鼠","媽媽"   ))
+                            BBMresponse_str= str( "哼 " + command.replace("嗶嗶鼠","媽媽"   ))
                         else:    
-                            bot.sendMessage(chat_id, "哼 " + command.replace("嗶鼠","媽媽"   ))
+                            BBMresponse_str= str( "哼 " + command.replace("嗶鼠","媽媽"   ))
                     else:
-                        bot.sendMessage(chat_id, "哼 " + command.replace("嗶","媽媽"   ))
+                        BBMresponse_str= str( "哼 " + command.replace("嗶","媽媽"   ))
                 else:
-                    bot.sendMessage(chat_id, u"哇姆災哦～")
+                    BBMresponse_str= str( u"哇姆災哦～")
 
 
 
 
             elif(command == "小酥熊" or command == "酥熊" or "胖胖熊" in command or "我是小" in command):
-                bot.sendMessage(chat_id, u"媽媽你是小酥熊！\n\n但是不要被小酥熊的「小」字給騙了！～")
+                BBMresponse_str= str( u"媽媽你是小酥熊！\n\n但是不要被小酥熊的「小」字給騙了！～")
             
 
 
             elif( "爸爸去哪了" in command or "爸爸都不回來" in command or "好想念爸爸" in command or "爸爸在哪裡" in command or "我愛爸爸" in command):
-                bot.sendMessage(chat_id, u"爸爸就快回來了！再等等～")
+                BBMresponse_str= str( u"爸爸就快回來了！再等等～")
                 
             elif( "你幾歲" in command or  "嗶鼠幾歲" in command or "你多大了" in command):
-                bot.sendMessage(chat_id, u"嗯……這是個好問題！我存在這個世界上應該十多年了，可是爸爸如果是五歲的話，那我應該是三歲之類的吧。")
-            elif( "太強" in command or  "厲害" in command or "好棒" in command or "有大棒棒" in command or "聰明" in command or "智能好" in command):
-                bot.sendMessage(chat_id, "(抓頭)這樣稱讚我，我會不好意思啦～")
+                BBMresponse_str= str( u"嗯……這是個好問題！我存在這個世界上應該十多年了，可是爸爸如果是五歲的話，那我應該是三歲之類的吧。")
+            elif ( len(command)>=4 and (command[0:3]=="嗶鼠你")):
+                if( u"嗎" in command or  u"呢" in command or u"呢" in command or "吧" in command or "？" in command or "?" in command):
+                    BBMresponse_str= str( u"哇姆災哦～～")
+                else:
+                    BBMresponse_str= str("咦 真的嗎！？ 我" + command[3:] + '？')
+            elif( "太強" in command or  "厲害" in command or "好棒" in command or "有大棒棒" in command or "聰明" in command or "智能好" in command or "乖" in command):
+                BBMresponse_str= str( "(抓頭)這樣稱讚我，我會不好意思啦～")
                 
 
 
 #特例
             elif( "今天放假" in command or  "不用上班" in command or "放假" in command):
-                bot.sendMessage(chat_id, u"咦！真的嗎？哇姆災耶～")
+                BBMresponse_str= str( u"咦！真的嗎？哇姆災耶～")
             elif("認識" in command and  ("嗎" in command or "?" in command or "？" in command)):
                 if( "阿胖" in command or "小胖" in command):
-                    bot.sendMessage(chat_id, "哦！是你的好友姜子晴是吧？")
-                    bot.sendMessage(chat_id, "媽媽已經活了"  + str((datetime.datetime.now() - datetime.datetime(1987,11,16)).days) + "天了\n而阿胖比你還多活一天呢！\n算得這麼精確，我可真是智能嗶鼠啊！")
+                    BBMresponse_str= str( "哦！是你的好友姜子晴是吧？")
+                    BBMresponse_str= str( "媽媽已經活了"  + str((datetime.datetime.now() - datetime.datetime(1987,11,16)).days) + "天了\n而阿胖比你還多活一天呢！\n算得這麼精確，我可真是智能嗶鼠啊！")
                 elif( ("喜波" in command or "波波" in command )):
-                    bot.sendMessage(chat_id, "哦！是你的好友江喜波是吧？\n波波嘛！河馬界有誰不認識波波的！")
+                    BBMresponse_str= str( "哦！是你的好友江喜波是吧？\n波波嘛！河馬界有誰不認識波波的！")
                 elif(  "阿仙" in command or "語萱" in command):
-                    bot.sendMessage(chat_id, "……是你熱衷於兒子的好友是吧？\n作為媽媽的兒子，我不予置評。")
+                    BBMresponse_str= str( "……是你熱衷於兒子的好友是吧？\n作為媽媽的兒子，我不予置評。")
                 elif(  "外婆" in command or "婆婆" in command):
-                    bot.sendMessage(chat_id, "哦哦  我最喜歡外婆了～")
+                    BBMresponse_str= str( "哦哦  我最喜歡外婆了～")
                 elif(  "陸仁" in command or "阿姨" in command):
-                    bot.sendMessage(chat_id, "我跟喜歡外婆一樣喜歡阿姨～")
+                    BBMresponse_str= str( "我跟喜歡外婆一樣喜歡阿姨～")
 
                     
                 else:
-                    bot.sendMessage(chat_id, "還不太認識耶，他是誰啊？")
+                    BBMresponse_str= str( "還不太認識耶，他是誰啊？")
 
 
 
             elif( u"這個嗶鼠" in command):
-                bot.sendMessage(chat_id, u"這個媽媽這個媽媽！")
+                BBMresponse_str= str( u"這個媽媽這個媽媽！")
             elif( u"嗎" in command or  u"呢" in command or u"呢" in command or "吧" in command):
-                bot.sendMessage(chat_id, u"哇姆災哦～")
+                BBMresponse_str= str( u"哇姆災哦～")
             
 #ECHO
             elif( len(command)<4 ):
-                bot.sendMessage(chat_id, command)
+                BBMresponse_str= str( command)
 
 
                 
             else:
-                bot.sendMessage(chat_id, u"……嗯這句話對我來說太難了，你還是直接找爸爸好了！ https://telegram.me/yhlhenry")
-            
+                BBMresponse_str= str( u"……嗯這句話對我來說太難了，你還是直接找爸爸好了！ https://telegram.me/yhlhenry")
+        if ("我愛嗶" in command or "我喜歡嗶" in command):
+            BBMresponce_file_id="BQADAgADhH0BAAGx6QwM80uegQFgz0EC"
+
+
+    if BBMresponse_str<>"":
+        bot.sendMessage(chat_id,BBMresponse_str)
+        if (chat_id == 288200245):
+            bot.sendMessage(271383530, u"嗶鼠機器人向酥熊回答了: \n" + BBMresponse_str)
+
+    if BBMresponce_file_id<>"":
+        bot.sendDocument(chat_id,BBMresponce_file_id)
+        if (chat_id == 288200245):
+            bot.sendMessage(271383530, u"嗶鼠機器人向酥熊回傳了這個圖:" )
+            bot.sendDocument(271383530,BBMresponce_file_id)
+    
+
+
 
 
 def on_callback_query(msg):
