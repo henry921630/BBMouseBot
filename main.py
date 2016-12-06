@@ -2,6 +2,11 @@
 # coding: utf8
 
 
+import GetFileID
+
+
+
+
 import time
 import random
 
@@ -30,12 +35,17 @@ def handle(msg):
     BBMresponce_file_id = ""
     BBMresponse_str=""
     content_type, chat_type, chat_id = telepot.glance(msg)
+
+
+    if (chat_id ==271383530):
+        bot.sendMessage(msg['chat']['id'],msg)
+
 #處理貼圖或檔案訊息
     if content_type == 'sticker' or  content_type == 'document':
         response=bot.getUpdates()
         BBMresponse_str=str( '媽媽，我看不懂貼圖啦！')
         #抓取file_id用
-        #bot.sendMessage(msg['chat']['id'],msg)
+        #bot.sendMessage(msg['chat']['id'],str(msg)+"tttt")
 
         BBMresponce_file_id="BQADBQADGQADOX-WCWw1LEnp71HpAg" #白爛貓敲肚子咚咚咚
         
