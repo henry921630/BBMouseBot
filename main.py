@@ -49,6 +49,7 @@ def handle(msg):
 
         BBMresponce_file_id="BQADBQADGQADOX-WCWw1LEnp71HpAg" #白爛貓敲肚子咚咚咚
         bot.sendMessage(chat_id,msg['document']['file_id'])
+        bot.sendDocument(chat_id,msg['document']['file_id'])
 
         
     #if content_type == 'document':
@@ -114,7 +115,7 @@ def handle(msg):
                 
 #版本宣告 version
             elif command == '/start':
-                BBMresponse_str= str( u"嗨！媽媽！我是嗶嗶鼠機器人v1206.1407版！智能大概是嗶嗶鼠的二十π分之一。")
+                BBMresponse_str= str( u"嗨！媽媽！我是嗶嗶鼠機器人v1206.1607版！智能大概是嗶嗶鼠的二十π分之一。")
             elif command == '/bbmouse':
                 n=random.randint(1,len(bbmousescripts))
                 BBMresponse_str= str( str(bbmousescripts[n]) + "\n\n(" + str(n) + "/" + str(len(bbmousescripts)) + ")" )
