@@ -48,7 +48,7 @@ def handle(msg):
         #bot.sendMessage(msg['chat']['id'],str(msg)+"tttt")
 
         BBMresponce_file_id="BQADBQADGQADOX-WCWw1LEnp71HpAg" #白爛貓敲肚子咚咚咚
-        
+                             
 
         
     #if content_type == 'document':
@@ -114,7 +114,7 @@ def handle(msg):
                 
 #版本宣告 version
             elif command == '/start':
-                BBMresponse_str= str( u"嗨！媽媽！我是嗶嗶鼠機器人v1204.2338版！智能大概是嗶嗶鼠的二十π分之一。")
+                BBMresponse_str= str( u"嗨！媽媽！我是嗶嗶鼠機器人v1206.1357版！智能大概是嗶嗶鼠的二十π分之一。")
             elif command == '/bbmouse':
                 n=random.randint(1,len(bbmousescripts))
                 BBMresponse_str= str( str(bbmousescripts[n]) + "\n\n(" + str(n) + "/" + str(len(bbmousescripts)) + ")" )
@@ -278,7 +278,7 @@ def handle(msg):
             else:
                 BBMresponse_str= str( u"……嗯這句話對我來說太難了，你還是直接找爸爸好了！ https://telegram.me/yhlhenry")
         if ("我愛嗶" in command or "我喜歡嗶" in command):
-            BBMresponce_file_id="BQADAgADhH0BAAGx6QwM80uegQFgz0EC"
+            BBMresponce_file_id="BQADAgADhH0BAAGx6QwM80uegQFgz0EC" #毛線聖誕老人織愛心
 
 
     if BBMresponse_str<>"":
@@ -287,6 +287,7 @@ def handle(msg):
             bot.sendMessage(271383530, u"嗶鼠機器人向酥熊回答了: \n" + BBMresponse_str)
 
     if BBMresponce_file_id<>"":
+        bot.sendMessage(271383530, u"(嗶鼠機器人試圖傳送貼圖): \n")
         bot.sendDocument(chat_id,BBMresponce_file_id)
         if (chat_id == 288200245):
             bot.sendMessage(271383530, u"嗶鼠機器人向酥熊回傳了這個圖:" )
