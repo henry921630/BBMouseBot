@@ -32,7 +32,7 @@ testingtoken='290645324:AAGBYFAnK6yCusuijM3plvDfhnxk3rgIlsg'
 
 def handle(msg):
     print u"start handle"
-    BBMresponce_file_id = ""
+    BBMresponce_file_id = "BQADBAADmAMAAroZZAc7yWUBvJ7jrgI"
     BBMresponse_str1=""
     content_type, chat_type, chat_id = telepot.glance(msg)
 
@@ -115,7 +115,7 @@ def handle(msg):
                 
 #版本宣告 version
             elif command == '/start':
-                BBMresponse_str1= str( u"嗨！媽媽！我是嗶嗶鼠機器人v1207.1110版！智能大概是嗶嗶鼠的二十π分之一。")
+                BBMresponse_str1= str( u"嗨！媽媽！我是嗶嗶鼠機器人v1207.1122版！智能大概是嗶嗶鼠的二十π分之一。")
             elif command == '/bbmouse':
                 n=random.randint(1,len(bbmousescripts))
                 BBMresponse_str1= str( str(bbmousescripts[n]) + "\n\n(" + str(n) + "/" + str(len(bbmousescripts)) + ")" )
