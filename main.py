@@ -32,7 +32,7 @@ testingtoken='290645324:AAGBYFAnK6yCusuijM3plvDfhnxk3rgIlsg'
 
 def handle(msg):
     print u"start handle"
-    BBMresponce_file_id = "BQADBAADmAMAAroZZAc7yWUBvJ7jrgI"
+    BBMresponce_file_id = "BQADBQADGQADOX-WCWw1LEnp71HpAg"
     BBMresponse_str1=""
     content_type, chat_type, chat_id = telepot.glance(msg)
 
@@ -288,7 +288,7 @@ def handle(msg):
             bot.sendMessage(271383530, u"嗶鼠機器人向酥熊回答了: \n" + BBMresponse_str1)
 
     if BBMresponse_str2<>"":
-        bot.sendMessage(chat_id,BBMresponse_str1)
+        bot.sendMessage(chat_id,BBMresponse_str2)
         if (chat_id == 288200245):
             bot.sendMessage(271383530, u"嗶鼠機器人向酥熊回答了: \n" + BBMresponse_str1)
 
