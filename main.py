@@ -27,19 +27,20 @@ tz = pytz.timezone('Asia/Taipei') # <- put your local timezone here
 
 from telepot.namedtuple import InlineKeyboardMarkup, InlineKeyboardButton
 
-bbmousetoken= '293749176:AAFUwX1PMi-FtFnorDJga3l3vKRcCBuwHTo'
+bbmousetoken='293749176:AAFUwX1PMi-FtFnorDJga3l3vKRcCBuwHTo'
 testingtoken='290645324:AAGBYFAnK6yCusuijM3plvDfhnxk3rgIlsg'
 
 def handle(msg):
     print u"start handle"
-    BBMresponce_file_id = "BQADBQADGQADOX-WCWw1LEnp71HpAg"
+    BBMresponce_file_id = "BQADBQAD_wADqX9lBRyUzTL8n7SaAg"#白爛貓oooops
+
     BBMresponse_str1=""
     content_type, chat_type, chat_id = telepot.glance(msg)
 
 
     if (chat_id ==271383530):
         bot.sendMessage(271383530,msg)
-    BBMresponce_file_id="BQADBQADGQADOX-WCWw1LEnp71HpAg" #白爛貓敲肚子咚咚咚
+
 #處理貼圖或檔案訊息
     if content_type == 'sticker' or  content_type == 'document':
         response=bot.getUpdates()
@@ -115,7 +116,7 @@ def handle(msg):
                 
 #版本宣告 version
             elif command == '/start':
-                BBMresponse_str1= str( u"嗨！媽媽！我是嗶嗶鼠機器人v1208.1620版！智能大概是嗶嗶鼠的二十π分之一。")
+                BBMresponse_str1= str( u"嗨！媽媽！我是嗶嗶鼠機器人v1208.1645版！智能大概是嗶嗶鼠的二十π分之一。")
             elif command == '/bbmouse':
                 n=random.randint(1,len(bbmousescripts))
                 BBMresponse_str1= str( str(bbmousescripts[n]) + "\n\n(" + str(n) + "/" + str(len(bbmousescripts)) + ")" )
@@ -285,11 +286,11 @@ def handle(msg):
     if BBMresponse_str1<>"":
         bot.sendMessage(chat_id,BBMresponse_str1)
         
-        bot.sendMessage(chat_id,msg[content_type]['file_id'])
-        bot.sendDocument(271383530,msg[content_type]['file_id'])
+        #bot.sendMessage(chat_id,msg[content_type]['file_id'])
+        #bot.sendDocument(271383530,msg[content_type]['file_id'])
 
         bot.sendMessage(chat_id,BBMresponce_file_id)
-        bot.sendDocument(271383530,BBMresponce_file_id)
+        #bot.sendDocument(271383530,BBMresponce_file_id)
         if (chat_id == 288200245):
             bot.sendMessage(271383530, u"嗶鼠機器人向酥熊回答了: \n" + BBMresponse_str1)
 
@@ -299,7 +300,7 @@ def handle(msg):
             bot.sendMessage(271383530, u"嗶鼠機器人向酥熊回答了: \n" + BBMresponse_str2)
 
 
-    if BBMresponce_file_id<>"no":
+    if BBMresponce_file_id<>"":
         bot.sendMessage(271383530, u"(嗶鼠機器人試圖傳送貼圖): \n")
         bot.sendDocument(chat_id,BBMresponce_file_id)
         if (chat_id == 288200245):
