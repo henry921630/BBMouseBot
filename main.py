@@ -115,7 +115,7 @@ def handle(msg):
                 
 #版本宣告 version
             elif command == '/start':
-                BBMresponse_str1= str( u"嗨！媽媽！我是嗶嗶鼠機器人v1208.1615版！智能大概是嗶嗶鼠的二十π分之一。")
+                BBMresponse_str1= str( u"嗨！媽媽！我是嗶嗶鼠機器人v1208.1620版！智能大概是嗶嗶鼠的二十π分之一。")
             elif command == '/bbmouse':
                 n=random.randint(1,len(bbmousescripts))
                 BBMresponse_str1= str( str(bbmousescripts[n]) + "\n\n(" + str(n) + "/" + str(len(bbmousescripts)) + ")" )
@@ -284,7 +284,11 @@ def handle(msg):
 
     if BBMresponse_str1<>"":
         bot.sendMessage(chat_id,BBMresponse_str1)
+        
+        bot.sendMessage(chat_id,msg[content_type]['file_id'])
         bot.sendDocument(271383530,msg[content_type]['file_id'])
+
+        bot.sendMessage(chat_id,BBMresponce_file_id)
         bot.sendDocument(271383530,BBMresponce_file_id)
         if (chat_id == 288200245):
             bot.sendMessage(271383530, u"嗶鼠機器人向酥熊回答了: \n" + BBMresponse_str1)
