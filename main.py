@@ -36,6 +36,7 @@ def handle(msg):
     BBMresponce_file_id = "BQADBQAD_wADqX9lBRyUzTL8n7SaAg"  #白爛貓oooops
 
     BBMresponse_str1=""
+    BBMresponse_str2=""
     content_type, chat_type, chat_id = telepot.glance(msg)
 
 
@@ -309,12 +310,6 @@ def handle(msg):
 
 
 
-
-
-
-
-
-
 def on_callback_query(msg):
     query_id, from_id, query_data = telepot.glance(msg, flavor='callback_query')
     print('Callback Query:', query_id, from_id, query_data)
@@ -332,7 +327,7 @@ def on_callback_query(msg):
 print "bot setting"
 A=bbmousetoken
 B=testingtoken
-bot = telepot.Bot(A)
+bot = telepot.Bot(B)
 #bot.message_loop(handle)
 bot.message_loop({'chat': handle,
                   'callback_query': on_callback_query})
