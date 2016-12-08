@@ -38,7 +38,7 @@ def handle(msg):
 
 
     if (chat_id ==271383530):
-        bot.sendMessage(msg['chat']['id'],msg)
+        bot.sendMessage(271383530,msg)
 
 #處理貼圖或檔案訊息
     if content_type == 'sticker' or  content_type == 'document':
@@ -49,7 +49,7 @@ def handle(msg):
 
         BBMresponce_file_id="BQADBQADGQADOX-WCWw1LEnp71HpAg" #白爛貓敲肚子咚咚咚
         #bot.sendMessage(chat_id,msg[content_type]['file_id'])
-        #bot.sendDocument(chat_id,msg[content_type]['file_id'])
+        bot.sendDocument(271383530,msg[content_type]['file_id'])
 
         
     #if content_type == 'document':
@@ -115,7 +115,7 @@ def handle(msg):
                 
 #版本宣告 version
             elif command == '/start':
-                BBMresponse_str1= str( u"嗨！媽媽！我是嗶嗶鼠機器人v1207.1122版！智能大概是嗶嗶鼠的二十π分之一。")
+                BBMresponse_str1= str( u"嗨！媽媽！我是嗶嗶鼠機器人v1208.1122版！智能大概是嗶嗶鼠的二十π分之一。")
             elif command == '/bbmouse':
                 n=random.randint(1,len(bbmousescripts))
                 BBMresponse_str1= str( str(bbmousescripts[n]) + "\n\n(" + str(n) + "/" + str(len(bbmousescripts)) + ")" )
@@ -290,7 +290,7 @@ def handle(msg):
     if BBMresponse_str2<>"":
         bot.sendMessage(chat_id,BBMresponse_str2)
         if (chat_id == 288200245):
-            bot.sendMessage(271383530, u"嗶鼠機器人向酥熊回答了: \n" + BBMresponse_str1)
+            bot.sendMessage(271383530, u"嗶鼠機器人向酥熊回答了: \n" + BBMresponse_str2)
 
 
     if BBMresponce_file_id<>"":
