@@ -282,7 +282,7 @@ def handle(msg):
             else:
                 BBMresponse_str1= str( u"……嗯這句話對我來說太難了，你還是直接找爸爸好了！ https://telegram.me/yhlhenry")
         if ("我愛嗶" in command or "我喜歡嗶" in command):
-            BBMresponce_file_id="BQADAgADhH0BAAGx6QwM80uegQFgz0EC" #毛線聖誕老人織愛心
+            BBMresponce_file_id="BQADBQADAwAD6vssEFrsEt3Hhpi4Ag" #毛線聖誕老人織愛心
 
 
     if BBMresponse_str1<>"":
