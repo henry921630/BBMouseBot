@@ -32,7 +32,7 @@ testingtoken='290645324:AAGBYFAnK6yCusuijM3plvDfhnxk3rgIlsg'
 
 def handle(msg):
     print u"start handle"
-    BBMresponce_file_id = "BQADBQAD_wADqX9lBRyUzTL8n7SaAg"#白爛貓oooops
+    BBMresponce_file_id = "BQADBQAD_wADqX9lBRyUzTL8n7SaAg"  #白爛貓oooops
 
     BBMresponse_str1=""
     content_type, chat_type, chat_id = telepot.glance(msg)
@@ -116,7 +116,7 @@ def handle(msg):
                 
 #版本宣告 version
             elif command == '/start':
-                BBMresponse_str1= str( u"嗨！媽媽！我是嗶嗶鼠機器人v1208.1645版！智能大概是嗶嗶鼠的二十π分之一。")
+                BBMresponse_str1= str( u"嗨！媽媽！我是嗶嗶鼠機器人v1208.1652版！智能大概是嗶嗶鼠的二十π分之一。")
             elif command == '/bbmouse':
                 n=random.randint(1,len(bbmousescripts))
                 BBMresponse_str1= str( str(bbmousescripts[n]) + "\n\n(" + str(n) + "/" + str(len(bbmousescripts)) + ")" )
@@ -300,13 +300,18 @@ def handle(msg):
             bot.sendMessage(271383530, u"嗶鼠機器人向酥熊回答了: \n" + BBMresponse_str2)
 
 
-    if BBMresponce_file_id<>"":
+    if (BBMresponce_file_id <> ""):
         bot.sendMessage(271383530, u"(嗶鼠機器人試圖傳送貼圖): \n")
         bot.sendDocument(chat_id,BBMresponce_file_id)
         if (chat_id == 288200245):
             bot.sendMessage(271383530, u"嗶鼠機器人向酥熊回傳了這個圖:" )
             bot.sendDocument(271383530,BBMresponce_file_id)
-    
+    if 2 > 1 :
+        bot.sendMessage(271383530, u"(嗶鼠機器人試圖傳送貼圖2): \n")
+        bot.sendDocument(chat_id,BBMresponce_file_id)
+        if (chat_id == 288200245):
+            bot.sendMessage(271383530, u"嗶鼠機器人向酥熊回傳了這個圖:2" )
+            bot.sendDocument(271383530,BBMresponce_file_id)
 
 
 
