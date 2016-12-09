@@ -194,7 +194,7 @@ def handle(msg):
 
 #情感偵測 #反身動詞
 #e.g.「我愛嗶嗶鼠」
-            elif( len(command)<=12 and command[0:1]=="我" and "嗶" in command ):
+            elif( len(command)<=12 and "我" in command[0:1] and "嗶" in command ):
 
                   BBMresponse_str1= str("嗶鼠也" + command[1:command.find("嗶")] + "媽媽")
 
@@ -285,6 +285,7 @@ def handle(msg):
                 
             else:
                 BBMresponse_str1= str( u"……嗯這句話對我來說太難了，請爸爸幫我升級智能吧！")
+
         if ("我愛嗶" in command or "我喜歡嗶" in command):
             print B
             print T
