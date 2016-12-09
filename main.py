@@ -121,14 +121,14 @@ def handle(msg):
                 BBMresponse_str1= str( u"讓嗶鼠我來講笑話給媽媽舔舔： \n" + str(lrsy[n]) + "\n\n(" + str(n) + "/" + str(len(lrsy)) + ")" )
                 
 #版本宣告 version
-            elif command == '/start':
-                BBMresponse_str1= str( u"嗨！媽媽！我是嗶嗶鼠機器人v1209.1758版！智能大概是嗶嗶鼠的二十π分之一。")
-            elif command == '/bbmouse':
+            elif command[:6] == '/start':
+                BBMresponse_str1= str( u"嗨！媽媽！我是嗶嗶鼠機器人v1209.1810版！智能大概是嗶嗶鼠的二十π分之一。")
+            elif command[:8] == '/bbmouse':
                 n=random.randint(1,len(bbmousescripts))
                 BBMresponse_str1= str( str(bbmousescripts[n]) + "\n\n(" + str(n) + "/" + str(len(bbmousescripts)) + ")" )
-            elif command == '/time':
+            elif command[:5] == '/time':
                 BBMresponse_str1= str( str(datetime.datetime.now(tz)))
-            elif command == '/marrydays':
+            elif command[:10] == '/marrydays':
                 BBMresponse_str1= str( u"報告媽媽：你已經結婚" + str((datetime.datetime.now() -datetime.datetime(2013,7,21)).days) + u"天囉！")
 
                 
@@ -284,7 +284,7 @@ def handle(msg):
 
                 
             else:
-                BBMresponse_str1= str( u"……嗯這句話對我來說太難了，你還是直接找爸爸好了！ https://telegram.me/yhlhenry")
+                BBMresponse_str1= str( u"……嗯這句話對我來說太難了，請爸爸幫我升級智能吧！")
         if ("我愛嗶" in command or "我喜歡嗶" in command):
             print B
             print T
