@@ -339,7 +339,7 @@ print "bot setting"
 
 B=bbmousetoken
 T=testingtoken
-mode=T
+mode=B
 bot = telepot.Bot(mode)
 #bot.message_loop(handle)
 bot.message_loop({'chat': handle,
