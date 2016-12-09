@@ -32,6 +32,7 @@ testingtoken='290645324:AAGBYFAnK6yCusuijM3plvDfhnxk3rgIlsg'
 
 def handle(msg):
     print u"start handle"
+    
 
     BBMresponce_file_id = ""  #白爛貓oooops
 
@@ -46,6 +47,7 @@ def handle(msg):
 #處理貼圖或檔案訊息
     if content_type == 'sticker' or  content_type == 'document':
         response=bot.getUpdates()
+        print msg
         BBMresponse_str1=str( '媽媽，我看不懂貼圖啦！')
         #抓取file_id用
         #bot.sendMessage(msg['chat']['id'],str(msg)+"tttt")
@@ -63,6 +65,8 @@ def handle(msg):
         chat_id = msg['chat']['id']
         command = msg['text']
         print msg['chat']['id']
+        print ""
+        print msg
         print 'Got command: %s' % command    
 
         if (command[0:2] == "/v" ):
@@ -282,7 +286,12 @@ def handle(msg):
             else:
                 BBMresponse_str1= str( u"……嗯這句話對我來說太難了，你還是直接找爸爸好了！ https://telegram.me/yhlhenry")
         if ("我愛嗶" in command or "我喜歡嗶" in command):
-            BBMresponce_file_id="BQADBQADAwAD6vssEFrsEt3Hhpi4Ag" #毛線聖誕老人織愛心
+            print B
+            print T
+            if mode == B :
+                BBMresponce_file_id="BQADBQADAwAD6vssEFrsEt3Hhpi4Ag" #毛線聖誕老人織愛心 嗶鼠版
+            else:
+                BBMresponce_file_id="BQADBQADBgAD6vssENUtjTtERQ4mAg" #毛線聖誕老人織愛心 測試版
 
 
     if BBMresponse_str1<>"":
@@ -323,11 +332,15 @@ def on_callback_query(msg):
     
 
 
+#def group(msg):
+    
 
 print "bot setting"
-A=bbmousetoken
-B=testingtoken
-bot = telepot.Bot(A)
+
+B=bbmousetoken
+T=testingtoken
+mode=T
+bot = telepot.Bot(mode)
 #bot.message_loop(handle)
 bot.message_loop({'chat': handle,
                   'callback_query': on_callback_query})

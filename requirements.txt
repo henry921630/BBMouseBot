@@ -23,7 +23,7 @@ pytz==2013.7
 redis==2.10.5
 schedule==0.3.2
 six==1.4.1
-telepot==8.1
+telepot==10.2
 tzlocal==1.2.2
 urllib3==1.15.1
 virtualenv==15.0.2
