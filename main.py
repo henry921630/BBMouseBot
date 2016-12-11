@@ -39,6 +39,10 @@ def handle(msg):
     content_type, chat_type, chat_id = telepot.glance(msg)
 
 
+    if msg['text'][0:1]=="/":
+        botcommand=True
+    else:
+        botcommand=False
 
     if chat_type=="group":
         command = msg['text'][1:]
@@ -62,7 +66,7 @@ def handle(msg):
     if content_type == 'sticker' or  content_type == 'document':
         response=bot.getUpdates()
         print msg
-        BBMresponse_str1=str( salutation +"，我看不懂貼圖啦！")
+        BBMresponse_str1=str( salutation + "，我看不懂貼圖啦！")
         #抓取file_id用
         #bot.sendMessage(msg['chat']['id'],str(msg)+"tttt")
 
@@ -130,28 +134,29 @@ def handle(msg):
 
 
 #指令區
-            if command == '/story':
-                n=random.randint(1,len(lrsy))
-                BBMresponse_str1= str( u"讓嗶鼠我來講笑話給"+ salutation +"舔舔： \n" + str(lrsy[n]) + "\n\n(" + str(n) + "/" + str(len(lrsy)) + ")" )
+
                 
 #版本宣告 version
-            elif command[:6] == '/start':
-                BBMresponse_str1= str( u"嗨！"+ salutation +"！我是嗶嗶鼠機器人v1211.1701版！智能大概是嗶嗶鼠的二十π分之一。")
-            elif command[:8] == '/bbmouse':
+            
+
+            if command == '/story' or command == 'story':
+                n=random.randint(1,len(lrsy))
+                BBMresponse_str1= str( u"讓嗶鼠我來講笑話給"+ salutation +"舔舔： \n" + str(lrsy[n]) + "\n\n(" + str(n) + "/" + str(len(lrsy)) + ")" )
+            elif command[:6] == '/start' or (chat_type=="group" and  command[:5] == 'start'):
+                BBMresponse_str1= str( u"嗨！"+ salutation +"！我是嗶嗶鼠機器人v1211.1745版！智能大概是嗶嗶鼠的二十π分之一。")
+            elif command[:8] == '/bbmouse' or (chat_type=="group" and command[:7] == 'bbmouse'):
                 n=random.randint(1,len(bbmousescripts))
                 BBMresponse_str1= str( str(bbmousescripts[n]) + "\n\n(" + str(n) + "/" + str(len(bbmousescripts)) + ")" )
-            elif command[:5] == '/time':
+            elif command[:5] == '/time' or (chat_type=="group" and  command[:4] == 'time'):
                 BBMresponse_str1= str( str(datetime.datetime.now(tz)))
-            elif command[:10] == '/marrydays':
+            elif command[:10] == '/marrydays' or(chat_type=="group" and  command[:9] == 'marrydays'):
                 BBMresponse_str1= str( u"報告"+ salutation +"：你已經結婚" + str((datetime.datetime.now() -datetime.datetime(2013,7,21)).days) + u"天囉！")
 
                 
-            elif ( command[0:7] == '/google'):
+            elif ( command[0:7] == '/google' or  (chat_type=="group" and command[0:6] == 'google')):
                 BBMresponse_str1= str( u"好的"+ salutation +"，讓我來為你Google:"+"\n https://www.google.com.tw/search?q=" + command[8:])
             elif("智能升級" in command or "智能進化" in command  or "什麼智能" in command   or "學會了什麼" in command or "有升級嗎" in command or "新功能" in command):
                 BBMresponse_str1= str( "智慧毛說過：「智能沒有奇蹟，只有累積。」\n智能升級是一個漫長的路程，而且你永遠不知道就在"+ salutation +"一回頭間，小孩又學會了什麼奇怪的東西。")
-
-
 #猜拳
             elif '猜拳' in command :
                 keyboard = InlineKeyboardMarkup(inline_keyboard=[
@@ -159,8 +164,6 @@ def handle(msg):
                    [InlineKeyboardButton(text="石頭", callback_data='rock')],
                    [InlineKeyboardButton(text="布", callback_data='paper')],
                ])
-                
-
                 BBMresponse_str1= str( ""+ salutation +"我們來猜拳吧！", reply_markup=keyboard)
 
 
@@ -354,7 +357,7 @@ print "bot setting"
 
 B=bbmousetoken
 T=testingtoken
-mode=B
+mode=T
 bot = telepot.Bot(mode)
 #bot.message_loop(handle)
 bot.message_loop({'chat': handle,
