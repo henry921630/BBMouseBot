@@ -45,8 +45,9 @@ def handle(msg):
         if (msg['from']['id'] ==271383530):
 
             salutation = "爸爸"
+
         elif (msg['from']['id']==288200245):
-            salutation = ""+ salutation +""
+            salutation = "媽媽"
 
     else:
         command = msg['text']
@@ -54,7 +55,7 @@ def handle(msg):
             bot.sendMessage(271383530,msg)
             salutation = "爸爸"
         elif (chat_id ==288200245):
-            salutation = ""+ salutation +""
+            salutation = "媽媽    "
 
 
 #處理貼圖或檔案訊息
@@ -135,7 +136,7 @@ def handle(msg):
                 
 #版本宣告 version
             elif command[:6] == '/start':
-                BBMresponse_str1= str( u"嗨！"+ salutation +"！我是嗶嗶鼠機器人v1211.1654版！智能大概是嗶嗶鼠的二十π分之一。")
+                BBMresponse_str1= str( u"嗨！"+ salutation +"！我是嗶嗶鼠機器人v1211.1701版！智能大概是嗶嗶鼠的二十π分之一。")
             elif command[:8] == '/bbmouse':
                 n=random.randint(1,len(bbmousescripts))
                 BBMresponse_str1= str( str(bbmousescripts[n]) + "\n\n(" + str(n) + "/" + str(len(bbmousescripts)) + ")" )
