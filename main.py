@@ -41,6 +41,7 @@ def handle(msg):
 
 
     if chat_type=="group":
+        command = msg['text'][1:]
         if (msg['from']['id'] ==271383530):
 
             salutation = "爸爸"
@@ -48,6 +49,7 @@ def handle(msg):
             salutation = ""+ salutation +""
 
     else:
+        command = msg['text']
         if (chat_id ==271383530):
             bot.sendMessage(271383530,msg)
             salutation = "爸爸"
@@ -74,7 +76,7 @@ def handle(msg):
 #處理純文字訊息
     if content_type == 'text':
         chat_id = msg['chat']['id']
-        command = msg['text']
+        
         print msg['chat']['id']
         print ""
         print msg
@@ -133,7 +135,7 @@ def handle(msg):
                 
 #版本宣告 version
             elif command[:6] == '/start':
-                BBMresponse_str1= str( u"嗨！"+ salutation +"！我是嗶嗶鼠機器人v1209.1810版！智能大概是嗶嗶鼠的二十π分之一。")
+                BBMresponse_str1= str( u"嗨！"+ salutation +"！我是嗶嗶鼠機器人v1211.1654版！智能大概是嗶嗶鼠的二十π分之一。")
             elif command[:8] == '/bbmouse':
                 n=random.randint(1,len(bbmousescripts))
                 BBMresponse_str1= str( str(bbmousescripts[n]) + "\n\n(" + str(n) + "/" + str(len(bbmousescripts)) + ")" )
@@ -215,7 +217,7 @@ def handle(msg):
                   BBMresponse_str1= str("哦 "+ salutation +"你" + command[3:] + '  啊不就好棒棒XD')
 
 
-            elif( len(command)>=4 and (command[0:2]=="嗶鼠" or command[0:2]=="嗶嗶" )):
+            elif( len(command)>=4 and len(command)<10 and (command[0:2]=="嗶鼠" or command[0:2]=="嗶嗶" )):
                   bbn=(command[0:3]=="嗶嗶鼠")
                   BBMresponse_str1= str("嗶鼠想跟"+ salutation +"一起" + command[2+bbn:])
 
