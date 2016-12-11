@@ -262,7 +262,7 @@ def handle(msg):
                     BBMresponse_str1= str( u"哇姆災哦～～")
                 else:
                     BBMresponse_str1= str("咦 真的嗎！？ 我" + command[3:] + '？')
-            elif( "太強" in command or  "厲害" in command or "好棒" in command or "有大棒棒" in command or "聰明" in command or "智能好" in command or "乖" in command):
+            elif( "真可愛" in command or "太強" in command or  "厲害" in command or "好棒" in command or "有大棒棒" in command or "聰明" in command or "智能好" in command or "乖" in command):
                 BBMresponse_str1= str( "(抓頭)這樣稱讚我，我會不好意思啦～")
                 
 
@@ -273,7 +273,7 @@ def handle(msg):
             elif("認識" in command and  ("嗎" in command or "?" in command or "？" in command)):
                 if( "阿胖" in command or "小胖" in command):
                     BBMresponse_str1= str( "哦！是你的好友姜子晴是吧？")
-                    BBMresponse_str1= str( ""+ salutation +"已經活了"  + str((datetime.datetime.now() - datetime.datetime(1987,11,16)).days) + "天了\n而阿胖比你還多活一天呢！\n算得這麼精確，我可真是智能嗶鼠啊！")
+                    BBMresponse_str2= str( ""+ salutation +"已經活了"  + str((datetime.datetime.now() - datetime.datetime(1987,11,16)).days) + "天了\n而阿胖比你還多活一天呢！\n算得這麼精確，我可真是智能嗶鼠啊！")
                 elif( ("喜波" in command or "波波" in command )):
                     BBMresponse_str1= str( "哦！是你的好友江喜波是吧？\n波波嘛！河馬界有誰不認識波波的！")
                 elif(  "阿仙" in command or "語萱" in command):
