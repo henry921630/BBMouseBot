@@ -29,6 +29,9 @@ from telepot.namedtuple import InlineKeyboardMarkup, InlineKeyboardButton
 
 bbmousetoken='293749176:AAFUwX1PMi-FtFnorDJga3l3vKRcCBuwHTo'
 testingtoken='290645324:AAGBYFAnK6yCusuijM3plvDfhnxk3rgIlsg'
+version=v12112132
+
+
 
 def handle(msg):
     print u"start handle"
@@ -143,7 +146,7 @@ def handle(msg):
                 n=random.randint(1,len(lrsy))
                 BBMresponse_str1= str( u"讓嗶鼠我來講笑話給"+ salutation +"舔舔： \n" + str(lrsy[n]) + "\n\n(" + str(n) + "/" + str(len(lrsy)) + ")" )
             elif command[:6] == '/start' or (chat_type=="group" and  command[:5] == 'start'):
-                BBMresponse_str1= str( u"嗨！"+ salutation +"！我是嗶嗶鼠機器人v1211.1745版！智能大概是嗶嗶鼠的二十π分之一。")
+                BBMresponse_str1= str( u"嗨！"+ salutation +"！我是嗶嗶鼠機器人+ version+版！智能大概是嗶嗶鼠的二十π分之一。")
             elif command[:8] == '/bbmouse' or (chat_type=="group" and command[:7] == 'bbmouse'):
                 n=random.randint(1,len(bbmousescripts))
                 BBMresponse_str1= str( str(bbmousescripts[n]) + "\n\n(" + str(n) + "/" + str(len(bbmousescripts)) + ")" )
@@ -221,7 +224,7 @@ def handle(msg):
                   BBMresponse_str1= str("哦 "+ salutation +"你" + command[3:] + '  啊不就好棒棒XD')
 
 
-            elif( len(command)>=4 and len(command)<10 and (command[0:2]=="嗶鼠" or command[0:2]=="嗶嗶" )):
+            elif( isquestion==false and len(command)>=4 and len(command)<10 and (command[0:2]=="嗶鼠" or command[0:2]=="嗶嗶" )):
                   bbn=(command[0:3]=="嗶嗶鼠")
                   BBMresponse_str1= str("嗶鼠想跟"+ salutation +"一起" + command[2+bbn:])
 
@@ -270,9 +273,9 @@ def handle(msg):
 #特例
             elif( "今天放假" in command or  "不用上班" in command or "放假" in command):
                 BBMresponse_str1= str( u"咦！真的嗎？哇姆災耶～")
-            elif("認識" in command and  ("嗎" in command or "?" in command or "？" in command)):
+            elif("認識" in command and isquestion==True):
                 if( "阿胖" in command or "小胖" in command):
-                    BBMresponse_str1= str( "哦！是你的好友姜子晴是吧？")
+                    BBMresponse_str1= str( "哦！我知道啊！是你的好友姜子晴是吧？")
                     BBMresponse_str2= str( ""+ salutation +"已經活了"  + str((datetime.datetime.now() - datetime.datetime(1987,11,16)).days) + "天了\n而阿胖比你還多活一天呢！\n算得這麼精確，我可真是智能嗶鼠啊！")
                 elif( ("喜波" in command or "波波" in command )):
                     BBMresponse_str1= str( "哦！是你的好友江喜波是吧？\n波波嘛！河馬界有誰不認識波波的！")
@@ -282,8 +285,21 @@ def handle(msg):
                     BBMresponse_str1= str( "哦哦  我最喜歡外婆了～")
                 elif(  "陸仁" in command or "阿姨" in command):
                     BBMresponse_str1= str( "我跟喜歡外婆一樣喜歡阿姨～")
+                elif(  "爸爸" in command or "阿羊" in command):
+                    BBMresponse_str1= str( salutation + "你在問什麼蠢問題！你當我是隻呆嗶嗎！")
+                elif(  "媽媽" in command or "我" in command):
+                    BBMresponse_str1= str( salutation + "你在問什麼蠢問題！你當我是隻呆嗶嗎！")
+                elif(  "爺爺" in command or "奶奶" in command  or "姑姑" in command):
+                    BBMresponse_str1= str( "我小時候有看過～不過很久沒見了！")                                        
+                elif(  "跳跳" in command or "小老虎" in command):
+                    BBMresponse_str1= str( "好想念跳跳哦！不知道他的智能有沒有長進一點了")
+                elif(  "吐動" in command or "國王" in command):
+                    BBMresponse_str1= str( "你說的是我們矮胖國的國王嗎！ 是不是到了該續聘的時間啦？")    
+                elif(  "小背包" in command or "小揹包" in command):
+                    BBMresponse_str1= str( "好想念小背包哦！")    
 
-                    
+
+
                 else:
                     BBMresponse_str1= str( "還不太認識耶，他是誰啊？")
 
@@ -348,7 +364,11 @@ def on_callback_query(msg):
         result="唔，我輸了。再來一把！"
     bot.answerCallbackQuery(query_id, text="(嗶鼠出了石頭！)  " + result)
     
-
+def isquestion(command):
+    if "?" in command or "嗎" in command or "呢" in command or "？" in command or "有沒有" in command or "是不是" in command or "好不好" in command:
+        return True
+    else:
+        return False
 
 #def group(msg):
     
