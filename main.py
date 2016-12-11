@@ -273,14 +273,15 @@ def handle(msg):
 #特例
             elif( "今天放假" in command or  "不用上班" in command or "放假" in command):
                 BBMresponse_str1= str( u"咦！真的嗎？哇姆災耶～")
+#認識
             elif("認識" in command and isquestion==True):
                 if( "阿胖" in command or "小胖" in command):
-                    BBMresponse_str1= str( "哦！我知道啊！是你的好友姜子晴是吧？")
+                    BBMresponse_str1= str( "哦！我知道啊！是媽媽的好友姜子晴是吧？")
                     BBMresponse_str2= str( ""+ salutation +"已經活了"  + str((datetime.datetime.now() - datetime.datetime(1987,11,16)).days) + "天了\n而阿胖比你還多活一天呢！\n算得這麼精確，我可真是智能嗶鼠啊！")
                 elif( ("喜波" in command or "波波" in command )):
-                    BBMresponse_str1= str( "哦！是你的好友江喜波是吧？\n波波嘛！河馬界有誰不認識波波的！")
+                    BBMresponse_str1= str( "哦！是媽媽的好友江喜波是吧？\n波波嘛！河馬界有誰不認識波波的！")
                 elif(  "阿仙" in command or "語萱" in command):
-                    BBMresponse_str1= str( "……是你熱衷於兒子的好友是吧？\n作為"+ salutation +"的兒子，我不予置評。")
+                    BBMresponse_str1= str( "……是媽媽熱衷於布偶兒子的好友是吧？\n作為媽媽的兒子，我不予置評。")
                 elif(  "外婆" in command or "婆婆" in command):
                     BBMresponse_str1= str( "哦哦  我最喜歡外婆了～")
                 elif(  "陸仁" in command or "阿姨" in command):
