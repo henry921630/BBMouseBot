@@ -27,7 +27,7 @@ from telepot.namedtuple import InlineKeyboardMarkup, InlineKeyboardButton
 
 bbmousetoken='293749176:AAFUwX1PMi-FtFnorDJga3l3vKRcCBuwHTo'
 testingtoken='290645324:AAGBYFAnK6yCusuijM3plvDfhnxk3rgIlsg'
-version="v12112332"
+version="v12121032"
 
 
 
@@ -60,7 +60,7 @@ def handle(msg):
             bot.sendMessage(271383530,msg)
             salutation = "爸爸"
         elif (chat_id ==288200245):
-            salutation = "媽媽    "
+            salutation = "媽媽"
 
 
 #處理貼圖或檔案訊息
