@@ -197,8 +197,8 @@ def handle(msg):
 
 
 
-                if len(accrecord)<4 or len(accrecord)>5 or len(accrecord[orderofDate])<>10: #如果格式不太合
-                    BBMresponse_str1=salutation+ " 你的記帳格式不對唷！記得空格要空對！ \n給你一個範例：「嗶鼠記帳 20161116 生日大餐 $999」"                  
+                if len(accrecord)<4 or len(accrecord)>5 or len(accrecord[orderofDate])<>8: #如果格式不太合
+                    BBMresponse_str1=salutation+ " 你的記帳格式不對唷！記得空格要空對！ \n給你一個範例：「嗶鼠記帳 20161116 生日大餐 $999」"      +accrecord[orderofDate]    
                 else:
                     bot.sendMessage(chat_id,"等我一下，我來翻找一下我的記帳小本子")
 
