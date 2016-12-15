@@ -23,7 +23,7 @@ from telepot.namedtuple import InlineKeyboardMarkup, InlineKeyboardButton
 
 bbmousetoken='293749176:AAFUwX1PMi-FtFnorDJga3l3vKRcCBuwHTo'
 testingtoken='290645324:AAGBYFAnK6yCusuijM3plvDfhnxk3rgIlsg'
-version="v12151648"
+version="v12151748"
 
 
 def auth_gss_client(path, scopes):
@@ -42,7 +42,7 @@ def BBMouseAccounting(chat_id,salutation,date, item, price,acctype="支出"):
     gss_client = auth_gss_client(auth_json_path, gss_scopes)
     wks = gss_client.open_by_key("1zowQqJ3bmSvTkId32x5KfDWpOxbDvhYzvHeeVd2BfKw")
     sheet = wks.sheet1
-    bot.sendMessage(chat_id,"(嗶鼠抄寫中)\n(嗶鼠需要專心工作，先別吵嗶鼠)")
+    bot.sendMessage(chat_id,"哦哦 找到記帳小本子了，等我記完再跟" + salutation+"說～\n(嗶鼠在小本子上專心抄寫中)\n(稍等一下，先別吵嗶鼠)")
     sheet.insert_row([salutation,date,item,price,acctype], 2)
 
 
@@ -188,23 +188,32 @@ def handle(msg):
 #記帳 accounting
             elif "記帳" in command[:12]:
                 accrecord= str(command).split()
+                orderofDate=1 #日期設在split的第2位
                 orderofAmount=3 #金額設在split的第四位   把多餘的字符消掉，以純數字記錄
-                if "$" in accrecord[orderofAmount]:
-                    accrecord[orderofAmount].replace("$","")
-                if "$" in accrecord[orderofAmount]:
-                    accrecord[orderofAmount].replace("元","")
 
-                if len(accrecord)<4 or len(accrecord)>5: #如果格式不太合
+                if len(accrecord)<4 or len(accrecord)>5 or len(accrecord[orderofDate])<>8: #如果格式不太合
                     BBMresponse_str1=salutation+ " 你的記帳格式不對唷！記得空格要空對！ \n給你一個範例：「嗶鼠記帳 20161116 生日大餐 $999」"                    
                 else:
                     bot.sendMessage(chat_id,"等我一下，我來翻找一下我的記帳小本子")
-                    
-                    
-                    print accrecord
-                    if("收入" in command or "撿到錢" in command or "兼差" in command or "家教" in command or "獎金" in command or "薪水" in command ):
-                        BBMouseAccounting(chat_id,salutation,accrecord[1],accrecord[2],accrecord[3],"收入")
+
+                    if accrecord[orderofDate]=="今天" or accrecord[orderofDate]=="today" or accrecord[orderofDate]=="now":
+                        accDate=time.strftime("%Y-%m-%d", time.localtime())
+                        
+                    elif len(accrecord[orderofDate])==8:
+                        accDate=accrecord[orderofDate][:4] + "-" + accrecord[orderofDate][4:6] +"-" +accrecord[orderofDate][6:]
+
+
+                    if "$" in accrecord[orderofAmount] or "元" in accrecord[orderofAmount]:
+                        accAmount=accrecord[orderofAmount].replace("$","")
+                        accAmount=accrecord[orderofAmount].replace("元","")
                     else:
-                        BBMouseAccounting(chat_id,salutation,accrecord[1],accrecord[2],accrecord[3],)
+                        accAmount=accrecord[orderofAmount]
+
+
+                    if("收入" in command or "撿到錢" in command or "兼差" in command or "家教" in command or "獎金" in command or "薪水" in command ):
+                        BBMouseAccounting(chat_id,salutation,accDate,accrecord[2],accAmount,"收入")
+                    else:
+                        BBMouseAccounting(chat_id,salutation,accDate,accrecord[2],accAmount,)
 
                     BBMresponse_str1="好了，我已經幫" + salutation + "記好了\n可以看這裡： https://goo.gl/OI2LXx "
 
@@ -447,7 +456,7 @@ print "bot setting"
 
 B=bbmousetoken
 T=testingtoken
-mode=B
+mode=T
 bot = telepot.Bot(mode)
 #bot.message_loop(handle)
 bot.message_loop({'chat': handle,
