@@ -23,7 +23,7 @@ from telepot.namedtuple import InlineKeyboardMarkup, InlineKeyboardButton
 
 bbmousetoken='293749176:AAFUwX1PMi-FtFnorDJga3l3vKRcCBuwHTo'
 testingtoken='290645324:AAGBYFAnK6yCusuijM3plvDfhnxk3rgIlsg'
-version="v12151628"
+version="v12151648"
 
 
 def auth_gss_client(path, scopes):
@@ -187,16 +187,26 @@ def handle(msg):
                 BBMresponse_str1=salutation + "叫我嗎？ 有什麼指教？"
 #記帳 accounting
             elif "記帳" in command[:12]:
-                bot.sendMessage(chat_id,"等我一下，我來翻找一下我的記帳小本子")
-                
                 accrecord= str(command).split()
-                print accrecord
-                if("收入" in command or "撿到錢" in command or "兼差" in command or "家教" in command or "獎金" in command or "薪水" in command ):
-                    BBMouseAccounting(chat_id,salutation,accrecord[1],accrecord[2],accrecord[3],"收入")
-                else:
-                    BBMouseAccounting(chat_id,salutation,accrecord[1],accrecord[2],accrecord[3],)
+                orderofAmount=3 #金額設在split的第四位   把多餘的字符消掉，以純數字記錄
+                if "$" in accrecord[orderofAmount]:
+                    accrecord[orderofAmount].replace("$","")
+                if "$" in accrecord[orderofAmount]:
+                    accrecord[orderofAmount].replace("元","")
 
-                BBMresponse_str1="好了，我已經幫" + salutation + "記好了\n可以看這裡： https://goo.gl/OI2LXx "
+                if len(accrecord)<4 or len(accrecord)>5: #如果格式不太合
+                    BBMresponse_str1=salutation+ " 你的記帳格式不對唷！記得空格要空對！ \n給你一個範例：「嗶鼠記帳 20161116 生日大餐 $999」"                    
+                else
+                    bot.sendMessage(chat_id,"等我一下，我來翻找一下我的記帳小本子")
+                    
+                    
+                    print accrecord
+                    if("收入" in command or "撿到錢" in command or "兼差" in command or "家教" in command or "獎金" in command or "薪水" in command ):
+                        BBMouseAccounting(chat_id,salutation,accrecord[1],accrecord[2],accrecord[3],"收入")
+                    else:
+                        BBMouseAccounting(chat_id,salutation,accrecord[1],accrecord[2],accrecord[3],)
+
+                    BBMresponse_str1="好了，我已經幫" + salutation + "記好了\n可以看這裡： https://goo.gl/OI2LXx "
 
 #深度問題
             elif("無聊" in command or "有趣的" in command  or "你會思考" in command   or "智能測試" in command or "智能問答" in command):
