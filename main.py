@@ -18,7 +18,7 @@ from telepot.namedtuple import InlineKeyboardMarkup, InlineKeyboardButton
 
 bbmousetoken='293749176:AAFUwX1PMi-FtFnorDJga3l3vKRcCBuwHTo'
 testingtoken='290645324:AAGBYFAnK6yCusuijM3plvDfhnxk3rgIlsg'
-version="v12151748"
+version="v12151848"
 B=bbmousetoken
 T=testingtoken
 mode=B
@@ -181,7 +181,7 @@ def handle(msg):
                 BBMresponse_str1= str( ""+ salutation +"我們來猜拳吧！", reply_markup=keyboard)
 
 
-            elif iscallBBMouse==True:
+            elif iscallBBMouse(command)==True:
                 BBMresponse_str1=salutation + "叫我嗎？ 有什麼指教？"
 #記帳 accounting
             elif "記帳" in command[:12]:
