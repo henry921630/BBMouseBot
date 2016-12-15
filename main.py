@@ -2,16 +2,11 @@
 # coding: utf8
 
 
-import GetFileID
-
-
+import GS
 import time
 import random
-
 import datetime
-
 import telepot
-
 import sys  
 reload(sys)
 sys.setdefaultencoding('utf8')  
@@ -332,20 +327,18 @@ def handle(msg):
                 BBMresponce_file_id="BQADBQADBgAD6vssENUtjTtERQ4mAg" #毛線聖誕老人織愛心 測試版
 
 
+    GS.test()
+
     if BBMresponse_str1<>"":
         bot.sendMessage(chat_id,BBMresponse_str1)
         
-        #bot.sendMessage(chat_id,msg[content_type]['file_id'])
-        #bot.sendDocument(271383530,msg[content_type]['file_id'])
-
-       #bot.sendMessage(chat_id,BBMresponce_file_id)
-        #bot.sendDocument(271383530,BBMresponce_file_id)
         if (chat_id == 288200245):
             bot.sendMessage(271383530, u"嗶鼠機器人向酥熊回答了: \n" + BBMresponse_str1)
     if BBMresponse_str2<>"":
         bot.sendMessage(chat_id,BBMresponse_str2)
         if (chat_id == 288200245):
             bot.sendMessage(271383530, u"嗶鼠機器人向酥熊回答了: \n" + BBMresponse_str2)
+
     if (BBMresponce_file_id <> ""):
         bot.sendMessage(271383530, u"(嗶鼠機器人試圖傳送貼圖): \n")
         bot.sendDocument(chat_id,BBMresponce_file_id)
