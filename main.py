@@ -423,7 +423,7 @@ def BBself(sentence): #判斷嗶鼠是否被提及，在第幾個字？
         return 0
 
 def iscallBBMouse(command): #判斷是否在呼叫嗶鼠
-    if command=="嗶" or command=="嗶嗶" or command=="嗶嗶鼠" or command=="嗶鼠" or command=="嗶仔" or command=="嗶嗶鼠仔" or command=="阿嗶" or command=="bb鼠" or command=="b鼠"
+    if command=="嗶" or command=="嗶嗶" or command=="嗶嗶鼠" or command=="嗶鼠" or command=="嗶仔" or command=="嗶嗶鼠仔" or command=="阿嗶" or command=="bb鼠" or command=="b鼠":
         return True
 
 def isflatter(command):
