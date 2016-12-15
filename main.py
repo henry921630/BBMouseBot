@@ -11,14 +11,9 @@ import telepot
 import sys  
 reload(sys)
 sys.setdefaultencoding('utf8')  
-#print "test"
-#Set TimeZone
 import tzlocal
 import pytz
 tz = pytz.timezone('Asia/Taipei') # <- put your local timezone here
-#now = datetime.now(tz) # the current time in your local timezone
-
-
 from telepot.namedtuple import InlineKeyboardMarkup, InlineKeyboardButton
 
 bbmousetoken='293749176:AAFUwX1PMi-FtFnorDJga3l3vKRcCBuwHTo'
@@ -193,17 +188,21 @@ def handle(msg):
                 accrecord= str(command).split()
                 orderofDate=1 #日期設在split的第2位
                 orderofAmount=3 #金額設在split的第四位   把多餘的字符消掉，以純數字記錄
+#處理日期格式
+                if accrecord[orderofDate]=="今天" or accrecord[orderofDate]=="today" or accrecord[orderofDate]=="now":
+                    accDate=time.strftime("%Y-%m-%d", time.localtime())                  
+                if len(accrecord[orderofDate])==8:
+                    accDate=accrecord[orderofDate][:4] + "-" + accrecord[orderofDate][4:6] +"-" +accrecord[orderofDate][6:]
 
-                if len(accrecord)<4 or len(accrecord)>5 or len(accrecord[orderofDate])<>8: #如果格式不太合
+
+
+
+                if len(accrecord)<4 or len(accrecord)>5 or len(accDate)<>10: #如果格式不太合
                     BBMresponse_str1=salutation+ " 你的記帳格式不對唷！記得空格要空對！ \n給你一個範例：「嗶鼠記帳 20161116 生日大餐 $999」"                    
                 else:
                     bot.sendMessage(chat_id,"等我一下，我來翻找一下我的記帳小本子")
 
-                    if accrecord[orderofDate]=="今天" or accrecord[orderofDate]=="today" or accrecord[orderofDate]=="now":
-                        accDate=time.strftime("%Y-%m-%d", time.localtime())
-                        
-                    elif len(accrecord[orderofDate])==8:
-                        accDate=accrecord[orderofDate][:4] + "-" + accrecord[orderofDate][4:6] +"-" +accrecord[orderofDate][6:]
+
 
 
                     if "$" in accrecord[orderofAmount] or "元" in accrecord[orderofAmount]:
