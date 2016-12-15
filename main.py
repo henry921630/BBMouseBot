@@ -24,6 +24,9 @@ from telepot.namedtuple import InlineKeyboardMarkup, InlineKeyboardButton
 bbmousetoken='293749176:AAFUwX1PMi-FtFnorDJga3l3vKRcCBuwHTo'
 testingtoken='290645324:AAGBYFAnK6yCusuijM3plvDfhnxk3rgIlsg'
 version="v12151748"
+B=bbmousetoken
+T=testingtoken
+mode=B
 
 
 def auth_gss_client(path, scopes):
@@ -454,9 +457,7 @@ def isflatter(command):
 
 print "bot setting"
 
-B=bbmousetoken
-T=testingtoken
-mode=T
+
 bot = telepot.Bot(mode)
 #bot.message_loop(handle)
 bot.message_loop({'chat': handle,
