@@ -1,8 +1,9 @@
 # -*- coding: utf8 -*-
 # coding: utf8
 
-
-import GS
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
+#import GS
 import time
 import random
 import datetime
@@ -24,6 +25,25 @@ bbmousetoken='293749176:AAFUwX1PMi-FtFnorDJga3l3vKRcCBuwHTo'
 testingtoken='290645324:AAGBYFAnK6yCusuijM3plvDfhnxk3rgIlsg'
 version="v12121032"
 
+
+def auth_gss_client(path, scopes):
+    credentials = ServiceAccountCredentials.from_json_keyfile_name(path,
+                                                                   scopes)
+    return gspread.authorize(credentials)
+
+def update_sheet(gss_client, key, today):
+    wks = gss_client.open_by_key(key)
+    sheet = wks.sheet1
+    sheet.insert_row([today], 2)
+
+def BBMouseAccounting(chat_id,salutation,date, item, price,acctype="支出"):
+    auth_json_path = 'BBMouseGS.json'
+    gss_scopes = ['https://spreadsheets.google.com/feeds']
+    gss_client = auth_gss_client(auth_json_path, gss_scopes)
+    wks = gss_client.open_by_key("1zowQqJ3bmSvTkId32x5KfDWpOxbDvhYzvHeeVd2BfKw")
+    sheet = wks.sheet1
+    bot.sendMessage(chat_id,"(嗶鼠抄寫中)\n(嗶鼠需要專心工作，先別吵嗶鼠)")
+    sheet.insert_row([salutation,date,item,price,acctype], 2)
 
 
 def handle(msg):
@@ -133,7 +153,7 @@ def handle(msg):
 
                 
 #版本宣告 version
-            
+            #command 已針對group訊息 刪除字首的斜線了
 
             if command == '/story' or command == 'story':
                 n=random.randint(1,len(lrsy))
@@ -162,8 +182,18 @@ def handle(msg):
                ])
                 BBMresponse_str1= str( ""+ salutation +"我們來猜拳吧！", reply_markup=keyboard)
 
+#記帳 accounting
+            elif "記帳" in command[:12]:
+                bot.sendMessage(chat_id,"等我一下，我來翻找一下我的記帳小本子")
+                
+                accrecord= str(command).split()
+                print accrecord
+                if("收入" in command or "撿到錢" in command or "兼差" in command or "家教" in command or "獎金" in command or "薪水" in command ):
+                    BBMouseAccounting(chat_id,salutation,accrecord[1],accrecord[2],accrecord[3],"收入")
+                else:
+                    BBMouseAccounting(chat_id,salutation,accrecord[1],accrecord[2],accrecord[3],)
 
-
+                BBMresponse_str1="好了，我已經幫" + salutation + "記好了\n可以看這裡： https://goo.gl/OI2LXx "
 
 #深度問題
             elif("無聊" in command or "有趣的" in command  or "你會思考" in command   or "智能測試" in command or "智能問答" in command):
@@ -326,8 +356,20 @@ def handle(msg):
             else:
                 BBMresponce_file_id="BQADBQADBgAD6vssENUtjTtERQ4mAg" #毛線聖誕老人織愛心 測試版
 
+# #Google Spreadsheet
+#     auth_json_path = 'BBMouseGS.json'
+#     gss_scopes = ['https://spreadsheets.google.com/feeds']
+#     gss_client = auth_gss_client(auth_json_path, gss_scopes)
 
-    GS.test()
+#     today = time.strftime("%c")
+#     spreadsheet_key_path = 'spreadsheet_key'
+#     with open(spreadsheet_key_path) as f:
+#         spreadsheet_key = f.read().strip()
+    
+#     update_sheet(gss_client, spreadsheet_key, today)
+    
+
+
 
     if BBMresponse_str1<>"":
         bot.sendMessage(chat_id,BBMresponse_str1)
@@ -382,7 +424,7 @@ print "bot setting"
 
 B=bbmousetoken
 T=testingtoken
-mode=B
+mode=T
 bot = telepot.Bot(mode)
 #bot.message_loop(handle)
 bot.message_loop({'chat': handle,
@@ -394,3 +436,4 @@ print 'I am listening ...'
 
 while 1:
     time.sleep(10)
+
