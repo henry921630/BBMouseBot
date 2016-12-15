@@ -23,7 +23,7 @@ from telepot.namedtuple import InlineKeyboardMarkup, InlineKeyboardButton
 
 bbmousetoken='293749176:AAFUwX1PMi-FtFnorDJga3l3vKRcCBuwHTo'
 testingtoken='290645324:AAGBYFAnK6yCusuijM3plvDfhnxk3rgIlsg'
-version="v12151528"
+version="v12151628"
 
 
 def auth_gss_client(path, scopes):
@@ -250,10 +250,10 @@ def handle(msg):
                   BBMresponse_str1= str("哦 "+ salutation +"你" + command[3:] + '  啊不就好……嗯不是啦，是好棒！')
 
 
-            elif(isflatter != True and isquestion(command)==False and len(command)>=4 and len(command)<10 and ( BBself(command[0:2])>0)):
+            elif(isflatter(command) != True and isquestion(command)==False and len(command)>=4 and len(command)<10 and ( BBself(command[0:2])>0)):
                   
                   #BBMresponse_str1= str("嗶鼠想跟"+ salutation +"一起" + command[BBself(command[0:2]):])  #這句太不適用了
-                  BBMresponse_str1= str("好啊～" + command)
+                  BBMresponse_str1= str("好啊～" + command[BBself(command[0:2]):])
 
 
                   
@@ -294,7 +294,7 @@ def handle(msg):
                     BBMresponse_str1= str( u"哇姆災哦～～")
                 else:
                     BBMresponse_str1= str("咦 真的嗎！？ 我" + command[3:] + '？')
-            elif(isflatter==True and BBself>0):
+            elif(isflatter(command)==True and BBself>0):
                 BBMresponse_str1= str( "(抓頭)這樣稱讚我，我會不好意思啦～")
                 
 
@@ -426,7 +426,7 @@ def iscallBBMouse(command): #判斷是否在呼叫嗶鼠
     if command=="嗶" or command=="嗶嗶" or command=="嗶嗶鼠" or command=="嗶鼠" or command=="嗶仔" or command=="嗶嗶鼠仔" or command=="阿嗶" or command=="bb鼠" or command=="b鼠":
         return True
 
-def isfFatter(command):
+def isflatter(command):
     if "可愛" in command or "太強" in command or  "厲害" in command or "好棒" in command or "有大棒棒" in command or "聰明" in command or "智能好" in command or "乖" in command:
         return True
 
