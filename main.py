@@ -21,7 +21,7 @@ testingtoken='290645324:AAGBYFAnK6yCusuijM3plvDfhnxk3rgIlsg'
 version="v12151848"
 B=bbmousetoken
 T=testingtoken
-mode=T
+mode=B
 
 
 def auth_gss_client(path, scopes):
