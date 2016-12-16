@@ -21,7 +21,7 @@ testingtoken='290645324:AAGBYFAnK6yCusuijM3plvDfhnxk3rgIlsg'
 version="v12151848"
 B=bbmousetoken
 T=testingtoken
-mode=B
+mode=T
 
 
 def auth_gss_client(path, scopes):
@@ -191,13 +191,14 @@ def handle(msg):
 #處理日期格式
                 if accrecord[orderofDate]=="今天" or accrecord[orderofDate]=="today" or accrecord[orderofDate]=="now":
                     accDate=time.strftime("%Y-%m-%d", time.localtime())                  
-                if len(accrecord[orderofDate])==8:
+                elif len(accrecord[orderofDate])==8:
                     accDate=accrecord[orderofDate][:4] + "-" + accrecord[orderofDate][4:6] +"-" +accrecord[orderofDate][6:]
+                else:
+                    accDate="error"
 
 
 
-
-                if len(accrecord)<4 or len(accrecord)>5 or len(accrecord[orderofDate])<>8: #如果格式不太合
+                if len(accrecord)<4 or len(accrecord)>5 or len(accDate)<>10: #如果格式不太合
                     BBMresponse_str1=salutation+ " 你的記帳格式不對唷！記得空格要空對！ \n給你一個範例：「嗶鼠記帳 20161116 生日大餐 $999」"      +accrecord[orderofDate]    
                 else:
                     bot.sendMessage(chat_id,"等我一下，我來翻找一下我的記帳小本子")
