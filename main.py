@@ -34,6 +34,16 @@ def update_sheet(gss_client, key, today):
     sheet = wks.sheet1
     sheet.insert_row([today], 2)
 
+def isVaildDate(date):
+        try:
+            if ":" in date:
+                time.strptime(date, "%Y-%m-%d %H:%M:%S")
+            else:
+                time.strptime(date, "%Y%m%d")
+            return True
+        except:
+            return False 
+
 def BBMouseAccounting(chat_id,salutation,date, item, price,acctype="支出"):
     auth_json_path = 'BBMouseGS.json'
     gss_scopes = ['https://spreadsheets.google.com/feeds']
@@ -182,28 +192,29 @@ def handle(msg):
 
 
             elif iscallBBMouse(command)==True:
-                BBMresponse_str1=salutation + "叫我嗎？ 有什麼指教？"
+                BBMresponse_str1=salutation + "叫我嗎？ 我在這～(咚咚咚)？"
 #記帳 accounting
             elif "記帳" in command[:12]:
                 accrecord= str(command).split()
                 orderofDate=1 #日期設在split的第2位
                 orderofAmount=3 #金額設在split的第四位   把多餘的字符消掉，以純數字記錄
 #處理日期格式
+                accDateError=""
                 if accrecord[orderofDate]=="今天" or accrecord[orderofDate]=="today" or accrecord[orderofDate]=="now":
                     accDate=time.strftime("%Y-%m-%d", time.localtime())                  
-                elif len(accrecord[orderofDate])==8:
+                elif isVaildDate(accrecord[orderofDate]) == True:
                     accDate=accrecord[orderofDate][:4] + "-" + accrecord[orderofDate][4:6] +"-" +accrecord[orderofDate][6:]
                 else:
-                    accDate="error"
-
+                    accDate="日期格式記錯了"
+                    accDateError="日期格式記錯了"
 
 
                 if len(accrecord)<4 or len(accrecord)>5 or len(accDate)<>10: #如果格式不太合
-                    BBMresponse_str1=salutation+ " 你的記帳格式不對唷！記得空格要空對！ \n給你一個範例：「嗶鼠記帳 20161116 生日大餐 $999」"      +accrecord[orderofDate]    
+                    BBMresponse_str1=salutation+ " 你的記帳格式不對唷！" +accDateError+ " \n給你一個範例：「嗶鼠記帳 20161116 生日大餐 $999」\n記得空格要空對！" 
+                    print accDateError
+                    print accDate
                 else:
                     bot.sendMessage(chat_id,"等我一下，我來翻找一下我的記帳小本子")
-
-
 
 
                     if "$" in accrecord[orderofAmount] or "元" in accrecord[orderofAmount]:
@@ -279,7 +290,7 @@ def handle(msg):
 
 
                   
-            elif( "臭" in command or "笨" in command or "傻" in command or "壞" in command or ("胖" in command and not("阿胖" in command or "小胖" in command))):
+            elif(iscallBBMouse(command) and iscurse(command) and not("阿胖" in command or "小胖" in command)):
                 if("嗶" in command):
                     if ("嗶嗶" in command):
                         if ("嗶嗶鼠" in command):
@@ -311,11 +322,11 @@ def handle(msg):
 
             elif( "你幾歲" in command or  "嗶鼠幾歲" in command or "你多大了" in command):
                 BBMresponse_str1= str( u"嗯……這是個好問題！我存在這個世界上應該十多年了，可是爸爸如果是五歲的話，那我應該是三歲之類的吧。")
-            elif ( len(command)>=4 and (command[0:3]=="嗶鼠你")):
+            elif ( len(command)>=4 and (command[0:3]=="嗶鼠你" or command[0:3]=="嗶鼠是" )):
                 if(isquestion(command)):
                     BBMresponse_str1= str( u"哇姆災哦～～")
                 else:
-                    BBMresponse_str1= str("咦 真的嗎！？ 我" + command[3:] + '？')
+                    BBMresponse_str1= str("咦 真的嗎！？" + command.replace("嗶鼠你","我").replace("嗶鼠是","我是") + '？')
             elif(isflatter(command)==True and BBself>0):
                 BBMresponse_str1= str( "(抓頭)這樣稱讚我，我會不好意思啦～")
                 
@@ -325,7 +336,7 @@ def handle(msg):
             elif( "今天放假" in command or  "不用上班" in command or "放假" in command):
                 BBMresponse_str1= str( u"咦！真的嗎？哇姆災耶～")
 #認識
-            elif("認識" in command and isquestion==True):
+            elif("認識" in command and isquestion(command)==True):
                 if( "阿胖" in command or "小胖" in command):
                     BBMresponse_str1= str( "哦！我知道啊！是媽媽的好友姜子晴是吧？")
                     BBMresponse_str2= str( ""+ salutation +"已經活了"  + str((datetime.datetime.now() - datetime.datetime(1987,11,16)).days) + "天了\n而阿胖比你還多活一天呢！\n算得這麼精確，我可真是智能嗶鼠啊！")
@@ -443,6 +454,11 @@ def BBself(sentence): #判斷嗶鼠是否被提及，在第幾個字？
         return 3
     else:
         return 0
+def iscurse(command):
+    if "臭" in command or "笨" in command or "傻" in command or "壞" in command or "呆" in command or "胖" in command:
+        return True
+    else:
+        return False
 
 def iscallBBMouse(command): #判斷是否在呼叫嗶鼠
     if command=="嗶" or command=="嗶嗶" or command=="嗶嗶鼠" or command=="嗶鼠" or command=="嗶仔" or command=="嗶嗶鼠仔" or command=="阿嗶" or command=="bb鼠" or command=="b鼠":
@@ -469,4 +485,8 @@ print 'I am listening ...'
 
 while 1:
     time.sleep(10)
+
+
+
+
 
