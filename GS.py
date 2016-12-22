@@ -13,7 +13,14 @@ import time
 from oauth2client.service_account import ServiceAccountCredentials
 print "GS starting"
 
-def auth_gss_client(path, scopes):
+
+
+
+
+
+
+
+def auth_gss_client_GoogleSpreadSheet(path, scopes):
     credentials = ServiceAccountCredentials.from_json_keyfile_name(path,
                                                                    scopes)
     return gspread.authorize(credentials)
@@ -23,10 +30,11 @@ def auth_gss_client(path, scopes):
 auth_json_path = 'BBMouseGS.json'
 gss_scopes = ['https://spreadsheets.google.com/feeds']
 
-gss_client = auth_gss_client(auth_json_path, gss_scopes)
+gss_client = auth_gss_client_GoogleSpreadSheet(auth_json_path, gss_scopes)
 
 
-def update_sheet(gss_client, key, today, item, price):
+def update_sheet(gss_client, key, today):
+
     wks = gss_client.open_by_key(key)
     sheet = wks.sheet1
     sheet.insert_row([today, item, price], 2)

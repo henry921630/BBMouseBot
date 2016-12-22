@@ -1,13 +1,24 @@
 # -*- coding: utf8 -*-
 # coding: utf8
+from __future__ import print_function
+import re
+
+import httplib2
+import os
+from oauth2client import client
+from oauth2client import tools
+from oauth2client.file import Storage
+
+from apiclient import discovery
+
 
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
-#import GS
 import time
 import random
 import datetime
 import telepot
+import uniout
 import sys  
 reload(sys)
 sys.setdefaultencoding('utf8')  
@@ -17,11 +28,108 @@ tz = pytz.timezone('Asia/Taipei') # <- put your local timezone here
 from telepot.namedtuple import InlineKeyboardMarkup, InlineKeyboardButton
 
 bbmousetoken='293749176:AAFUwX1PMi-FtFnorDJga3l3vKRcCBuwHTo'
-testingtoken='290645324:AAGBYFAnK6yCusuijM3plvDfhnxk3rgIlsg'
-version="v12151848"
+testingtoken='290645324:AAGhpIzNqzDejvhQSPR4-FIqmy4WbtLPzVI'
+version="v12221148"
 B=bbmousetoken
 T=testingtoken
 mode=B
+
+
+# ###Google Calendar測試專區
+
+# try:
+#     import argparse
+#     flags = argparse.ArgumentParser(parents=[tools.argparser]).parse_args()
+# except ImportError:
+#     flags = None
+
+# SCOPES = 'https://www.googleapis.com/auth/calendar', 'https://www.googleapis.com/auth/calendar.readonly', 'https://www.googleapis.com/auth/plus.login'
+# CLIENT_SECRET_FILE = 'client_secret.json'
+# APPLICATION_NAME = 'Google Calendar API Python Quickstart'
+
+# def get_credentials():
+#     """Gets valid user credentials from storage.
+
+#     If nothing has been stored, or if the stored credentials are invalid,
+#     the OAuth2 flow is completed to obtain the new credentials.
+
+#     Returns:
+#         Credentials, the obtained credential.
+#     """
+#     home_dir = os.path.expanduser('~')
+#     credential_dir = os.path.join(home_dir, '.credentials')
+#     if not os.path.exists(credential_dir):
+#         os.makedirs(credential_dir)
+#     credential_path = os.path.join(credential_dir,
+#                                    'calendar-python-quickstart.json')
+
+#     store = Storage(credential_path)
+#     credentials = store.get()
+#     if not credentials or credentials.invalid:
+#         flow = client.flow_from_clientsecrets(CLIENT_SECRET_FILE, SCOPES)
+#         flow.user_agent = APPLICATION_NAME
+#         if flags:
+#             credentials = tools.run_flow(flow, store, flags)
+#         else: # Needed only for compatibility with Python 2.6
+#             credentials = tools.run(flow, store)
+#         print('Storing credentials to ' + credential_path)
+#     return credentials
+
+
+
+# eventxxx = {
+#   'summary': 'Google I/O 2015',
+#   'location': '800 Howard St., San Francisco, CA 94103',
+#   'description': 'A chance to hear more about Google\'s developer products.',
+#   'start': {
+#     'dateTime': '2016-12-28T09:00:00-07:00',
+#     'timeZone': 'America/Los_Angeles',
+#   },
+#   'end': {
+#     'dateTime': '2016-12-28T17:00:00-07:00',
+#     'timeZone': 'America/Los_Angeles',
+#   },
+#   'recurrence': [
+#     'RRULE:FREQ=DAILY;COUNT=2'
+#   ],
+#   'attendees': [
+#     {'email': 'lpage@example.com'},
+#     {'email': 'sbrin@example.com'},
+#   ],
+#   'reminders': {
+#     'useDefault': False,
+#     'overrides': [
+#       {'method': 'email', 'minutes': 24 * 60},
+#       {'method': 'popup', 'minutes': 10},
+#     ],
+#   },
+# }
+
+# credentials = get_credentials()
+# http = credentials.authorize(httplib2.Http())
+# service=discovery.build('calendar', 'v3', http=http)
+
+# now = datetime.datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
+# print('Getting the upcoming 10 events')
+# eventsResult = service.events().list(
+#     calendarId='primary', timeMin=now, maxResults=10, singleEvents=True,
+#     orderBy='startTime').execute()
+# events = eventsResult.get('items', [])
+
+# if not events:
+#     print('No upcoming events found.')
+# for event in events:
+#     start = event['start'].get('dateTime', event['start'].get('date'))
+#     print(start, event['summary'])
+
+
+
+# eventxxx = service.events().insert(calendarId='primary', body=eventxxx).execute()
+# print ("Event created: " + (eventxxx.get('htmlLink')))
+
+# ###測試專區
+
+
 
 
 def auth_gss_client(path, scopes):
@@ -44,18 +152,100 @@ def isVaildDate(date):
         except:
             return False 
 
-def BBMouseAccounting(chat_id,salutation,date, item, price,acctype="支出"):
+def BBMouseAccounting(chat_id,salutation,date, item, price,acctype,command):
     auth_json_path = 'BBMouseGS.json'
     gss_scopes = ['https://spreadsheets.google.com/feeds']
     gss_client = auth_gss_client(auth_json_path, gss_scopes)
     wks = gss_client.open_by_key("1zowQqJ3bmSvTkId32x5KfDWpOxbDvhYzvHeeVd2BfKw")
     sheet = wks.sheet1
     bot.sendMessage(chat_id,"哦哦 找到記帳小本子了，等我記完再跟" + salutation+"說～\n(嗶鼠在小本子上專心抄寫中)\n(稍等一下，先別吵嗶鼠)")
-    sheet.insert_row([salutation,date,item,price,acctype], 2)
+    sheet.insert_row([salutation,date,item,price,acctype,command], 2)
+
+def StrPermutation(list1,list2,list3):
+    list0=[]
+    for x in range(len(list1)):
+        for i in range(len(list2)):
+            for j in range(len(list3)):
+                list0.append(list1[x]+list2[i]+list3[j])
+    return list0
+
+    
+
+def AccountingSentenceAnalysis_get_date(command):
+
+    try:
+        RegularExpressDate_8digit=(re.search('[0-9]{8}', command)).group()
+    except:
+        print ("無八碼")
+
+    if "今天" in command or "today"  in command or "now"  in command or "剛剛"  in command :
+        accDate=time.strftime("%Y-%m-%d", time.gmtime(time.time()+8*60*60))                  #八小時乘上六十分鐘乘上六十秒
+    elif "昨" in command or "yesterday"  in command  :
+        accDate=time.strftime("%Y-%m-%d", time.gmtime(time.time()+8*60*60 -60*60*24))                  #八小時乘上六十分鐘乘上六十秒 再減一天回到昨天
+    elif isVaildDate( RegularExpressDate_8digit) == True:
+        accDate=RegularExpressDate_8digit[:4] + "-" + RegularExpressDate_8digit[4:6] +"-" +RegularExpressDate_8digit[6:]
+    else:
+        accDate="日期格式記錯了"
+        accDateError="日期格式記錯了"
+    return accDate
+
+def AccountingSentenceAnalysis_get_person(command):
+    pass
+def AccountingSentenceAnalysis_get_item(command):
+    try:
+        seperatepoint=command.index(" ")
+    except:
+        print ("no this seperatepoint")
+    try:
+        seperatepoint=command.index(",")
+    except:
+        print ("no this seperatepoint")
+    try:
+        seperatepoint=command.index("，")
+    except:
+        print ("no this seperatepoint")
+
+    command=command[seperatepoint:]
+    print("command")
+    print(command)
+    subjectlist=["我","爸爸","媽媽","他","她","嗶","鼠","你"," "]
+
+    timeadvlist1=["上上","上","這"]    
+    timeadvlist2=["禮拜","星期","週","周"]    
+    timeadvlist3=["一","二","三","四","五","六","日","天"]    
+    timeadvlist=StrPermutation(timeadvlist1,timeadvlist2,timeadvlist3)+["前天","昨天","昨日","今日","今天","今兒個","剛剛"]
+
+    verblist=["買","花了","購入","吃","喝","點了","付了","繳了",""]
+    advlist=["了","哦","啊","呢","喔","總共","共"]
+    ohterlist=[str(AccountingSentenceAnalysis_get_amount(command)),"$","元"]
+    totalelementlist=subjectlist+timeadvlist+verblist+advlist+ohterlist
+    item=command
+    for i in range(len(totalelementlist)):
+        try:
+            item=item.replace(totalelementlist[i],"")
+            print ("item:" + item+" 取代標的:"+totalelementlist[i])
+        except:
+            print ("No this subject."+ totalelementlist[i])
+    print (item)
+    return item
+
+def AccountingSentenceAnalysis_get_amount(command):
+    amount=0
+    print ("start amount")
+    print(command)
+    try:
+        amount=re.search('\d{1,4}',command).group()
+        print (re.search('\d{1,4}',command).group())
+        print ("amount"+str(amount))
+    except:
+        print ("no amount detected")
+
+    return amount
+
 
 
 def handle(msg):
-    print u"start handle"
+    print ("start handle")
     
     BBMresponce_file_id=""
     BBMresponse_str1=""
@@ -89,7 +279,7 @@ def handle(msg):
 #處理貼圖或檔案訊息
     if content_type == 'sticker' or  content_type == 'document':
         #response=bot.getUpdates()
-        print msg
+        print (msg)
         BBMresponse_str1=str( salutation + "，我看不懂貼圖啦！")
         #抓取file_id用
         #bot.sendMessage(msg['chat']['id'],str(msg)+"tttt")
@@ -106,11 +296,11 @@ def handle(msg):
     if content_type == 'text':
         chat_id = msg['chat']['id']
         
-        print msg['chat']['id']
-        print ""
-        print msg
-        print 'Got command: %s' % command    
-
+        print (msg['chat']['id'])
+        print ("")
+        print (msg)
+        printx = 'Got command: %s' % command    
+        print (printx)
         if (command[0:2] == "/v" ):
             bot.sendMessage(288200245, msg['text'][3:])
             bot.sendMessage(271383530, msg['text'][3:])
@@ -192,42 +382,50 @@ def handle(msg):
 
 
             elif iscallBBMouse(command)==True:
-                BBMresponse_str1=salutation + "叫我嗎？ 我在這～(咚咚咚)？"
+                BBMresponse_str1=salutation + "叫我嗎？ 我在這～(咚咚咚)"
 #記帳 accounting
-            elif "記帳" in command[:12]:
+            elif ("記" in command[:12] and "帳" in command[:12]):
                 accrecord= str(command).split()
                 orderofDate=1 #日期設在split的第2位
                 orderofAmount=3 #金額設在split的第四位   把多餘的字符消掉，以純數字記錄
 #處理日期格式
-                accDateError=""
-                if accrecord[orderofDate]=="今天" or accrecord[orderofDate]=="today" or accrecord[orderofDate]=="now":
-                    accDate=time.strftime("%Y-%m-%d", time.localtime())                  
-                elif isVaildDate(accrecord[orderofDate]) == True:
-                    accDate=accrecord[orderofDate][:4] + "-" + accrecord[orderofDate][4:6] +"-" +accrecord[orderofDate][6:]
-                else:
-                    accDate="日期格式記錯了"
+                
+                # if accrecord[orderofDate]=="今天" or accrecord[orderofDate]=="today" or accrecord[orderofDate]=="now":
+                #     accDate=time.strftime("%Y-%m-%d", time.gmtime(time.time()+8*60*60))                  #八小時乘上六十分鐘乘上六十秒
+                # elif isVaildDate(accrecord[orderofDate]) == True:
+                #     accDate=accrecord[orderofDate][:4] + "-" + accrecord[orderofDate][4:6] +"-" +accrecord[orderofDate][6:]
+                # else:
+                #     accDate="日期格式記錯了"
+                #     accDateError="日期格式記錯了"
+                accDate=AccountingSentenceAnalysis_get_date(command)
+
+                if not(isinstance(accDate,int)):
                     accDateError="日期格式記錯了"
-
-
-                if len(accrecord)<4 or len(accrecord)>5 or len(accDate)<>10: #如果格式不太合
-                    BBMresponse_str1=salutation+ " 你的記帳格式不對唷！" +accDateError+ " \n給你一個範例：「嗶鼠記帳 20161116 生日大餐 $999」\n記得空格要空對！" 
-                    print accDateError
-                    print accDate
                 else:
+                    accDateError=""
+
+                # if len(accrecord)<4 or len(accrecord)>5 or len(accDate)<>10: #如果格式不太合
+                #     BBMresponse_str1=salutation+ " 你的記帳格式不對唷！" +accDateError+ " \n給你一個範例：「嗶鼠記帳 20161116 生日大餐 $999」\n記得空格要空對！" 
+                #     print (accDateError)
+                #     print (accDate)
+                # else:
+                if True:
                     bot.sendMessage(chat_id,"等我一下，我來翻找一下我的記帳小本子")
 
 
-                    if "$" in accrecord[orderofAmount] or "元" in accrecord[orderofAmount]:
-                        accAmount=accrecord[orderofAmount].replace("$","")
-                        accAmount=accrecord[orderofAmount].replace("元","")
-                    else:
-                        accAmount=accrecord[orderofAmount]
+                    # if "$" in accrecord[orderofAmount] or "元" in accrecord[orderofAmount]:
+                    #     accAmount=accrecord[orderofAmount].replace("$","")
+                    #     accAmount=accAmount.replace("元","")
+                    # else:
+                    #     accAmount=accrecord[orderofAmount]
 
+                    accAmount=AccountingSentenceAnalysis_get_amount(command)
+                    accItem=AccountingSentenceAnalysis_get_item(command)
 
                     if("收入" in command or "撿到錢" in command or "兼差" in command or "家教" in command or "獎金" in command or "薪水" in command ):
-                        BBMouseAccounting(chat_id,salutation,accDate,accrecord[2],accAmount,"收入")
+                        BBMouseAccounting(chat_id,salutation,accDate,accItem,accAmount,"收入",command)
                     else:
-                        BBMouseAccounting(chat_id,salutation,accDate,accrecord[2],accAmount,)
+                        BBMouseAccounting(chat_id,salutation,accDate,accItem,accAmount,"支出",command)
 
                     BBMresponse_str1="好了，我已經幫" + salutation + "記好了\n可以看這裡： https://goo.gl/OI2LXx "
 
@@ -387,8 +585,8 @@ def handle(msg):
                 # print ( BBself(command[0:2])>0)
 
         if ("我愛嗶" in command or "我喜歡嗶" in command):
-            print B
-            print T
+            print (B)
+            print (T)
             if mode == B :
                 BBMresponce_file_id="BQADBQADAwAD6vssEFrsEt3Hhpi4Ag" #毛線聖誕老人織愛心 嗶鼠版
             else:
@@ -471,7 +669,7 @@ def isflatter(command):
 #def group(msg):
     
 
-print "bot setting"
+print ("bot setting")
 
 
 bot = telepot.Bot(mode)
@@ -479,7 +677,7 @@ bot = telepot.Bot(mode)
 bot.message_loop({'chat': handle,
                   'callback_query': on_callback_query})
 
-print 'I am listening ...'
+print ('I am listening ...')
 
 
 
