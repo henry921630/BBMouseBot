@@ -15,6 +15,7 @@ from apiclient import discovery
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 import time
+from time import sleep
 import random
 import datetime
 import telepot
@@ -171,7 +172,7 @@ def StrPermutation(list1,list2,list3):
 
 
 def getseperatepoint(command):
-    seperatepoint=0
+    seperatepoint=-1
     try:
         seperatepoint=command.index(" ")
     except:        
@@ -193,6 +194,7 @@ def getseperatepoint(command):
     except:
         print ("no this seperatepoint")
     return seperatepoint
+
 def AccountingSentenceAnalysis_get_date(command):
     command=command[getseperatepoint(command)+1:]
     try:
@@ -206,9 +208,10 @@ def AccountingSentenceAnalysis_get_date(command):
     elif "昨" in command or "yesterday"  in command  :
         accDate=time.strftime("%Y-%m-%d", time.gmtime(time.time()+8*60*60 -60*60*24))                  #八小時乘上六十分鐘乘上六十秒 再減一天回到昨天
     elif "禮拜" in command or "周"  in command  or "週"  in command:
-        if "上"  in command:
+        if "上"  in command:        
             w=command.count("上")
-
+        else:
+            w=0
         if "禮拜一" in command or "週一" in command or "周一" in command:
             wd=1
         elif "禮拜二" in command or "週二" in command or "周二" in command:
@@ -260,17 +263,24 @@ def AccountingSentenceAnalysis_get_item(command):
 
     verblist=["買","花了","購入","吃","喝","點了","付了","繳了","繳交","賺了",""]
     advlist=["了","哦","啊","呢","喔","總共","共"]
-    ohterlist=[str(AccountingSentenceAnalysis_get_amount(command)),"$","元","塊錢","記帳"]
+
+    try:
+        RegularExpressDate_8digit=(re.search('[0-9]{8}', command)).group()
+    except:
+        RegularExpressDate_8digit=""
+        print ("無八碼")
+    
+    ohterlist=[str(AccountingSentenceAnalysis_get_amount(command)),RegularExpressDate_8digit,"$","元","塊錢","記帳","記個帳","謝謝"]
     punctuationlist=["！","!","，",","]
     totalelementlist=subjectlist+timeadvlist+verblist+advlist+ohterlist+punctuationlist
     item=command
     for i in range(len(totalelementlist)):
         try:
             item=item.replace(totalelementlist[i],"")
-            #除錯時使用 print ("item:" + item+" 取代標的:"+totalelementlist[i])
+            #print ("item:" + item+" 取代標的:"+totalelementlist[i])
         except:
             pass
-            #除錯時使用 print ("No this subject."+ totalelementlist[i])
+            #print ("No this subject."+ totalelementlist[i])
     print (item)
     return item
 
@@ -278,14 +288,21 @@ def AccountingSentenceAnalysis_get_amount(command):
     amount=0
     print ("start amount")
     print(command)
-    try:
-        amount=re.search('\d{1,4}',command).group()
-        print (re.search('\d{1,4}',command).group())
-        print ("amount"+str(amount))
-    except:
-        print ("no amount detected")
-
+   
+    if "元" in  command and type(int(command[command.index("元")-1]))==int:
+        #print (type(command.index("塊")-1))
+        amount=re.search('\d{1,4}',command[(command.index("元")-5):command.index("元")]).group()
+    elif "塊" in command  and  type(int(command[command.index("塊")-1]))==int:
+        amount=re.search('\d{1,4}',command[(command.index("塊")-5):command.index("塊")]).group()
+    elif "$" in command:
+        amount=re.search('\d{1,4}',command[(command.index("$")):command.index("$")+5]).group()
+    else :
+        amount=re.search('\D(\d{1,4}$)',command).group(1)
+    
+    print ("amount"+str(amount))
+ 
     return amount
+
 
 
 
@@ -441,8 +458,12 @@ def handle(msg):
                    [InlineKeyboardButton(text="布", callback_data='paper')],
                ])
                 BBMresponse_str1= str( ""+ salutation +"我們來猜拳吧！", reply_markup=keyboard)
-
-
+            elif '默哀十秒鐘' in command:
+                bot.sendMessage(chat_id,"請"+salutation+"起立，我們一起默哀十秒鐘")
+                for i in range(10):
+                    bot.sendMessage(chat_id,i+1)
+                    sleep(1)
+                BBMresponse_str1="好的請坐\nSit down please."
             elif iscallBBMouse(command)==True:
                 BBMresponse_str1=salutation + "叫我嗎？ 我在這～(咚咚咚)"
 #記帳 accounting
@@ -490,7 +511,7 @@ def handle(msg):
                         acctype="支出"
                     BBMouseAccounting(chat_id,salutation,accDate,accItem,accAmount,acctype,command)
 
-                    BBMresponse_str1="好了，我已經幫" + salutation + "記好了\n日期：" + str(accDate)+ "  項目："+str(accItem)+ "  金額："+acctype+"NT" +accAmount + "\n記帳紀錄可以看這裡： https://goo.gl/OI2LXx "
+                    BBMresponse_str1="好了，我已經幫" + salutation + "記好了\n日期： " + str(accDate)+ "   項目： "+str(accItem)+ "   金額： "+acctype+"NT" +accAmount + "\n記帳紀錄可以看這裡： https://goo.gl/OI2LXx "
 
 #深度問題
             elif("無聊" in command or "有趣的" in command  or "你會思考" in command   or "智能測試" in command or "智能問答" in command):
