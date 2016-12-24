@@ -29,7 +29,7 @@ from telepot.namedtuple import InlineKeyboardMarkup, InlineKeyboardButton
 
 bbmousetoken='293749176:AAFUwX1PMi-FtFnorDJga3l3vKRcCBuwHTo'
 testingtoken='290645324:AAGhpIzNqzDejvhQSPR4-FIqmy4WbtLPzVI'
-version="v12241148"
+version="v2.012241548"
 B=bbmousetoken
 T=testingtoken
 mode=B
@@ -169,13 +169,36 @@ def StrPermutation(list1,list2,list3):
                 list0.append(list1[x]+list2[i]+list3[j])
     return list0
 
-    
 
+def getseperatepoint(command):
+    seperatepoint=0
+    try:
+        seperatepoint=command.index(" ")
+    except:        
+        print ("no this seperatepoint")
+    try:
+        seperatepoint=command.index(",")
+    except:        
+        print ("no this seperatepoint")
+    try:
+        seperatepoint=command.index("，")
+    except:        
+        print ("no this seperatepoint")
+    try:
+        seperatepoint=command.index(":")
+    except:        
+        print ("no this seperatepoint")
+    try:
+        seperatepoint=command.index("：")
+    except:
+        print ("no this seperatepoint")
+    return seperatepoint
 def AccountingSentenceAnalysis_get_date(command):
-
+    command=command[getseperatepoint(command)+1:]
     try:
         RegularExpressDate_8digit=(re.search('[0-9]{8}', command)).group()
     except:
+        RegularExpressDate_8digit=""
         print ("無八碼")
 
     if "今天" in command or "today"  in command or "now"  in command or "剛剛"  in command  or "剛才"  in command or "我剛"  in command:
@@ -224,33 +247,8 @@ def AccountingSentenceAnalysis_get_date(command):
 def AccountingSentenceAnalysis_get_person(command):
     pass
 def AccountingSentenceAnalysis_get_item(command):
-    seperatepoint=0
-    try:
-        seperatepoint=command.index(" ")
-    except:
-        
-        print ("no this seperatepoint")
-    try:
-        seperatepoint=command.index(",")
-    except:
-        
-        print ("no this seperatepoint")
-    try:
-        seperatepoint=command.index("，")
-    except:
-        
-        print ("no this seperatepoint")
-    try:
-        seperatepoint=command.index(":")
-    except:
-        
-        print ("no this seperatepoint")
-    try:
-        seperatepoint=command.index("：")
-    except:
-        
-        print ("no this seperatepoint")
-    command=command[seperatepoint+1:]
+    
+    command=command[getseperatepoint(command)+1:]
     print("command")
     print(command)
     subjectlist=["我","爸爸","媽媽","他","她","嗶","鼠","你"," "]
@@ -258,11 +256,11 @@ def AccountingSentenceAnalysis_get_item(command):
     timeadvlist1=["上上","上","這"]    
     timeadvlist2=["禮拜","星期","週","周"]    
     timeadvlist3=["一","二","三","四","五","六","日","天"]    
-    timeadvlist=StrPermutation(timeadvlist1,timeadvlist2,timeadvlist3)+["前天","昨天","昨日","今日","今天","今兒個","剛剛","剛才"]
+    timeadvlist=StrPermutation(timeadvlist1,timeadvlist2,timeadvlist3)+["前天","昨天","昨日","早上","中午","下午","晚上","今日","今天","今兒個","剛剛","剛才"]
 
-    verblist=["買","花了","購入","吃","喝","點了","付了","繳了","賺了",""]
+    verblist=["買","花了","購入","吃","喝","點了","付了","繳了","繳交","賺了",""]
     advlist=["了","哦","啊","呢","喔","總共","共"]
-    ohterlist=[str(AccountingSentenceAnalysis_get_amount(command)),"$","元","塊錢"]
+    ohterlist=[str(AccountingSentenceAnalysis_get_amount(command)),"$","元","塊錢","記帳"]
     punctuationlist=["！","!","，",","]
     totalelementlist=subjectlist+timeadvlist+verblist+advlist+ohterlist+punctuationlist
     item=command
@@ -492,7 +490,7 @@ def handle(msg):
                         acctype="支出"
                     BBMouseAccounting(chat_id,salutation,accDate,accItem,accAmount,acctype,command)
 
-                    BBMresponse_str1="好了，我已經幫" + salutation + "記好了\n日期:" + str(accDate)+ "  項目:"+str(accItem)+ "  金額:"+acctype+"NT" +accAmount + "\n記帳紀錄可以看這裡： https://goo.gl/OI2LXx "
+                    BBMresponse_str1="好了，我已經幫" + salutation + "記好了\n日期：" + str(accDate)+ "  項目："+str(accItem)+ "  金額："+acctype+"NT" +accAmount + "\n記帳紀錄可以看這裡： https://goo.gl/OI2LXx "
 
 #深度問題
             elif("無聊" in command or "有趣的" in command  or "你會思考" in command   or "智能測試" in command or "智能問答" in command):
