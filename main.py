@@ -29,7 +29,7 @@ from telepot.namedtuple import InlineKeyboardMarkup, InlineKeyboardButton
 
 bbmousetoken='293749176:AAFUwX1PMi-FtFnorDJga3l3vKRcCBuwHTo'
 testingtoken='290645324:AAGhpIzNqzDejvhQSPR4-FIqmy4WbtLPzVI'
-version="v12221148"
+version="v12241148"
 B=bbmousetoken
 T=testingtoken
 mode=B
@@ -212,7 +212,8 @@ def AccountingSentenceAnalysis_get_date(command):
     elif isVaildDate( RegularExpressDate_8digit) == True:
         accDate=RegularExpressDate_8digit[:4] + "-" + RegularExpressDate_8digit[4:6] +"-" +RegularExpressDate_8digit[6:]
     else:
-        accDate="日期格式記錯了"
+        #accDate="日期格式記錯了"
+        accDate=time.strftime("%Y-%m-%d", time.gmtime(time.time()+8*60*60))                  #如果偵測不到日期就預設為今天
 
     return accDate
 
@@ -262,7 +263,8 @@ def AccountingSentenceAnalysis_get_item(command):
     verblist=["買","花了","購入","吃","喝","點了","付了","繳了","賺了",""]
     advlist=["了","哦","啊","呢","喔","總共","共"]
     ohterlist=[str(AccountingSentenceAnalysis_get_amount(command)),"$","元","塊錢"]
-    totalelementlist=subjectlist+timeadvlist+verblist+advlist+ohterlist
+    punctuationlist=["！","!","，",","]
+    totalelementlist=subjectlist+timeadvlist+verblist+advlist+ohterlist+punctuationlist
     item=command
     for i in range(len(totalelementlist)):
         try:
