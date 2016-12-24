@@ -178,34 +178,78 @@ def AccountingSentenceAnalysis_get_date(command):
     except:
         print ("無八碼")
 
-    if "今天" in command or "today"  in command or "now"  in command or "剛剛"  in command :
+    if "今天" in command or "today"  in command or "now"  in command or "剛剛"  in command  or "剛才"  in command or "我剛"  in command:
         accDate=time.strftime("%Y-%m-%d", time.gmtime(time.time()+8*60*60))                  #八小時乘上六十分鐘乘上六十秒
     elif "昨" in command or "yesterday"  in command  :
         accDate=time.strftime("%Y-%m-%d", time.gmtime(time.time()+8*60*60 -60*60*24))                  #八小時乘上六十分鐘乘上六十秒 再減一天回到昨天
+    elif "禮拜" in command or "周"  in command  or "週"  in command:
+        if "上"  in command:
+            w=command.count("上")
+
+        if "禮拜一" in command or "週一" in command or "周一" in command:
+            wd=1
+        elif "禮拜二" in command or "週二" in command or "周二" in command:
+            wd=2
+        elif "禮拜三" in command or "週三" in command or "周三" in command:
+            wd=3
+        elif "禮拜四" in command or "週四" in command or "周四" in command:
+            wd=4
+        elif "禮拜五" in command or "週五" in command or "周五" in command:
+            wd=5
+        elif "禮拜六" in command or "週六" in command or "周六" in command:
+            wd=6
+        elif "禮拜日" in command or "週日" in command or "周日" in command:
+            wd=7
+        else:
+            pass
+        #待做 先回到本週一，再減去週數，再加到指定weekday
+        dt=datetime.datetime.fromtimestamp(time.mktime(time.gmtime())+60*60*8) #調整八小時時區後的現在時間(datetime)
+        thisMonday=dt-datetime.timedelta(days=datetime.date.today().weekday())        
+        lastMonday=thisMonday-datetime.timedelta(7*w)
+        lastSomeday=lastMonday+ datetime.timedelta(wd-1)
+        timetuple=lastSomeday.timetuple()
+        accDate=time.strftime("%Y-%m-%d", timetuple)          
     elif isVaildDate( RegularExpressDate_8digit) == True:
         accDate=RegularExpressDate_8digit[:4] + "-" + RegularExpressDate_8digit[4:6] +"-" +RegularExpressDate_8digit[6:]
     else:
         accDate="日期格式記錯了"
-        accDateError="日期格式記錯了"
+
     return accDate
+
+
+
+
 
 def AccountingSentenceAnalysis_get_person(command):
     pass
 def AccountingSentenceAnalysis_get_item(command):
+    seperatepoint=0
     try:
         seperatepoint=command.index(" ")
     except:
+        
         print ("no this seperatepoint")
     try:
         seperatepoint=command.index(",")
     except:
+        
         print ("no this seperatepoint")
     try:
         seperatepoint=command.index("，")
     except:
+        
         print ("no this seperatepoint")
-
-    command=command[seperatepoint:]
+    try:
+        seperatepoint=command.index(":")
+    except:
+        
+        print ("no this seperatepoint")
+    try:
+        seperatepoint=command.index("：")
+    except:
+        
+        print ("no this seperatepoint")
+    command=command[seperatepoint+1:]
     print("command")
     print(command)
     subjectlist=["我","爸爸","媽媽","他","她","嗶","鼠","你"," "]
@@ -213,19 +257,20 @@ def AccountingSentenceAnalysis_get_item(command):
     timeadvlist1=["上上","上","這"]    
     timeadvlist2=["禮拜","星期","週","周"]    
     timeadvlist3=["一","二","三","四","五","六","日","天"]    
-    timeadvlist=StrPermutation(timeadvlist1,timeadvlist2,timeadvlist3)+["前天","昨天","昨日","今日","今天","今兒個","剛剛"]
+    timeadvlist=StrPermutation(timeadvlist1,timeadvlist2,timeadvlist3)+["前天","昨天","昨日","今日","今天","今兒個","剛剛","剛才"]
 
-    verblist=["買","花了","購入","吃","喝","點了","付了","繳了",""]
+    verblist=["買","花了","購入","吃","喝","點了","付了","繳了","賺了",""]
     advlist=["了","哦","啊","呢","喔","總共","共"]
-    ohterlist=[str(AccountingSentenceAnalysis_get_amount(command)),"$","元"]
+    ohterlist=[str(AccountingSentenceAnalysis_get_amount(command)),"$","元","塊錢"]
     totalelementlist=subjectlist+timeadvlist+verblist+advlist+ohterlist
     item=command
     for i in range(len(totalelementlist)):
         try:
             item=item.replace(totalelementlist[i],"")
-            print ("item:" + item+" 取代標的:"+totalelementlist[i])
+            #除錯時使用 print ("item:" + item+" 取代標的:"+totalelementlist[i])
         except:
-            print ("No this subject."+ totalelementlist[i])
+            pass
+            #除錯時使用 print ("No this subject."+ totalelementlist[i])
     print (item)
     return item
 
@@ -270,7 +315,7 @@ def handle(msg):
     else:
         command = msg['text']
         if (chat_id ==271383530):
-            bot.sendMessage(271383530,msg)
+            #除錯時使用 回傳msg  bot.sendMessage(271383530,msg)
             salutation = "爸爸"
         elif (chat_id ==288200245):
             salutation = "媽媽"
@@ -341,9 +386,26 @@ def handle(msg):
                                }
 
             #生日快樂
+            print ("聖誕" in command or  "平安" in command or "耶誕" in command or (datetime.datetime.today().month==12 and (datetime.datetime.today().day==24 or datetime.datetime.today().day==25)))
+            print (datetime.datetime.today().day==24 or datetime.datetime.today().day==25)
+            if  (datetime.datetime.today().month==12 and (datetime.datetime.today().day==24 or datetime.datetime.today().day==25)):
+                rd=random.randint(1,100)
+                if "聖誕" in command or  "平安" in command or "耶誕" in command:
+                    rd=random.randint(80,100)
+                if rd>=90:
+                    BBMresponse_str1= str( u" 我要報給你們一個大喜的訊息，是關乎萬民的～～")
+                    bot.sendMessage(chat_id,BBMresponse_str1)
+                elif rd>=80:
+                    BBMresponse_str1= str( u"耶～今天是平安夜耶，"+ salutation +"聖誕快樂！\n嗶鼠不用什麼禮物，只要"+salutation+"愛我就好了！")
+                    bot.sendMessage(chat_id,BBMresponse_str1)
+                    if mode == B :
+                        BBMresponce_file_id="BQADBQADAwAD6vssEFrsEt3Hhpi4Ag" #毛線聖誕老人織愛心 嗶鼠版
+                    else:
+                        BBMresponce_file_id="BQADBQADBgAD6vssENUtjTtERQ4mAg" #毛線聖誕老人織愛心 測試版
 
-            if command != "/start" and datetime.datetime.today().month==11 and datetime.datetime.today().day==16:
-                BBMresponse_str1= str( u"耶～今天是"+ salutation +"生日，生日快樂！")
+                print (BBMresponse_str1)
+                
+                print ("rd:"+str(rd))
                 
 
 
@@ -423,11 +485,12 @@ def handle(msg):
                     accItem=AccountingSentenceAnalysis_get_item(command)
 
                     if("收入" in command or "撿到錢" in command or "兼差" in command or "家教" in command or "獎金" in command or "薪水" in command ):
-                        BBMouseAccounting(chat_id,salutation,accDate,accItem,accAmount,"收入",command)
+                        acctype="收入"
                     else:
-                        BBMouseAccounting(chat_id,salutation,accDate,accItem,accAmount,"支出",command)
+                        acctype="支出"
+                    BBMouseAccounting(chat_id,salutation,accDate,accItem,accAmount,acctype,command)
 
-                    BBMresponse_str1="好了，我已經幫" + salutation + "記好了\n可以看這裡： https://goo.gl/OI2LXx "
+                    BBMresponse_str1="好了，我已經幫" + salutation + "記好了\n日期:" + str(accDate)+ "  項目:"+str(accItem)+ "  金額:"+acctype+"NT" +accAmount + "\n記帳紀錄可以看這裡： https://goo.gl/OI2LXx "
 
 #深度問題
             elif("無聊" in command or "有趣的" in command  or "你會思考" in command   or "智能測試" in command or "智能問答" in command):
