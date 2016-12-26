@@ -33,7 +33,7 @@ testingtoken='290645324:AAGhpIzNqzDejvhQSPR4-FIqmy4WbtLPzVI'
 version="v2.012241548"
 B=bbmousetoken
 T=testingtoken
-mode=T
+mode=B
 
 
 # ###Google Calendar測試專區
