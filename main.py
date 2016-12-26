@@ -11,7 +11,7 @@ from oauth2client.file import Storage
 
 from apiclient import discovery
 
-
+import csv
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 import time
@@ -33,7 +33,7 @@ testingtoken='290645324:AAGhpIzNqzDejvhQSPR4-FIqmy4WbtLPzVI'
 version="v2.012241548"
 B=bbmousetoken
 T=testingtoken
-mode=B
+mode=T
 
 
 # ###Google Calendar測試專區
@@ -159,7 +159,7 @@ def BBMouseAccounting(chat_id,salutation,date, item, price,acctype,command):
     gss_client = auth_gss_client(auth_json_path, gss_scopes)
     wks = gss_client.open_by_key("1zowQqJ3bmSvTkId32x5KfDWpOxbDvhYzvHeeVd2BfKw")
     sheet = wks.sheet1
-    bot.sendMessage(chat_id,"哦哦 找到記帳小本子了，等我記完再跟" + salutation+"說～\n(嗶鼠在小本子上專心抄寫中)\n(稍等一下，先別吵嗶鼠)")
+    
     sheet.insert_row([salutation,date,item,price,acctype,command], 2)
 
 def StrPermutation(list1,list2,list3):
@@ -303,15 +303,23 @@ def AccountingSentenceAnalysis_get_amount(command):
  
     return amount
 
-
+def getcommandlistbyeachline(command):
+    if "\n" in command:
+        commandlist=command.split("\n")
+        # print ("commandlist: " +commandlist)
+        return commandlist
+    else:
+        return command
+    
 
 
 def handle(msg):
     print ("start handle")
     
     BBMresponce_file_id=""
-    BBMresponse_str1=""
-    BBMresponse_str2=""
+    # BBMresponse_str[0]=""
+    # BBMresponse_str[1]=""
+    BBMresponse_str=["","",""]
     content_type, chat_type, chat_id = telepot.glance(msg)
 
 
@@ -342,7 +350,7 @@ def handle(msg):
     if content_type == 'sticker' or  content_type == 'document':
         #response=bot.getUpdates()
         print (msg)
-        BBMresponse_str1=str( salutation + "，我看不懂貼圖啦！")
+        BBMresponse_str[0]=str( salutation + "，我看不懂貼圖啦！")
         #抓取file_id用
         #bot.sendMessage(msg['chat']['id'],str(msg)+"tttt")
 
@@ -410,17 +418,17 @@ def handle(msg):
                 if "聖誕" in command or  "平安" in command or "耶誕" in command:
                     rd=random.randint(80,100)
                 if rd>=90:
-                    BBMresponse_str1= str( u" 我要報給你們一個大喜的訊息，是關乎萬民的～～")
-                    bot.sendMessage(chat_id,BBMresponse_str1)
+                    BBMresponse_str[0]= str( u" 我要報給你們一個大喜的訊息，是關乎萬民的～～")
+                    bot.sendMessage(chat_id,BBMresponse_str[0])
                 elif rd>=80:
-                    BBMresponse_str1= str( u"耶～今天是平安夜耶，"+ salutation +"聖誕快樂！\n嗶鼠不用什麼禮物，只要"+salutation+"愛我就好了！")
-                    bot.sendMessage(chat_id,BBMresponse_str1)
+                    BBMresponse_str[0]= str( u"耶～今天是平安夜耶，"+ salutation +"聖誕快樂！\n嗶鼠不用什麼禮物，只要"+salutation+"愛我就好了！")
+                    bot.sendMessage(chat_id,BBMresponse_str[0])
                     if mode == B :
                         BBMresponce_file_id="BQADBQADAwAD6vssEFrsEt3Hhpi4Ag" #毛線聖誕老人織愛心 嗶鼠版
                     else:
                         BBMresponce_file_id="BQADBQADBgAD6vssENUtjTtERQ4mAg" #毛線聖誕老人織愛心 測試版
 
-                print (BBMresponse_str1)
+                print (BBMresponse_str[0])
                 
                 print ("rd:"+str(rd))
                 
@@ -434,22 +442,22 @@ def handle(msg):
 
             if command == '/story' or command == 'story':
                 n=random.randint(1,len(lrsy))
-                BBMresponse_str1= str( u"讓嗶鼠我來講笑話給"+ salutation +"舔舔： \n" + str(lrsy[n]) + "\n\n(" + str(n) + "/" + str(len(lrsy)) + ")" )
+                BBMresponse_str[0]= str( u"讓嗶鼠我來講笑話給"+ salutation +"舔舔： \n" + str(lrsy[n]) + "\n\n(" + str(n) + "/" + str(len(lrsy)) + ")" )
             elif command[:6] == '/start' or (chat_type=="group" and  command[:5] == 'start'):
-                BBMresponse_str1= str( u"嗨！"+ salutation +"！我是嗶嗶鼠機器人"+ version+"版！智能大概是嗶嗶鼠的二十π分之一。")
+                BBMresponse_str[0]= str( u"嗨！"+ salutation +"！我是嗶嗶鼠機器人"+ version+"版！智能大概是嗶嗶鼠的二十π分之一。")
             elif command[:8] == '/bbmouse' or (chat_type=="group" and command[:7] == 'bbmouse'):
                 n=random.randint(1,len(bbmousescripts))
-                BBMresponse_str1= str( str(bbmousescripts[n]) + "\n\n(" + str(n) + "/" + str(len(bbmousescripts)) + ")" )
+                BBMresponse_str[0]= str( str(bbmousescripts[n]) + "\n\n(" + str(n) + "/" + str(len(bbmousescripts)) + ")" )
             elif command[:5] == '/time' or (chat_type=="group" and  command[:4] == 'time'):
-                BBMresponse_str1= str( str(datetime.datetime.now(tz)))
+                BBMresponse_str[0]= str( str(datetime.datetime.now(tz)))
             elif command[:10] == '/marrydays' or(chat_type=="group" and  command[:9] == 'marrydays'):
-                BBMresponse_str1= str( u"報告"+ salutation +"：你已經結婚" + str((datetime.datetime.now() -datetime.datetime(2013,7,21)).days) + u"天囉！")
+                BBMresponse_str[0]= str( u"報告"+ salutation +"：你已經結婚" + str((datetime.datetime.now() -datetime.datetime(2013,7,21)).days) + u"天囉！")
 
                 
             elif ( command[0:7] == '/google' or  (chat_type=="group" and command[0:6] == 'google')):
-                BBMresponse_str1= str( u"好的"+ salutation +"，讓我來為你Google:"+"\n https://www.google.com.tw/search?q=" + command[8:])
+                BBMresponse_str[0]= str( u"好的"+ salutation +"，讓我來為你Google:"+"\n https://www.google.com.tw/search?q=" + command[8:])
             elif("智能升級" in command or "智能進化" in command  or "什麼智能" in command   or "學會了什麼" in command or "有升級嗎" in command or "新功能" in command):
-                BBMresponse_str1= str( "智慧毛說過：「智能沒有奇蹟，只有累積。」\n智能升級是一個漫長的路程，而且你永遠不知道就在"+ salutation +"一回頭間，小孩又學會了什麼奇怪的東西。")
+                BBMresponse_str[0]= str( "智慧毛說過：「智能沒有奇蹟，只有累積。」\n智能升級是一個漫長的路程，而且你永遠不知道就在"+ salutation +"一回頭間，小孩又學會了什麼奇怪的東西。")
 #猜拳
             elif '猜拳' in command :
                 keyboard = InlineKeyboardMarkup(inline_keyboard=[
@@ -457,20 +465,58 @@ def handle(msg):
                    [InlineKeyboardButton(text="石頭", callback_data='rock')],
                    [InlineKeyboardButton(text="布", callback_data='paper')],
                ])
-                BBMresponse_str1= str( ""+ salutation +"我們來猜拳吧！", reply_markup=keyboard)
-            elif '默哀十秒鐘' in command:
-                bot.sendMessage(chat_id,"請"+salutation+"起立，我們一起默哀十秒鐘")
-                for i in range(10):
-                    bot.sendMessage(chat_id,i+1)
+                BBMresponse_str[0]= str( ""+ salutation +"我們來猜拳吧！", reply_markup=keyboard)
+
+            elif '碼表' in command or '倒數' in command or '碼錶' in command or '計時' in command:
+                if "秒" in command:
+                    try:
+                        s=re.search("\d{1,3}",command[command.index("秒")-3:command.index("秒")]).group()
+                    except:
+                        s=0
+                else:
+                    s=0
+                if "分鐘" in command:
+                    try:
+                        m=re.search("\d{1,3}",command[command.index("分")-3:command.index("分")]).group()
+                    except:
+                        m=0
+                else:
+                    m=0
+                totalsec=int(s)+60*int(m)       
+                bot.sendMessage(chat_id,"好的，倒數開始！每15秒提醒一次，最後15秒將會讀秒！")
+                for i in range(int(totalsec)):
+                    #print("delete"+str((totalsec-i)%30))
+                    if totalsec-i<=15:
+                        bot.sendMessage(chat_id,totalsec-i)
+                        print (totalsec-i)
+                    elif (totalsec-i)%15==0 :
+                        bot.sendMessage(chat_id,"倒數"+str( totalsec-i )+"秒")
+                        print("倒數"+str( totalsec-i )+"秒")
+                    else:
+                        pass
                     sleep(1)
-                BBMresponse_str1="好的請坐\nSit down please."
+                bot.sendMessage(chat_id,"嗶嗶嗶嗶嗶！時間到！")              
+
+
+
+
+            elif '默哀' in command:
+                if"十秒鐘" in command or "10秒鐘" in command:
+                    bot.sendMessage(chat_id,"請"+salutation+"起立，我們一起默哀十秒鐘")
+                    for i in range(10):
+                        bot.sendMessage(chat_id,i+1+"~")
+                        sleep(1)
+                    BBMresponse_str[0]="好的請坐\nSit down please."
+                else:
+                    bot.sendMessage(chat_id,salutation+"我只學過默哀十秒鐘哦～")
+
             elif iscallBBMouse(command)==True:
-                BBMresponse_str1=salutation + "叫我嗎？ 我在這～(咚咚咚)"
+                BBMresponse_str[0]=salutation + "叫我嗎？ 我在這～(咚咚咚)"
 #記帳 accounting
             elif ("記" in command[:12] and "帳" in command[:12]):
-                accrecord= str(command).split()
-                orderofDate=1 #日期設在split的第2位
-                orderofAmount=3 #金額設在split的第四位   把多餘的字符消掉，以純數字記錄
+                #accrecord= str(command).split()
+                #orderofDate=1 #日期設在split的第2位
+                #orderofAmount=3 #金額設在split的第四位   把多餘的字符消掉，以純數字記錄
 #處理日期格式
                 
                 # if accrecord[orderofDate]=="今天" or accrecord[orderofDate]=="today" or accrecord[orderofDate]=="now":
@@ -480,20 +526,19 @@ def handle(msg):
                 # else:
                 #     accDate="日期格式記錯了"
                 #     accDateError="日期格式記錯了"
-                accDate=AccountingSentenceAnalysis_get_date(command)
 
-                if not(isinstance(accDate,int)):
-                    accDateError="日期格式記錯了"
-                else:
-                    accDateError=""
+                #如果記帳的command有換行的話，每一行視作一筆單獨的記帳紀錄
+                commandlist=getcommandlistbyeachline(command)
+
+
 
                 # if len(accrecord)<4 or len(accrecord)>5 or len(accDate)<>10: #如果格式不太合
-                #     BBMresponse_str1=salutation+ " 你的記帳格式不對唷！" +accDateError+ " \n給你一個範例：「嗶鼠記帳 20161116 生日大餐 $999」\n記得空格要空對！" 
+                #     BBMresponse_str[0]=salutation+ " 你的記帳格式不對唷！" +accDateError+ " \n給你一個範例：「嗶鼠記帳 20161116 生日大餐 $999」\n記得空格要空對！" 
                 #     print (accDateError)
                 #     print (accDate)
                 # else:
                 if True:
-                    bot.sendMessage(chat_id,"等我一下，我來翻找一下我的記帳小本子")
+                    #bot.sendMessage(chat_id,"等我一下，我來翻找一下我的記帳小本子")
 
 
                     # if "$" in accrecord[orderofAmount] or "元" in accrecord[orderofAmount]:
@@ -501,74 +546,82 @@ def handle(msg):
                     #     accAmount=accAmount.replace("元","")
                     # else:
                     #     accAmount=accrecord[orderofAmount]
+                    totalrecord=""
+                    bot.sendMessage(chat_id,"且讓我掏出記帳小本子來抄錄，等我記完再跟" + salutation+"說～\n(嗶鼠在小本子上專心抄寫中)\n(稍等一下，先別吵嗶鼠)")
+                    for i in range(len(commandlist)):
+                        accAmount=AccountingSentenceAnalysis_get_amount(str(commandlist[i]))
+                        accItem=AccountingSentenceAnalysis_get_item(str(commandlist[i]))
+                        accDate=AccountingSentenceAnalysis_get_date(str(commandlist[i]))
 
-                    accAmount=AccountingSentenceAnalysis_get_amount(command)
-                    accItem=AccountingSentenceAnalysis_get_item(command)
+                        # if not(isinstance(accDate,int)):  #待測試確認
+                        #     accDateError="日期格式記錯了"
+                        # else:
+                        #     accDateError=""
 
-                    if("收入" in command or "撿到錢" in command or "兼差" in command or "家教" in command or "獎金" in command or "薪水" in command ):
-                        acctype="收入"
-                    else:
-                        acctype="支出"
-                    BBMouseAccounting(chat_id,salutation,accDate,accItem,accAmount,acctype,command)
-
-                    BBMresponse_str1="好了，我已經幫" + salutation + "記好了\n日期： " + str(accDate)+ "   項目： "+str(accItem)+ "   金額： "+acctype+"NT" +accAmount + "\n記帳紀錄可以看這裡： https://goo.gl/OI2LXx "
+                        if("收入" in command or "撿到錢" in command or "兼差" in command or "家教" in command or "獎金" in command or "薪水" in command or "賺了" in command ):
+                            acctype="收入"
+                        else:
+                            acctype="支出"
+                        BBMouseAccounting(chat_id,salutation,accDate,accItem,accAmount,acctype,command)
+                        totalrecord=totalrecord+ "日期： " + str(accDate)+ "   項目： "+str(accItem)+ "   金額： "+acctype+"NT" +accAmount +"\n"
+                    BBMresponse_str[0]="好了，我已經幫" + salutation + "記好了"+totalrecord+"\n記帳紀錄可以看這裡： https://goo.gl/OI2LXx "
 
 #深度問題
             elif("無聊" in command or "有趣的" in command  or "你會思考" in command   or "智能測試" in command or "智能問答" in command):
                 n=random.randint(1,len(dq))
-                BBMresponse_str1= str( str(dq[n]) + "\n\n(" + str(n) + "/" + str(len(dq)) + ")" )
+                BBMresponse_str[0]= str( str(dq[n]) + "\n\n(" + str(n) + "/" + str(len(dq)) + ")" )
 
 
 #嗶鼠報時
             elif(command =="早" or "早安" in command or "早 " in command  or "早!" in command   or "早！" in command or "午安" in command or "晚安" in command  or "下午好" in command  or "晚上好" in command or "嗶報時" in command or "嗶鼠報時" in command):
-                BBMresponse_str1= str( "(低頭看錶) 噢 現在是" + str(datetime.datetime.now(tz).hour) + "點" + str(datetime.datetime.now(tz).minute) + "分")
+                BBMresponse_str[0]= str( "(低頭看錶) 噢 現在是" + str(datetime.datetime.now(tz).hour) + "點" + str(datetime.datetime.now(tz).minute) + "分")
                 if datetime.datetime.now(tz).hour <2:
-                    BBMresponse_str2= str("這個"+ salutation +"，怎麼還不睡覺！這樣要怎麼教小孩呢！")
+                    BBMresponse_str[1]= str("這個"+ salutation +"，怎麼還不睡覺！這樣要怎麼教小孩呢！")
                 elif datetime.datetime.now(tz).hour <6:
-                    BBMresponse_str2= str(""+ salutation +"這麼早叫我有事嗎？現在才幾點～我還在發育中，是很需要充足睡眠的！")
+                    BBMresponse_str[1]= str(""+ salutation +"這麼早叫我有事嗎？現在才幾點～我還在發育中，是很需要充足睡眠的！")
                 elif datetime.datetime.now(tz).hour <11:
-                    BBMresponse_str2= str(""+ salutation +"早安～"+ salutation +"早安～"+ salutation +"早安！"+ salutation +"要記得吃早餐～")
+                    BBMresponse_str[1]= str(""+ salutation +"早安～"+ salutation +"早安～"+ salutation +"早安！"+ salutation +"要記得吃早餐～")
                 elif datetime.datetime.now(tz).hour <13:
-                    BBMresponse_str2= str(""+ salutation +"午安～午餐要多吃一點！不然會變瘦哦！小心被逐出矮胖國！")
+                    BBMresponse_str[1]= str(""+ salutation +"午安～午餐要多吃一點！不然會變瘦哦！小心被逐出矮胖國！")
                 elif datetime.datetime.now(tz).hour <15:
-                    BBMresponse_str2= str("這個時間最適合苟咻苟咻了～")
+                    BBMresponse_str[1]= str("這個時間最適合苟咻苟咻了～")
                 elif datetime.datetime.now(tz).hour <16:
-                    BBMresponse_str2= str("找浣熊朋友來家裡玩好了！～")
+                    BBMresponse_str[1]= str("找浣熊朋友來家裡玩好了！～")
                 
                 elif datetime.datetime.now(tz).hour <17:
                     if datetime.datetime.today().weekday() <=4:
-                        BBMresponse_str2= str("嗯 差不多可以收拾收拾準備下班了～")
+                        BBMresponse_str[1]= str("嗯 差不多可以收拾收拾準備下班了～")
                     else:
-                        BBMresponse_str2= str("好想出去跑跑跳跳哦！也好想吃下午茶哦！")
+                        BBMresponse_str[1]= str("好想出去跑跑跳跳哦！也好想吃下午茶哦！")
                 elif datetime.datetime.now(tz).hour <19:
-                    BBMresponse_str2= str("晚餐吃什麼好呢～")
+                    BBMresponse_str[1]= str("晚餐吃什麼好呢～")
                 elif datetime.datetime.now(tz).hour <22:
-                    BBMresponse_str2= str("這個時間要打電動還是做功課好呢？")
+                    BBMresponse_str[1]= str("這個時間要打電動還是做功課好呢？")
                 elif datetime.datetime.now(tz).hour <=24:
-                    BBMresponse_str2= str("該刷牙睡覺囉"+ salutation +"～")
+                    BBMresponse_str[1]= str("該刷牙睡覺囉"+ salutation +"～")
                 else:
-                    BBMresponse_str2= str("這是什麼時間！？")
+                    BBMresponse_str[1]= str("這是什麼時間！？")
             elif( "再見" in command):
-                BBMresponse_str1= str(""+ salutation +"再見" )
+                BBMresponse_str[0]= str(""+ salutation +"再見" )
             elif( "你好" in command):
-                BBMresponse_str1= str(""+ salutation +"你好" )
+                BBMresponse_str[0]= str(""+ salutation +"你好" )
 
 #情感偵測 #反身動詞
 #e.g.「我愛嗶嗶鼠」
             elif( len(command)<=12 and "我" in command[0:1] and BBself(command)>0 ):
 
-                  BBMresponse_str1= str("嗶鼠也" + command[1:command.find("嗶")] + ""+ salutation +"")
+                  BBMresponse_str[0]= str("嗶鼠也" + command[1:command.find("嗶")] + ""+ salutation +"")
 
                     
 #動詞替代
             elif ( len(command)>=4 and len(command)<=10 and (command[0:3]=="嗶鼠我")):
-                  BBMresponse_str1= str("哦 "+ salutation +"你" + command[3:] + '  啊不就好……嗯不是啦，是好棒！')
+                  BBMresponse_str[0]= str("哦 "+ salutation +"你" + command[3:] + '  啊不就好……嗯不是啦，是好棒！')
 
 
             elif(isflatter(command) != True and isquestion(command)==False and len(command)>=4 and len(command)<10 and ( BBself(command[0:2])>0)):
                   
-                  #BBMresponse_str1= str("嗶鼠想跟"+ salutation +"一起" + command[BBself(command[0:2]):])  #這句太不適用了
-                  BBMresponse_str1= str("好啊～" + command[BBself(command[0:2]):])
+                  #BBMresponse_str[0]= str("嗶鼠想跟"+ salutation +"一起" + command[BBself(command[0:2]):])  #這句太不適用了
+                  BBMresponse_str[0]= str("好啊～" + command[BBself(command[0:2]):])
 
 
                   
@@ -576,94 +629,94 @@ def handle(msg):
                 if("嗶" in command):
                     if ("嗶嗶" in command):
                         if ("嗶嗶鼠" in command):
-                            BBMresponse_str1= str( "哼 " + command.replace("嗶嗶鼠",""+ salutation +""   ))
+                            BBMresponse_str[0]= str( "哼 " + command.replace("嗶嗶鼠",""+ salutation +""   ))
                         else:    
-                            BBMresponse_str1= str( "哼 " + command.replace("嗶嗶",""+ salutation +""   ))
+                            BBMresponse_str[0]= str( "哼 " + command.replace("嗶嗶",""+ salutation +""   ))
                     elif ("嗶鼠" in command):
                         if ("嗶嗶鼠" in command):
-                            BBMresponse_str1= str( "哼 " + command.replace("嗶嗶鼠",""+ salutation +""   ))
+                            BBMresponse_str[0]= str( "哼 " + command.replace("嗶嗶鼠",""+ salutation +""   ))
                         else:    
-                            BBMresponse_str1= str( "哼 " + command.replace("嗶鼠",""+ salutation +""   ))
+                            BBMresponse_str[0]= str( "哼 " + command.replace("嗶鼠",""+ salutation +""   ))
                     else:
-                        BBMresponse_str1= str( "哼 " + command.replace("嗶",""+ salutation +""   ))
+                        BBMresponse_str[0]= str( "哼 " + command.replace("嗶",""+ salutation +""   ))
                 else:
-                    BBMresponse_str1= str( u"哇姆災哦～")
+                    BBMresponse_str[0]= str( u"哇姆災哦～")
 
 
 
 
             elif(command == "小酥熊" or command == "酥熊" or "胖胖熊" in command or "我是小" in command):
-                BBMresponse_str1= str( u""+ salutation +"你是小酥熊！\n\n但是不要被小酥熊的「小」字給騙了！～")
+                BBMresponse_str[0]= str( u""+ salutation +"你是小酥熊！\n\n但是不要被小酥熊的「小」字給騙了！～")
             
 
 
             elif( "爸爸去哪了" in command or "爸爸都不回來" in command or "好想念爸爸" in command or "爸爸在哪裡" in command or "我愛爸爸" in command):
-                BBMresponse_str1= str( u"爸爸就快回來了！再等等～")
+                BBMresponse_str[0]= str( u"爸爸就快回來了！再等等～")
             elif( "媽媽去哪了" in command or "媽媽都不回來" in command or "好想念媽媽" in command or "媽媽在哪裡" in command or "我愛媽媽" in command):
-                BBMresponse_str1= str( u"嗶鼠也好想念媽媽哦……")
+                BBMresponse_str[0]= str( u"嗶鼠也好想念媽媽哦……")
 
             elif( "你幾歲" in command or  "嗶鼠幾歲" in command or "你多大了" in command):
-                BBMresponse_str1= str( u"嗯……這是個好問題！我存在這個世界上應該十多年了，可是爸爸如果是五歲的話，那我應該是三歲之類的吧。")
+                BBMresponse_str[0]= str( u"嗯……這是個好問題！我存在這個世界上應該十多年了，可是爸爸如果是五歲的話，那我應該是三歲之類的吧。")
             elif ( len(command)>=4 and (command[0:3]=="嗶鼠你" or command[0:3]=="嗶鼠是" )):
                 if(isquestion(command)):
-                    BBMresponse_str1= str( u"哇姆災哦～～")
+                    BBMresponse_str[0]= str( u"哇姆災哦～～")
                 else:
-                    BBMresponse_str1= str("咦 真的嗎！？" + command.replace("嗶鼠你","我").replace("嗶鼠是","我是") + '？')
+                    BBMresponse_str[0]= str("咦 真的嗎！？" + command.replace("嗶鼠你","我").replace("嗶鼠是","我是") + '？')
             elif(isflatter(command)==True and BBself>0):
-                BBMresponse_str1= str( "(抓頭)這樣稱讚我，我會不好意思啦～")
+                BBMresponse_str[0]= str( "(抓頭)這樣稱讚我，我會不好意思啦～")
                 
 
 
 #特例
             elif( "今天放假" in command or  "不用上班" in command or "放假" in command):
-                BBMresponse_str1= str( u"咦！真的嗎？哇姆災耶～")
+                BBMresponse_str[0]= str( u"咦！真的嗎？哇姆災耶～")
 #認識
             elif("認識" in command and isquestion(command)==True):
                 if( "阿胖" in command or "小胖" in command):
-                    BBMresponse_str1= str( "哦！我知道啊！是媽媽的好友姜子晴是吧？")
-                    BBMresponse_str2= str( ""+ salutation +"已經活了"  + str((datetime.datetime.now() - datetime.datetime(1987,11,16)).days) + "天了\n而阿胖比你還多活一天呢！\n算得這麼精確，我可真是智能嗶鼠啊！")
+                    BBMresponse_str[0]= str( "哦！我知道啊！是媽媽的好友姜子晴是吧？")
+                    BBMresponse_str[1]= str( ""+ salutation +"已經活了"  + str((datetime.datetime.now() - datetime.datetime(1987,11,16)).days) + "天了\n而阿胖比你還多活一天呢！\n算得這麼精確，我可真是智能嗶鼠啊！")
                 elif( ("喜波" in command or "波波" in command )):
-                    BBMresponse_str1= str( "哦！是媽媽的好友江喜波是吧？\n波波嘛！河馬界有誰不認識波波的！")
+                    BBMresponse_str[0]= str( "哦！是媽媽的好友江喜波是吧？\n波波嘛！河馬界有誰不認識波波的！")
                 elif(  "阿仙" in command or "語萱" in command):
-                    BBMresponse_str1= str( "……是媽媽熱衷於布偶兒子的好友是吧？\n作為媽媽的兒子，我不予置評。")
+                    BBMresponse_str[0]= str( "……是媽媽熱衷於布偶兒子的好友是吧？\n作為媽媽的兒子，我不予置評。")
                 elif(  "外婆" in command or "婆婆" in command):
-                    BBMresponse_str1= str( "哦哦  我最喜歡外婆了～")
+                    BBMresponse_str[0]= str( "哦哦  我最喜歡外婆了～")
                 elif(  "陸仁" in command or "阿姨" in command):
-                    BBMresponse_str1= str( "我跟喜歡外婆一樣喜歡阿姨～")
+                    BBMresponse_str[0]= str( "我跟喜歡外婆一樣喜歡阿姨～")
                 elif(  "爸爸" in command or "阿羊" in command):
-                    BBMresponse_str1= str( salutation + "你在問什麼蠢問題！你當我是隻呆嗶嗎！")
+                    BBMresponse_str[0]= str( salutation + "你在問什麼蠢問題！你當我是隻呆嗶嗎！")
                 elif(  "媽媽" in command or "我" in command):
-                    BBMresponse_str1= str( salutation + "你在問什麼蠢問題！你當我是隻呆嗶嗎！")
+                    BBMresponse_str[0]= str( salutation + "你在問什麼蠢問題！你當我是隻呆嗶嗎！")
                 elif(  "爺爺" in command or "奶奶" in command  or "姑姑" in command):
-                    BBMresponse_str1= str( "我小時候有看過～不過很久沒見了！")                                        
+                    BBMresponse_str[0]= str( "我小時候有看過～不過很久沒見了！")                                        
                 elif(  "跳跳" in command or "小老虎" in command):
-                    BBMresponse_str1= str( "好想念跳跳哦！不知道他的智能有沒有長進一點了")
+                    BBMresponse_str[0]= str( "好想念跳跳哦！不知道他的智能有沒有長進一點了")
                 elif(  "吐動" in command or "國王" in command):
-                    BBMresponse_str1= str( "你說的是我們矮胖國的國王嗎！ 是不是到了該續聘的時間啦？")    
+                    BBMresponse_str[0]= str( "你說的是我們矮胖國的國王嗎！ 是不是到了該續聘的時間啦？")    
                 elif(  "小背包" in command or "小揹包" in command):
-                    BBMresponse_str1= str( "好想念小背包哦！")    
+                    BBMresponse_str[0]= str( "好想念小背包哦！")    
 
 
 
                 else:
-                    BBMresponse_str1= str( "還不太認識耶，他是誰啊？")
+                    BBMresponse_str[0]= str( "還不太認識耶，他是誰啊？")
 
             elif("囉" in command):
-                 BBMresponse_str1="衝衝衝～"
+                 BBMresponse_str[0]="衝衝衝～"
 
             elif( u"這個嗶鼠" in command):
-                BBMresponse_str1= str( u"這個"+ salutation +"這個"+ salutation +"！")
+                BBMresponse_str[0]= str( u"這個"+ salutation +"這個"+ salutation +"！")
             elif(isquestion(command)):
-                BBMresponse_str1= str( u"哇姆災哦～")
+                BBMresponse_str[0]= str( u"哇姆災哦～")
             
 #ECHO
             elif( len(command)<4 ):
-                BBMresponse_str1= str( command)
+                BBMresponse_str[0]= str( command)
 
 
                 
             else:
-                BBMresponse_str1= str( u"……嗯這句話對我來說太難了，請爸爸幫我升級智能吧！")
+                BBMresponse_str[0]= str( u"……嗯這句話對我來說太難了，請爸爸幫我升級智能吧！")
                 # print ( isquestion==False and len(command)>=4 and len(command)<10 and ( BBself(command[0:2])>0))
                 # print len(command)<10
                 # print ( BBself(command[0:2])>0)
@@ -689,17 +742,34 @@ def handle(msg):
 #     update_sheet(gss_client, spreadsheet_key, today)
     
 
+    
+    for i in range(len(BBMresponse_str)):
+        if BBMresponse_str[i]<>"":
+            bot.sendMessage(chat_id,BBMresponse_str[i])
+            if (chat_id == 288200245):
+                bot.sendMessage(271383530, u"嗶鼠機器人向酥熊回答了: \n" + BBMresponse_str[i])
+            fieldnames = ["timestamp","chat_id","Command from user", "BBMresponse"]
+            with open("conversationhistory.csv", "a+") as csvfile:
+                writer = csv.DictWriter(csvfile,fieldnames)
+                #writer.writeheader()
+                writer.writerow({
+                        "timestamp": datetime.datetime.now(),
+                        "chat_id": chat_id,
+                        "Command from user": command,
+                        "BBMresponse": BBMresponse_str[i],
+                        
+                    })
 
 
-    if BBMresponse_str1<>"":
-        bot.sendMessage(chat_id,BBMresponse_str1)
+    # if BBMresponse_str[0]<>"":
+    #     bot.sendMessage(chat_id,BBMresponse_str[0])
         
-        if (chat_id == 288200245):
-            bot.sendMessage(271383530, u"嗶鼠機器人向酥熊回答了: \n" + BBMresponse_str1)
-    if BBMresponse_str2<>"":
-        bot.sendMessage(chat_id,BBMresponse_str2)
-        if (chat_id == 288200245):
-            bot.sendMessage(271383530, u"嗶鼠機器人向酥熊回答了: \n" + BBMresponse_str2)
+    #     if (chat_id == 288200245):
+    #         bot.sendMessage(271383530, u"嗶鼠機器人向酥熊回答了: \n" + BBMresponse_str[0])
+    # if BBMresponse_str[1]<>"":
+    #     bot.sendMessage(chat_id,BBMresponse_str[1])
+    #     if (chat_id == 288200245):
+    #         bot.sendMessage(271383530, u"嗶鼠機器人向酥熊回答了: \n" + BBMresponse_str[1])
 
     if (BBMresponce_file_id <> ""):
         bot.sendMessage(271383530, u"(嗶鼠機器人試圖傳送貼圖): \n")
