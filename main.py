@@ -33,7 +33,7 @@ testingtoken='290645324:AAGhpIzNqzDejvhQSPR4-FIqmy4WbtLPzVI'
 version="v2.012261548"
 B=bbmousetoken
 T=testingtoken
-mode=B
+mode=T
 
 
 # ###Google Calendar測試專區
@@ -285,6 +285,7 @@ def AccountingSentenceAnalysis_get_item(command):
     return item
 
 def AccountingSentenceAnalysis_get_amount(command):
+    print(command)
     amount=0
     print ("start amount")
     print(command)
@@ -309,7 +310,8 @@ def getcommandlistbyeachline(command):
         # print ("commandlist: " +commandlist)
         return commandlist
     else:
-        return command
+        commandlist=[command]
+        return commandlist
     
 
 
@@ -411,8 +413,8 @@ def handle(msg):
                                }
 
             #生日快樂
-            print ("聖誕" in command or  "平安" in command or "耶誕" in command or (datetime.datetime.today().month==12 and (datetime.datetime.today().day==24 or datetime.datetime.today().day==25)))
-            print (datetime.datetime.today().day==24 or datetime.datetime.today().day==25)
+            # print ("聖誕" in command or  "平安" in command or "耶誕" in command or (datetime.datetime.today().month==12 and (datetime.datetime.today().day==24 or datetime.datetime.today().day==25)))
+            # print (datetime.datetime.today().day==24 or datetime.datetime.today().day==25)
             if  (datetime.datetime.today().month==12 and (datetime.datetime.today().day==24 or datetime.datetime.today().day==25)):
                 rd=random.randint(1,100)
                 if "聖誕" in command or  "平安" in command or "耶誕" in command:
@@ -529,7 +531,7 @@ def handle(msg):
 
                 #如果記帳的command有換行的話，每一行視作一筆單獨的記帳紀錄
                 commandlist=getcommandlistbyeachline(command)
-
+                
 
 
                 # if len(accrecord)<4 or len(accrecord)>5 or len(accDate)<>10: #如果格式不太合
@@ -549,6 +551,7 @@ def handle(msg):
                     totalrecord=""
                     bot.sendMessage(chat_id,"且讓我掏出記帳小本子來抄錄，等我記完再跟" + salutation+"說～\n(嗶鼠在小本子上專心抄寫中)\n(稍等一下，先別吵嗶鼠)")
                     for i in range(len(commandlist)):
+                        print (commandlist[i])
                         accAmount=AccountingSentenceAnalysis_get_amount(str(commandlist[i]))
                         accItem=AccountingSentenceAnalysis_get_item(str(commandlist[i]))
                         accDate=AccountingSentenceAnalysis_get_date(str(commandlist[i]))
@@ -564,7 +567,7 @@ def handle(msg):
                             acctype="支出"
                         BBMouseAccounting(chat_id,salutation,accDate,accItem,accAmount,acctype,command)
                         totalrecord=totalrecord+ "日期： " + str(accDate)+ "   項目： "+str(accItem)+ "   金額： "+acctype+"NT" +accAmount +"\n"
-                    BBMresponse_str[0]="好了，我已經幫" + salutation + "記好了"+totalrecord+"\n記帳紀錄可以看這裡： https://goo.gl/OI2LXx "
+                    BBMresponse_str[0]="好了，我已經幫" + salutation + "記好了：\n"+totalrecord+"\n記帳紀錄可以看這裡： https://goo.gl/OI2LXx "
 
 #深度問題
             elif("無聊" in command or "有趣的" in command  or "你會思考" in command   or "智能測試" in command or "智能問答" in command):
