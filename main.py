@@ -798,7 +798,7 @@ def on_callback_query(msg):
     bot.answerCallbackQuery(query_id, text="(嗶鼠出了石頭！)  " + result)
     
 def isquestion(command):
-    if "?" in command or "嗎" in command or "呢" in command or "？" in command or "有沒有" in command or "是不是" in command or "好不好" in command:
+    if "?" in command or "嗎" in command or "呢" in command or "？" in command or "有沒有" in command or "是不是" in command or "好不好" in command or "為什麼" in command or "為何" in command:
         return True
     else:
         return False
