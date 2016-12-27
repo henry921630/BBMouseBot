@@ -30,7 +30,7 @@ from telepot.namedtuple import InlineKeyboardMarkup, InlineKeyboardButton
 
 bbmousetoken='293749176:AAFUwX1PMi-FtFnorDJga3l3vKRcCBuwHTo'
 testingtoken='290645324:AAGhpIzNqzDejvhQSPR4-FIqmy4WbtLPzVI'
-version="v2.012271248"
+version="v2.012271348"
 B=bbmousetoken
 T=testingtoken
 mode=B
@@ -443,7 +443,7 @@ def handle(msg):
 #版本宣告 version
             #command 已針對group訊息 刪除字首的斜線了
 
-            if command == '/story' or command == 'story':
+            if command[:6] == '/story' or (chat_type=="group" and  command[:5] == 'story'):
                 n=random.randint(1,len(lrsy))
                 BBMresponse_str[0]= str( u"讓嗶鼠我來講笑話給"+ salutation +"舔舔： \n" + str(lrsy[n]) + "\n\n(" + str(n) + "/" + str(len(lrsy)) + ")" )
             elif command[:6] == '/start' or (chat_type=="group" and  command[:5] == 'start'):
