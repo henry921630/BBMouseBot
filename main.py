@@ -30,7 +30,7 @@ from telepot.namedtuple import InlineKeyboardMarkup, InlineKeyboardButton
 
 bbmousetoken='293749176:AAFUwX1PMi-FtFnorDJga3l3vKRcCBuwHTo'
 testingtoken='290645324:AAGhpIzNqzDejvhQSPR4-FIqmy4WbtLPzVI'
-version="v2.012261548"
+version="v2.012271248"
 B=bbmousetoken
 T=testingtoken
 mode=B
@@ -390,7 +390,7 @@ def handle(msg):
                     6:"我在浴室，小羴羊敲了敲門才走進來。\nV: 小羴羊都會敲門才進來耶，真有禮貌。\nH: 我怕打到小酥餅的頭嘛。\nV: (暗自竊喜，老公真疼我)\nH: 其實我不怕打到酥餅的頭，我是怕酥餅罵我。",\
                     7:"爺爺揹著小酥熊，走到山上來看猴，猴子哭了叫"+ salutation +"，就被爺爺揹回家。 \nhttps://youtu.be/HDL1Ivz55N0",\
                     8:"「生氣的酥熊」\n「來把牠進化吧」\n「變成更生氣的酥熊」\nhttps://youtu.be/yxg06yebRd0",\
-                    9:"叭叭叭 擤鼻涕\n羊：有人在跟妳呼應，一起擤鼻涕\n熊：這是我們康巴族的鼓語\n羊：那妳跟他說了什麼？\n熊：我叫他趕快出來，我要大便；他回不要不要\n羊：酥熊用康巴族鼓語讓對方不要不要的\n"
+                    9:"(叭叭叭 媽媽擤鼻涕中)\n羊：有人在跟妳呼應，一起擤鼻涕\n熊：這是我們康巴族的鼓語\n羊：那妳跟他說了什麼？\n熊：我叫他趕快出來，我要大便；他回不要不要\n羊：酥熊用康巴族鼓語讓對方不要不要的\n",\
                     }
 
 
