@@ -153,11 +153,22 @@ def isVaildDate(date):
         except:
             return False 
 
+def BBMouseDevelopingHistory(command):
+    # auth_json_path = 'BBMouseGS.json'
+    # gss_scopes = ['https://spreadsheets.google.com/feeds']
+    # gss_client = auth_gss_client(auth_json_path, gss_scopes)
+    # wks = gss_client.open_by_key("1zowQqJ3bmSvTkId32x5KfDWpOxbDvhYzvHeeVd2BfKw") #嗶鼠記帳小本子
+    # sheet = wks.sheet1
+    
+    # sheet.insert_row([salutation,date,item,price,acctype,command], 2)
+    pass
+
+
 def BBMouseAccounting(chat_id,salutation,date, item, price,acctype,command):
     auth_json_path = 'BBMouseGS.json'
     gss_scopes = ['https://spreadsheets.google.com/feeds']
     gss_client = auth_gss_client(auth_json_path, gss_scopes)
-    wks = gss_client.open_by_key("1zowQqJ3bmSvTkId32x5KfDWpOxbDvhYzvHeeVd2BfKw")
+    wks = gss_client.open_by_key("1zowQqJ3bmSvTkId32x5KfDWpOxbDvhYzvHeeVd2BfKw") #嗶鼠記帳小本子
     sheet = wks.sheet1
     
     sheet.insert_row([salutation,date,item,price,acctype,command], 2)
@@ -176,23 +187,28 @@ def getseperatepoint(command):
     try:
         seperatepoint=command.index(" ")
     except:        
-        print ("no this seperatepoint")
+        pass
+        #print ("no this seperatepoint")
     try:
         seperatepoint=command.index(",")
     except:        
-        print ("no this seperatepoint")
+        pass
+        #print ("no this seperatepoint")
     try:
         seperatepoint=command.index("，")
     except:        
-        print ("no this seperatepoint")
+        pass
+        #print ("no this seperatepoint")
     try:
         seperatepoint=command.index(":")
     except:        
-        print ("no this seperatepoint")
+        pass
+        #print ("no this seperatepoint")
     try:
         seperatepoint=command.index("：")
     except:
-        print ("no this seperatepoint")
+        pass
+        #print ("no this seperatepoint")
     return seperatepoint
 
 def AccountingSentenceAnalysis_get_date(command):
@@ -243,6 +259,11 @@ def AccountingSentenceAnalysis_get_date(command):
 
     return accDate
 
+def isaskaccounting(command):
+    if ("記" in command[:12] and "帳" in command[:12]):
+        return True
+    else:
+        return False
 
 
 
@@ -250,10 +271,13 @@ def AccountingSentenceAnalysis_get_date(command):
 def AccountingSentenceAnalysis_get_person(command):
     pass
 def AccountingSentenceAnalysis_get_item(command):
+    if isaskaccounting(command):
+        command=command[getseperatepoint(command)+1:]
+    else:
+        command=command
+
+    print("AccountingSentenceAnalysis_get_item command:" + command)
     
-    command=command[getseperatepoint(command)+1:]
-    print("command")
-    print(command)
     subjectlist=["我","爸爸","媽媽","他","她","嗶","鼠","你"," "]
 
     timeadvlist1=["上上","上","這"]    
@@ -261,7 +285,7 @@ def AccountingSentenceAnalysis_get_item(command):
     timeadvlist3=["一","二","三","四","五","六","日","天"]    
     timeadvlist=StrPermutation(timeadvlist1,timeadvlist2,timeadvlist3)+["前天","昨天","昨日","早上","中午","下午","晚上","今日","今天","今兒個","剛剛","剛才"]
 
-    verblist=["買","花了","購入","吃","喝","點了","付了","繳了","繳交","賺了",""]
+    verblist=["買","花了","購入","吃了","喝","點了","付了","繳了","繳交","賺了",""]
     advlist=["了","哦","啊","呢","喔","總共","共"]
 
     try:
@@ -285,10 +309,10 @@ def AccountingSentenceAnalysis_get_item(command):
     return item
 
 def AccountingSentenceAnalysis_get_amount(command):
-    print(command)
+    print("AccountingSentenceAnalysis_get_amount"+command)
     amount=0
-    print ("start amount")
-    print(command)
+    #print ("start amount")
+    
    
     if "元" in  command and type(int(command[command.index("元")-1]))==int:
         #print (type(command.index("塊")-1))
@@ -300,7 +324,7 @@ def AccountingSentenceAnalysis_get_amount(command):
     else :
         amount=re.search('\D(\d{1,4}$)',command).group(1)
     
-    print ("amount"+str(amount))
+    print ("amount: "+str(amount))
  
     return amount
 
@@ -308,10 +332,11 @@ def getcommandlistbyeachline(command):
     if "\n" in command:
         commandlist=command.split("\n")
         # print ("commandlist: " +commandlist)
-        return commandlist
+        
     else:
         commandlist=[command]
-        return commandlist
+
+    return commandlist
     
 
 
@@ -516,7 +541,7 @@ def handle(msg):
             elif iscallBBMouse(command)==True:
                 BBMresponse_str[0]=salutation + "叫我嗎？ 我在這～(咚咚咚)"
 #記帳 accounting
-            elif ("記" in command[:12] and "帳" in command[:12]):
+            elif isaskaccounting(command):
                 #accrecord= str(command).split()
                 #orderofDate=1 #日期設在split的第2位
                 #orderofAmount=3 #金額設在split的第四位   把多餘的字符消掉，以純數字記錄
@@ -532,7 +557,8 @@ def handle(msg):
 
                 #如果記帳的command有換行的話，每一行視作一筆單獨的記帳紀錄
                 commandlist=getcommandlistbyeachline(command)
-                
+                for i in range(len(commandlist)):
+                    print ("commandlist[" + str(i) +"]   " + commandlist[i])
 
 
                 # if len(accrecord)<4 or len(accrecord)>5 or len(accDate)<>10: #如果格式不太合
@@ -552,7 +578,7 @@ def handle(msg):
                     totalrecord=""
                     bot.sendMessage(chat_id,"且讓我掏出記帳小本子來抄錄，等我記完再跟" + salutation+"說～\n(嗶鼠在小本子上專心抄寫中)\n(稍等一下，先別吵嗶鼠)")
                     for i in range(len(commandlist)):
-                        print (commandlist[i])
+                        print ("print (commandlist[i])"+commandlist[i])
                         accAmount=AccountingSentenceAnalysis_get_amount(str(commandlist[i]))
                         accItem=AccountingSentenceAnalysis_get_item(str(commandlist[i]))
                         accDate=AccountingSentenceAnalysis_get_date(str(commandlist[i]))
