@@ -164,14 +164,14 @@ def BBMouseDevelopingHistory(command):
     pass
 
 
-def BBMouseAccounting(chat_id,salutation,date, item, price,acctype,command):
+def BBMouseAccounting(chat_id,salutation,date, item,source, price,acctype,command):
     auth_json_path = 'BBMouseGS.json'
     gss_scopes = ['https://spreadsheets.google.com/feeds']
     gss_client = auth_gss_client(auth_json_path, gss_scopes)
     wks = gss_client.open_by_key("1zowQqJ3bmSvTkId32x5KfDWpOxbDvhYzvHeeVd2BfKw") #嗶鼠記帳小本子
     sheet = wks.sheet1
     
-    sheet.insert_row([salutation,date,item,price,acctype,command], 2)
+    sheet.insert_row([salutation,date,item,source,price,acctype,command], 2)
 
 def StrPermutation(list1,list2,list3):
     list0=[]
@@ -223,6 +223,8 @@ def AccountingSentenceAnalysis_get_date(command):
         accDate=time.strftime("%Y-%m-%d", time.gmtime(time.time()+8*60*60))                  #八小時乘上六十分鐘乘上六十秒
     elif "昨" in command or "yesterday"  in command  :
         accDate=time.strftime("%Y-%m-%d", time.gmtime(time.time()+8*60*60 -60*60*24))                  #八小時乘上六十分鐘乘上六十秒 再減一天回到昨天
+    elif "前天" in command or "before yesterday"  in command  :
+        accDate=time.strftime("%Y-%m-%d", time.gmtime(time.time()+8*60*60 -2*60*60*24))                  #八小時乘上六十分鐘乘上六十秒 再減二天回到前天
     elif "禮拜" in command or "周"  in command  or "週"  in command:
         if "上"  in command:        
             w=command.count("上")
@@ -265,6 +267,25 @@ def isaskaccounting(command):
     else:
         return False
 
+def AccountingSentenceAnalysis_get_source(command):
+    if "悠遊卡" in command or "悠游卡" in command or "easycard" in command or "easy card" in command:
+        source="悠遊卡"
+    elif "玉山" in command and "卡" in command:
+        source="玉山信用卡"
+    elif "華南" in command and "卡" in command:
+        source="華南旅鑽卡"
+    elif "富邦" in command and "卡" in command:
+        source="富邦信用卡"
+    elif "樂天" in command and "卡" in command:
+        source="樂天信用卡"
+    elif "用" in command and "了" in command:
+        source=str(command[command.index("用")+1:(command.index("了")-1)])
+    else:
+        source = "現金"
+
+    return source
+
+    pass
 
 
 
@@ -285,7 +306,8 @@ def AccountingSentenceAnalysis_get_item(command):
     timeadvlist3=["一","二","三","四","五","六","日","天"]    
     timeadvlist=StrPermutation(timeadvlist1,timeadvlist2,timeadvlist3)+["前天","昨天","昨日","早上","中午","下午","晚上","今日","今天","今兒個","剛剛","剛才"]
 
-    verblist=["買","花了","購入","吃了","喝","點了","付了","繳了","繳交","賺了",""]
+    sourcelist=["華南卡","玉山卡","樂天卡","富邦卡"]
+    verblist=["用","買","花了","購入","吃了","喝","點了","付了","繳了","繳交","賺了",""]
     advlist=["了","哦","啊","呢","喔","總共","共"]
 
     try:
@@ -294,26 +316,27 @@ def AccountingSentenceAnalysis_get_item(command):
         RegularExpressDate_8digit=""
         print ("無八碼")
     
-    ohterlist=[str(AccountingSentenceAnalysis_get_amount(command)),RegularExpressDate_8digit,"$","元","塊錢","記帳","記個帳","謝謝"]
+    ohterlist=[RegularExpressDate_8digit,"$","元","塊錢","記帳","記個帳","謝謝"]
     punctuationlist=["！","!","，",","]
-    totalelementlist=subjectlist+timeadvlist+verblist+advlist+ohterlist+punctuationlist
+    totalelementlist=[AccountingSentenceAnalysis_get_source(command),AccountingSentenceAnalysis_get_amount(command)]+subjectlist+timeadvlist+sourcelist+verblist+advlist+ohterlist+punctuationlist
     item=command
+    
     for i in range(len(totalelementlist)):
         try:
             item=item.replace(totalelementlist[i],"")
-            #print ("item:" + item+" 取代標的:"+totalelementlist[i])
+            
+            print ("item:" + item+" 取代標的:")+totalelementlist[i]
         except:
             pass
-            #print ("No this subject."+ totalelementlist[i])
+            print ("No this subject."+ totalelementlist[i])
     print (item)
     return item
 
 def AccountingSentenceAnalysis_get_amount(command):
+
     print("AccountingSentenceAnalysis_get_amount"+command)
     amount=0
-    #print ("start amount")
-    
-   
+
     if "元" in  command and type(int(command[command.index("元")-1]))==int:
         #print (type(command.index("塊")-1))
         amount=re.search('\d{1,4}',command[(command.index("元")-5):command.index("元")]).group()
@@ -331,7 +354,6 @@ def AccountingSentenceAnalysis_get_amount(command):
 def getcommandlistbyeachline(command):
     if "\n" in command:
         commandlist=command.split("\n")
-        # print ("commandlist: " +commandlist)
         
     else:
         commandlist=[command]
@@ -344,8 +366,7 @@ def handle(msg):
     print ("start handle")
     
     BBMresponce_file_id=""
-    # BBMresponse_str[0]=""
-    # BBMresponse_str[1]=""
+
     BBMresponse_str=["","",""]
     content_type, chat_type, chat_id = telepot.glance(msg)
 
@@ -510,20 +531,28 @@ def handle(msg):
                         m=0
                 else:
                     m=0
+
                 totalsec=int(s)+60*int(m)       
-                bot.sendMessage(chat_id,"好的，倒數開始！每15秒提醒一次，最後15秒將會讀秒！")
-                for i in range(int(totalsec)):
-                    #print("delete"+str((totalsec-i)%30))
-                    if totalsec-i<=15:
-                        bot.sendMessage(chat_id,totalsec-i)
-                        print (totalsec-i)
-                    elif (totalsec-i)%15==0 :
-                        bot.sendMessage(chat_id,"倒數"+str( totalsec-i )+"秒")
-                        print("倒數"+str( totalsec-i )+"秒")
-                    else:
-                        pass
-                    sleep(1)
-                bot.sendMessage(chat_id,"嗶嗶嗶嗶嗶！時間到！")              
+                if totalsec>600:
+                    BBMresponse_str[0]="這個倒數太久了啦！想累死我嗎！"
+                else:   
+                    bot.sendMessage(chat_id,"好的，倒數開始！誰也別想打斷我！\n最後10秒將會讀秒！")
+                    for i in range(int(totalsec)):
+                        #print("delete"+str((totalsec-i)%30))
+                        if totalsec-i<=15:
+                            bot.sendMessage(chat_id,totalsec-i)
+                            print (totalsec-i)
+                        elif (totalsec-i<=180)&((totalsec-i)%20==0 ):
+                            bot.sendMessage(chat_id,"倒數"+str( totalsec-i )+"秒")
+                            print("倒數"+str( totalsec-i )+"秒")
+                        elif (totalsec-i<=600)&((totalsec-i)%60==0 ):
+                            bot.sendMessage(chat_id,"倒數"+str( (totalsec-i)/60 )+"分鐘")
+                            print("倒數"+str( (totalsec-i)/60 )+"分鐘")
+
+                        else:
+                            pass
+                        sleep(1)
+                    bot.sendMessage(chat_id,"嗶嗶嗶嗶嗶！時間到！")              
 
 
 
@@ -578,11 +607,11 @@ def handle(msg):
                     totalrecord=""
                     bot.sendMessage(chat_id,"且讓我掏出記帳小本子來抄錄，等我記完再跟" + salutation+"說～\n(嗶鼠在小本子上專心抄寫中)\n(稍等一下，先別吵嗶鼠)")
                     for i in range(len(commandlist)):
-                        print ("print (commandlist[i])"+commandlist[i])
-                        accAmount=AccountingSentenceAnalysis_get_amount(str(commandlist[i]))
-                        accItem=AccountingSentenceAnalysis_get_item(str(commandlist[i]))
-                        accDate=AccountingSentenceAnalysis_get_date(str(commandlist[i]))
-
+                        #print ("print (commandlist[i])"+commandlist[i])
+                        accAmount=AccountingSentenceAnalysis_get_amount(commandlist[i])
+                        accItem=AccountingSentenceAnalysis_get_item(commandlist[i])
+                        accDate=AccountingSentenceAnalysis_get_date(commandlist[i])
+                        accSource=AccountingSentenceAnalysis_get_source(commandlist[i])
                         # if not(isinstance(accDate,int)):  #待測試確認
                         #     accDateError="日期格式記錯了"
                         # else:
@@ -592,7 +621,7 @@ def handle(msg):
                             acctype="收入"
                         else:
                             acctype="支出"
-                        BBMouseAccounting(chat_id,salutation,accDate,accItem,accAmount,acctype,command)
+                        BBMouseAccounting(chat_id,salutation,accDate,accItem,accSource,accAmount,acctype,command)
                         totalrecord=totalrecord+ "日期： " + str(accDate)+ "   項目： "+str(accItem)+ "   金額： "+acctype+"NT" +accAmount +"\n"
                     BBMresponse_str[0]="好了，我已經幫" + salutation + "記好了：\n"+totalrecord+"\n記帳紀錄可以看這裡： https://goo.gl/OI2LXx "
 
