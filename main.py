@@ -30,7 +30,7 @@ from telepot.namedtuple import InlineKeyboardMarkup, InlineKeyboardButton
 
 bbmousetoken='293749176:AAFUwX1PMi-FtFnorDJga3l3vKRcCBuwHTo'
 testingtoken='290645324:AAGhpIzNqzDejvhQSPR4-FIqmy4WbtLPzVI'
-version="v2.012271348"
+version="v2.012291348"
 B=bbmousetoken
 T=testingtoken
 mode=B
@@ -567,7 +567,7 @@ def handle(msg):
                 else:
                     bot.sendMessage(chat_id,salutation+"我只學過默哀十秒鐘哦～")
 
-            elif iscallBBMouse(command)==True:
+            elif iscallBBMouseonly(command)==True:
                 BBMresponse_str[0]=salutation + "叫我嗎？ 我在這～(咚咚咚)"
 #記帳 accounting
             elif isaskaccounting(command):
@@ -684,7 +684,7 @@ def handle(msg):
 
 
                   
-            elif(iscallBBMouse(command) and iscurse(command) and not("阿胖" in command or "小胖" in command)):
+            elif(iscurse(command) and not("阿胖" in command or "小胖" in command)):
                 if("嗶" in command):
                     if ("嗶嗶" in command):
                         if ("嗶嗶鼠" in command):
@@ -801,7 +801,7 @@ def handle(msg):
 #     update_sheet(gss_client, spreadsheet_key, today)
     
 
-    
+
     for i in range(len(BBMresponse_str)):
         if BBMresponse_str[i]<>"":
             bot.sendMessage(chat_id,BBMresponse_str[i])
@@ -853,7 +853,7 @@ def on_callback_query(msg):
     bot.answerCallbackQuery(query_id, text="(嗶鼠出了石頭！)  " + result)
     
 def isquestion(command):
-    if "?" in command or "嗎" in command or "呢" in command or "？" in command or "有沒有" in command or "是不是" in command or "好不好" in command or "為什麼" in command or "為何" in command:
+    if "?" in command or "嗎" in command or "呢" in command or "？" in command or "有沒有" in command or "是不是" in command or "好不好" in command or "為什麼" in command or "為何" in command or "怎麼" in command:
         return True
     else:
         return False
@@ -871,7 +871,7 @@ def iscurse(command):
     else:
         return False
 
-def iscallBBMouse(command): #判斷是否在呼叫嗶鼠
+def iscallBBMouseonly(command): #判斷是否在呼叫嗶鼠
     if command=="嗶" or command=="嗶嗶" or command=="嗶嗶鼠" or command=="嗶鼠" or command=="嗶仔" or command=="嗶嗶鼠仔" or command=="阿嗶" or command=="bb鼠" or command=="b鼠":
         return True
 
