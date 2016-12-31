@@ -30,7 +30,7 @@ from telepot.namedtuple import InlineKeyboardMarkup, InlineKeyboardButton
 
 bbmousetoken='293749176:AAFUwX1PMi-FtFnorDJga3l3vKRcCBuwHTo'
 testingtoken='290645324:AAGhpIzNqzDejvhQSPR4-FIqmy4WbtLPzVI'
-version="v2.012291348"
+version="v2.0 2017"
 B=bbmousetoken
 T=testingtoken
 mode=B
@@ -739,9 +739,9 @@ def handle(msg):
 
 
                 elif(command == "小酥熊" or command == "酥熊" or "胖胖熊" in command or "我是小" in command or "瓜熊" in command) :#and (chat_id=288200245) :
-                    if datetime.datetime.today().year==2016:
+                    if datetime.datetime.now(tz)==2016:
                         BBMresponse_str[0]= str( u""+ salutation +"你是小酥熊！\n\n但是不要被小酥熊的「小」字給騙了！～")
-                    elif datetime.datetime.today().year==2017:
+                    elif datetime.datetime.now(tz).year==2017:
                         BBMresponse_str[0]= str( u""+ salutation +"你是小瓜熊！\n\n但是不要被小瓜熊的「小」字給騙了！～")
                     else:
                         pass
