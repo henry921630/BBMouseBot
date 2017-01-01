@@ -2,7 +2,7 @@
 # coding: utf8
 from __future__ import print_function
 import re
-
+import ast
 import httplib2
 import os
 from oauth2client import client
@@ -10,7 +10,7 @@ from oauth2client import tools
 from oauth2client.file import Storage
 
 from apiclient import discovery
-
+import linecache
 import csv
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
@@ -261,7 +261,7 @@ def AccountingSentenceAnalysis_get_date(command):
 
     return accDate
 
-def isaskaccounting(command):
+def ifaskaccounting(command):
     if ("記" in command[:12] and "帳" in command[:12]):
         return True
     else:
@@ -276,7 +276,7 @@ def confirmifaskaccounting(msg):
         amount=""
     print ("command in confirm:" + command)
     print ("command in confirm:" + amount)
-    if ("元" in command or "$" in command) and amount<>"":
+    if not("記" in command and "帳" in command) and ("元" in command or "$" in command) and amount<>"":
         bot.sendMessage(chat_id,"是要記帳的意思嗎？")
         yesorno(msg)
         return True
@@ -316,7 +316,7 @@ def AccountingSentenceAnalysis_get_source(command):
 def AccountingSentenceAnalysis_get_person(command):
     pass
 def AccountingSentenceAnalysis_get_item(command):
-    if isaskaccounting(command):
+    if ifaskaccounting(command):
         command=command[getseperatepoint(command)+1:]
     else:
         command=command
@@ -349,10 +349,10 @@ def AccountingSentenceAnalysis_get_item(command):
         try:
             item=item.replace(totalelementlist[i],"")
             
-            print ("item:" + item+" 取代標的:")+totalelementlist[i]
+            #print ("item:" + item+" 取代標的:")+totalelementlist[i]
         except:
             pass
-            print ("No this subject."+ totalelementlist[i])
+            #print ("No this subject."+ totalelementlist[i])
     print (item)
     return item
 
@@ -388,7 +388,13 @@ def getcommandlistbyeachline(command):
 
 def handle(msg):
     print ("start handle")
-    
+    print (type(msg))
+    if not( isinstance(msg,dict)):
+        msg=ast.literal_eval(msg)
+    print (type(msg))
+    print (msg)
+
+
     BBMresponce_file_id=""
 
     BBMresponse_str=["","",""]
@@ -439,9 +445,11 @@ def handle(msg):
     if content_type == 'text':
 
         if confirmifaskaccounting(msg):
+            isaskaccounting=True
             #print (confirmifaskaccounting(msg))
-            pass
+            
         else:
+            isaskaccounting=False
             #print (confirmifaskaccounting(msg))
             chat_id = msg['chat']['id']
             
@@ -595,7 +603,7 @@ def handle(msg):
                     if"十秒鐘" in command or "10秒鐘" in command:
                         bot.sendMessage(chat_id,"請"+salutation+"起立，我們一起默哀十秒鐘")
                         for i in range(10):
-                            bot.sendMessage(chat_id,i+1+"~")
+                            bot.sendMessage(chat_id,str(i+1)+"~")
                             sleep(1)
                         BBMresponse_str[0]="好的請坐\nSit down please."
                     else:
@@ -604,7 +612,7 @@ def handle(msg):
                 elif iscallBBMouseonly(command)==True:
                     BBMresponse_str[0]=salutation + "叫我嗎？ 我在這～(咚咚咚)"
     #記帳 accounting
-                elif isaskaccounting(command):
+                elif ifaskaccounting(command):
                     #accrecord= str(command).split()
                     #orderofDate=1 #日期設在split的第2位
                     #orderofAmount=3 #金額設在split的第四位   把多餘的字符消掉，以純數字記錄
@@ -801,7 +809,8 @@ def handle(msg):
 
                 elif("囉" in command):
                      BBMresponse_str[0]="衝衝衝～"
-
+                elif( "謝謝" in command):      
+                    BBMresponse_str[0]= str( u"小意思～"+ salutation +"不用客氣！")
                 elif( u"這個嗶鼠" in command):
                     BBMresponse_str[0]= str( u"這個"+ salutation +"這個"+ salutation +"！")
                 elif(isquestion(command)):
@@ -828,37 +837,43 @@ def handle(msg):
             else:
                 BBMresponce_file_id="BQADBQADBgAD6vssENUtjTtERQ4mAg" #毛線聖誕老人織愛心 測試版
 
-# #Google Spreadsheet
-#     auth_json_path = 'BBMouseGS.json'
-#     gss_scopes = ['https://spreadsheets.google.com/feeds']
-#     gss_client = auth_gss_client(auth_json_path, gss_scopes)
 
-#     today = time.strftime("%c")
-#     spreadsheet_key_path = 'spreadsheet_key'
-#     with open(spreadsheet_key_path) as f:
-#         spreadsheet_key = f.read().strip()
-    
-#     update_sheet(gss_client, spreadsheet_key, today)
-    
+    if isaskaccounting==True:
+        print ("msg['text']"+msg['text'])
+        msg['text']=msg['text'].replace(msg['text'],"記帳"+msg['text'])
+        # print ("msg['text']"+msg['text'])
+        # print ("msg in csv")
+        # print (msg['text'].replace(msg['text'],"記帳"+msg['text']))
 
 
     for i in range(len(BBMresponse_str)):
+
+        fieldnames = ["msg"]
+        with open("msghistory.csv", "a+") as csvfile:
+
+            writer = csv.DictWriter(csvfile,fieldnames)
+            #writer.writeheader()
+            writer.writerow({
+
+                    "msg":msg,  
+                })
+        # fieldnames = ["timestamp","chat_id","Command from user", "BBMresponse","msg"]
+        # with open("conversationhistory.csv", "a+") as csvfile:
+
+        #     writer = csv.DictWriter(csvfile,fieldnames)
+        #     #writer.writeheader()
+        #     writer.writerow({
+        #             "timestamp": datetime.datetime.now(),
+        #             "chat_id": chat_id,
+        #             "Command from user": command,
+        #             "BBMresponse": BBMresponse_str[i].replace("\n",""),
+        #             "msg":msg,  
+        #         })
         if BBMresponse_str[i]<>"":
             bot.sendMessage(chat_id,BBMresponse_str[i])
             if (chat_id == 288200245):
                 bot.sendMessage(271383530, u"嗶鼠機器人向酥熊回答了: \n" + BBMresponse_str[i])
-            fieldnames = ["timestamp","chat_id","Command from user", "BBMresponse"]
-            with open("conversationhistory.csv", "a+") as csvfile:
-
-                writer = csv.DictWriter(csvfile,fieldnames)
-                #writer.writeheader()
-                writer.writerow({
-                        "timestamp": datetime.datetime.now(),
-                        "chat_id": chat_id,
-                        "Command from user": command,
-                        "BBMresponse": BBMresponse_str[i].replace("\n",""),
-                        
-                    })
+            
 
 
     # if BBMresponse_str[0]<>"":
@@ -888,9 +903,15 @@ def on_callback_query(msg):
 
     if query_data=='yes':
         #getintent
-        print ()
-        with open("conversationhistory.csv", "a+") as csvfile:
-            print (csvfile.readlines()[len(csvfile.readlines())-1])
+        print("query_data==yes")
+        count = len(open("msghistory.csv",'rU').readlines())
+        csvfile = open(r'msghistory.csv', 'rb')
+        cr = csv.reader(csvfile)
+        print (linecache.getline("msghistory.csv",count-1))
+        fromquerymsg=ast.literal_eval(linecache.getline("msghistory.csv",count-1))
+        #fromquerymsg={linecache.getline("msghistory.csv",count-1)}
+        handle(fromquerymsg)
+
         result="好的！"
     elif query_data=='no':
         result="原來不是啊，誤會誤會～"
