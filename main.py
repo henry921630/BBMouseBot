@@ -302,11 +302,25 @@ def AccountingSentenceAnalysis_get_source(command):
         source="富邦信用卡"
     elif "樂天" in command and "卡" in command:
         source="樂天信用卡"
-    elif "用" in command and "了" in command:
-        source=str(command[command.index("用")+1:(command.index("了")-1)])
+    elif "用" in command :
+
+
+        verblist=["買","花","購","吃","喝","付","繳","看",""]
+        n=len(command)
+
+        for i in verblist:
+            try:
+
+                tempn=command.index(i)
+                if tempn<n and tempn>1:
+                    n=tempn
+            except:
+                pass
+
+        source=str(command[command.index("用")+1:n])
     else:
         source = "現金"
-
+    print ("AccountingSentenceAnalysis_get_source:" + source)
     return source
 
     pass
@@ -316,10 +330,10 @@ def AccountingSentenceAnalysis_get_source(command):
 def AccountingSentenceAnalysis_get_person(command):
     pass
 def AccountingSentenceAnalysis_get_item(command):
-    if ifaskaccounting(command):
-        command=command[getseperatepoint(command)+1:]
-    else:
-        command=command
+    # if ifaskaccounting(command):
+    #     command=command[getseperatepoint(command)+1:]
+    # else:
+    #     command=command
 
     print("AccountingSentenceAnalysis_get_item command:" + command)
     
@@ -331,7 +345,7 @@ def AccountingSentenceAnalysis_get_item(command):
     timeadvlist=StrPermutation(timeadvlist1,timeadvlist2,timeadvlist3)+["前天","昨天","昨日","早上","中午","下午","晚上","今日","今天","今兒個","剛剛","剛才"]
 
     sourcelist=["華南卡","玉山卡","樂天卡","富邦卡"]
-    verblist=["用","買","花了","購入","吃了","喝","點了","付了","繳了","繳交","賺了",""]
+    verblist=["用","花了","購入","吃了","喝","點了","付了","繳了","繳交","賺了",""]
     advlist=["了","哦","啊","呢","喔","總共","共"]
 
     try:
@@ -344,7 +358,8 @@ def AccountingSentenceAnalysis_get_item(command):
     punctuationlist=["！","!","，",","]
     totalelementlist=[AccountingSentenceAnalysis_get_source(command),AccountingSentenceAnalysis_get_amount(command)]+subjectlist+timeadvlist+sourcelist+verblist+advlist+ohterlist+punctuationlist
     item=command
-    
+    # print ("item=command")
+    # print (item)
     for i in range(len(totalelementlist)):
         try:
             item=item.replace(totalelementlist[i],"")
@@ -651,6 +666,8 @@ def handle(msg):
                         for i in range(len(commandlist)):
                             #print ("print (commandlist[i])"+commandlist[i])
                             accAmount=AccountingSentenceAnalysis_get_amount(commandlist[i])
+                            # print("commandlist[i]")
+                            # print(commandlist[i])
                             accItem=AccountingSentenceAnalysis_get_item(commandlist[i])
                             accDate=AccountingSentenceAnalysis_get_date(commandlist[i])
                             accSource=AccountingSentenceAnalysis_get_source(commandlist[i])
@@ -845,18 +862,21 @@ def handle(msg):
         # print ("msg in csv")
         # print (msg['text'].replace(msg['text'],"記帳"+msg['text']))
 
+    fieldnames = ["msg"]
+    with open("msghistory.csv", "a+") as csvfile:
+
+        writer = csv.DictWriter(csvfile,fieldnames)
+        #writer.writeheader()
+        writer.writerow({
+
+                "msg":msg,  
+            })
+
+
 
     for i in range(len(BBMresponse_str)):
 
-        fieldnames = ["msg"]
-        with open("msghistory.csv", "a+") as csvfile:
 
-            writer = csv.DictWriter(csvfile,fieldnames)
-            #writer.writeheader()
-            writer.writerow({
-
-                    "msg":msg,  
-                })
         # fieldnames = ["timestamp","chat_id","Command from user", "BBMresponse","msg"]
         # with open("conversationhistory.csv", "a+") as csvfile:
 
@@ -900,19 +920,23 @@ def handle(msg):
 def on_callback_query(msg):
     query_id, from_id, query_data = telepot.glance(msg, flavor='callback_query')
     print('Callback Query:', query_id, from_id, query_data)
-
+    result=""
     if query_data=='yes':
         #getintent
         print("query_data==yes")
         count = len(open("msghistory.csv",'rU').readlines())
         csvfile = open(r'msghistory.csv', 'rb')
         cr = csv.reader(csvfile)
+        print("count")
+        print(count)
+        print ("linecache.getline(""msghistory.csv"",count-1)")
         print (linecache.getline("msghistory.csv",count-1))
         fromquerymsg=ast.literal_eval(linecache.getline("msghistory.csv",count-1))
         #fromquerymsg={linecache.getline("msghistory.csv",count-1)}
+        bot.answerCallbackQuery(query_id, text="好的！")
         handle(fromquerymsg)
 
-        result="好的！"
+
     elif query_data=='no':
         result="原來不是啊，誤會誤會～"
 
@@ -924,7 +948,8 @@ def on_callback_query(msg):
         result="(嗶鼠出了石頭！)  嘿～不分勝敗"
     elif query_data=='paper':
         result="(嗶鼠出了石頭！)  唔，我輸了。再來一把！"
-    bot.answerCallbackQuery(query_id, text=result)
+    if result<>"":
+        bot.answerCallbackQuery(query_id, text=result)
     
 def isquestion(command):
     if "?" in command or "嗎" in command or "呢" in command or "？" in command or "有沒有" in command or "是不是" in command or "好不好" in command or "為什麼" in command or "為何" in command or "怎麼" in command:
