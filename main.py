@@ -34,7 +34,6 @@ B=bbmousetoken
 T=testingtoken
 mode=B
 
-
 # ###Google Calendar測試專區
 
 # try:
@@ -861,21 +860,56 @@ def handle(msg):
         # print ("msg in csv")
         # print (msg['text'].replace(msg['text'],"記帳"+msg['text']))
 
-    fieldnames = ["msg"]
-    with open("msghistory.csv", "a+") as csvfile:
-        print("writing history in msghistory.csv")
-        print (msg)
-        writer = csv.DictWriter(csvfile,fieldnames)
-        #writer.writeheader()
-        writer.writerow({
-                "msg":msg,  
-            })
-        print("confirm writing")
-        count = len(open("msghistory.csv",'rU').readlines())
-        fromquerymsg=ast.literal_eval(linecache.getline("msghistory.csv",count-1))
-        print(fromquerymsg)        
 
 
+
+
+
+
+    msglist=[]
+    count2=0
+    
+
+    f = open('msghistory.csv', 'rb')
+    for row in csv.reader(f):
+        msglist.append(row)
+        print ("row:"+str(row))
+        count2=count2+1
+    f.close()
+
+    # print("msglist  ")
+    # print(msglist)
+
+    # msglist.append(msg)
+    # print("after msglist  ")
+    # print(msglist)
+
+
+    #with open("msghistory.csv", "ab+") as csvfile:
+    csvfile=open("msghistory.csv", "wb+")
+    print("writing history in msghistory.csv")
+    print (msg)
+    writer = csv.writer(csvfile)
+    #writer.writeheader()    
+    #print(msglist)
+    #print("pre count:"+str(count))
+    
+    for row in msglist:        
+        #print(row)
+        writer.writerow([row[0],"END"])    
+    writer.writerow([msg,"END"])
+    
+    
+    #count = len(csvfile.read())
+    #print("count:"+str(count))
+    #fromquerymsg=ast.literal_eval(linecache.getline("msghistory.csv",count))
+    
+    # count = len(csvfile.read())    
+    # fromquerymsg=linecache.getline("msghistory.csv",count)
+    # print("fromquerymsg "+fromquerymsg)        
+    # count = len(csvfile.read())
+    # print("after count:"+str(count))
+    csvfile.close()
 
     for i in range(len(BBMresponse_str)):
 
@@ -927,29 +961,45 @@ def on_callback_query(msg):
     if query_data=='yes':
         #getintent
         print("query_data==yes")
-        count = len(open("msghistory.csv",'rU').readlines())
-        csvfile = open(r'msghistory.csv', 'rb')
-        #cr = csv.reader(csvfile)
-        print("count")
-        print(count)
-        print("every record:")
-        for i in range(count):
-            print (str(i)+"  "+linecache.getline("msghistory.csv",i))    
-        print()
-        print ("linecache.getline(""msghistory.csv"",count-1)")
-        print (linecache.getline("msghistory.csv",count-1))
-        try:
-            fromquerymsg=ast.literal_eval(linecache.getline("msghistory.csv",count-1))
-        except:
-            try:
-                fromquerymsg=ast.literal_eval(linecache.getline("msghistory.csv",count-2))
-            except:
-                fromquerymsg=ast.literal_eval(linecache.getline("msghistory.csv",count-3))
+        # count = len(open("msghistory.csv",'rb').readlines())
+        # csvfile = open(r'msghistory.csv', 'rb')
+        # #cr = csv.reader(csvfile)
+        # print("count")
+        # print(count)
+        # print("every record:")
+        # for i in range(count):
+        #     print (str(i)+"  "+linecache.getline("msghistory.csv",i))    
+        # print()
+        # print ("linecache.getline(""msghistory.csv"",count-1)")
+        # print (linecache.getline("msghistory.csv",count-1))
+        # try:
+        #     fromquerymsg=ast.literal_eval(linecache.getline("msghistory.csv",count-1))
+        # except:
+        #     try:
+        #         fromquerymsg=ast.literal_eval(linecache.getline("msghistory.csv",count-2))
+        #     except:
+        #         fromquerymsg=ast.literal_eval(linecache.getline("msghistory.csv",count-3))
+
+
+
+
+        msglist=[]
+        count2=0
+        
+        f = open('msghistory.csv', 'rb')
+        for row in csv.reader(f):
+            msglist.append(row)
+            #print ("row:"+str(row))
+            count2=count2+1
+        f.close()
+        print("msglist[len(msglist)-1]")
+        print(msglist[len(msglist)-1])
+        fromquerymsg=msglist[len(msglist)-1]
 
 
         #fromquerymsg={linecache.getline("msghistory.csv",count-1)}
         bot.answerCallbackQuery(query_id, text="好的！")
-        handle(fromquerymsg)
+        handle(fromquerymsg[0])
 
 
     elif query_data=='no':
