@@ -871,6 +871,7 @@ def handle(msg):
                 "msg":msg,  
             })
         print("confirm writing")
+        count = len(open("msghistory.csv",'rU').readlines())
         fromquerymsg=ast.literal_eval(linecache.getline("msghistory.csv",count-1))
         print(fromquerymsg)        
 
