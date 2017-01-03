@@ -8,7 +8,6 @@ import os
 from oauth2client import client
 from oauth2client import tools
 from oauth2client.file import Storage
-
 from apiclient import discovery
 import linecache
 import csv
@@ -30,7 +29,7 @@ from telepot.namedtuple import InlineKeyboardMarkup, InlineKeyboardButton
 
 bbmousetoken='293749176:AAFUwX1PMi-FtFnorDJga3l3vKRcCBuwHTo'
 testingtoken='290645324:AAGhpIzNqzDejvhQSPR4-FIqmy4WbtLPzVI'
-version="v2.0 2017"
+version="v2.0 20170103"
 B=bbmousetoken
 T=testingtoken
 mode=B
@@ -864,7 +863,7 @@ def handle(msg):
 
     fieldnames = ["msg"]
     with open("msghistory.csv", "a+") as csvfile:
-
+        print("writing history in msghistory.csv")
         writer = csv.DictWriter(csvfile,fieldnames)
         #writer.writeheader()
         writer.writerow({
@@ -926,12 +925,19 @@ def on_callback_query(msg):
         print("query_data==yes")
         count = len(open("msghistory.csv",'rU').readlines())
         csvfile = open(r'msghistory.csv', 'rb')
-        cr = csv.reader(csvfile)
+        #cr = csv.reader(csvfile)
         print("count")
         print(count)
+        print("every record:")
+        for i in range(count):
+            print (str(i)+"  "+linecache.getline("msghistory.csv",i))    
+        print()
         print ("linecache.getline(""msghistory.csv"",count-1)")
         print (linecache.getline("msghistory.csv",count-1))
-        fromquerymsg=ast.literal_eval(linecache.getline("msghistory.csv",count-1))
+        try:
+            fromquerymsg=ast.literal_eval(linecache.getline("msghistory.csv",count-1))
+        except:
+            fromquerymsg=ast.literal_eval(linecache.getline("msghistory.csv",count-2))
         #fromquerymsg={linecache.getline("msghistory.csv",count-1)}
         bot.answerCallbackQuery(query_id, text="好的！")
         handle(fromquerymsg)
