@@ -868,9 +868,11 @@ def handle(msg):
         writer = csv.DictWriter(csvfile,fieldnames)
         #writer.writeheader()
         writer.writerow({
-
                 "msg":msg,  
             })
+        print("confirm writing")
+        fromquerymsg=ast.literal_eval(linecache.getline("msghistory.csv",count-1))
+        print(fromquerymsg)        
 
 
 
