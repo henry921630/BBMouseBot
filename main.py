@@ -864,6 +864,7 @@ def handle(msg):
     fieldnames = ["msg"]
     with open("msghistory.csv", "a+") as csvfile:
         print("writing history in msghistory.csv")
+        print (msg)
         writer = csv.DictWriter(csvfile,fieldnames)
         #writer.writeheader()
         writer.writerow({
