@@ -937,7 +937,12 @@ def on_callback_query(msg):
         try:
             fromquerymsg=ast.literal_eval(linecache.getline("msghistory.csv",count-1))
         except:
-            fromquerymsg=ast.literal_eval(linecache.getline("msghistory.csv",count-2))
+            try:
+                fromquerymsg=ast.literal_eval(linecache.getline("msghistory.csv",count-2))
+            except:
+                fromquerymsg=ast.literal_eval(linecache.getline("msghistory.csv",count-3))
+
+
         #fromquerymsg={linecache.getline("msghistory.csv",count-1)}
         bot.answerCallbackQuery(query_id, text="好的！")
         handle(fromquerymsg)
