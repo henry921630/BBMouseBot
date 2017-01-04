@@ -269,7 +269,7 @@ def confirmifaskaccounting(msg):
     content_type, chat_type, chat_id = telepot.glance(msg)
     command = msg['text']
     try:
-        amount=re.search('\D(\d{1,4})\D',command).group(1)
+        amount=re.search('\D(\d{1,4})[$\D]',command).group(1)
     except:
         amount=""
     print ("command in confirm:" + command)
@@ -303,7 +303,7 @@ def AccountingSentenceAnalysis_get_source(command):
     elif "用" in command :
 
 
-        verblist=["買","花","購","吃","喝","付","繳","看",""]
+        verblist=["買","花","購","吃","喝","付","繳","看","幫",""]
         n=len(command)
 
         for i in verblist:
