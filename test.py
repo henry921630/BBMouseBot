@@ -1,25 +1,61 @@
-# -*- coding: utf8 -*-
-# coding: utf8
-import re
-import sys
-from time  import sleep 
-import csv
-import linecache
-reload(sys)
-sys.setdefaultencoding('utf8') 
-command="嗶鼠倒數1分鐘又3秒"
+# #!/usr/bin/env python
+# # -*- coding: utf-8 -*-
+# #
+# # Copyright 2014 Google Inc. All Rights Reserved.
+# #
+# # Licensed under the Apache License, Version 2.0 (the "License");
+# # you may not use this file except in compliance with the License.
+# # You may obtain a copy of the License at
+# #
+# #      http://www.apache.org/licenses/LICENSE-2.0
+# #
+# # Unless required by applicable law or agreed to in writing, software
+# # distributed under the License is distributed on an "AS IS" BASIS,
+# # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# # See the License for the specific language governing permissions and
+# # limitations under the License.
 
-csvfile = file('msghistory2.csv', 'wb')
-writer = csv.writer(csvfile)
-writer.writerow(['姓名', '年龄', '电话'])
+# """Simple command-line example for Custom Search.
+# Command-line application that does a search.
+# """
 
-data = [
-    ('小河', '25', '1234567'),
-]
-data2 = [
-    ('小芳', '18', '789456')
-    ]
-writer.writerows(data)
-writer.writerows(data2)
+# __author__ = 'jcgregorio@google.com (Joe Gregorio)'
 
-csvfile.close()
+# import pprint
+
+# from googleapiclient.discovery import build
+
+
+# def main():
+#   # Build a service object for interacting with the API. Visit
+#   # the Google APIs Console <http://code.google.com/apis/console>
+#   # to get an API key for your own application.
+#   service = build("customsearch", "v1",
+#             developerKey="AIzaSyB2OR9CaYyS8rObfyGKUB4cBul0meWu3k8")
+
+#   res = service.cse().list(
+#       q='excelmyself',
+#       cx='017576662512468239146:omuauf_lfve',
+#     ).execute()
+#   pprint.pprint(res)
+
+# if __name__ == '__main__':
+#   main()
+
+
+from googleapiclient.discovery import build
+import pprint
+
+my_api_key = "AIzaSyB2OR9CaYyS8rObfyGKUB4cBul0meWu3k8"
+my_cse_id = "000067863868697805010:t3am0ieo4h4"
+
+def google_search(search_term, api_key, cse_id, **kwargs):
+    service = build("customsearch", "v1", developerKey=api_key)
+    res = service.cse().list(q=search_term, cx=cse_id, **kwargs).execute()
+    return res
+
+results = google_search(    'h', my_api_key, my_cse_id, num=10)
+for result in results:
+    pprint.pprint(result)
+
+pprint.pprint(results)

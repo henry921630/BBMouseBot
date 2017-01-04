@@ -579,7 +579,7 @@ def handle(msg):
                             s=0
                     else:
                         s=0
-                    if "分鐘" in command:
+                    if "分" in command:
                         try:
                             m=re.search("\d{1,3}",command[command.index("分")-3:command.index("分")]).group()
                         except:
@@ -594,10 +594,10 @@ def handle(msg):
                         bot.sendMessage(chat_id,"好的，倒數開始！誰也別想打斷我！\n最後10秒將會讀秒！")
                         for i in range(int(totalsec)):
                             #print("delete"+str((totalsec-i)%30))
-                            if totalsec-i<=15:
+                            if totalsec-i<=10:
                                 bot.sendMessage(chat_id,totalsec-i)
                                 print (totalsec-i)
-                            elif (totalsec-i<=180)&((totalsec-i)%20==0 ):
+                            elif (totalsec-i<=180)&((totalsec-i)%30==0 ):
                                 bot.sendMessage(chat_id,"倒數"+str( totalsec-i )+"秒")
                                 print("倒數"+str( totalsec-i )+"秒")
                             elif (totalsec-i<=600)&((totalsec-i)%60==0 ):
