@@ -4,6 +4,8 @@ from __future__ import print_function
 import re
 import ast
 import httplib2
+import json
+import apiai
 import os
 from oauth2client import client
 from oauth2client import tools
@@ -19,7 +21,8 @@ import random
 import datetime
 import telepot
 import uniout
-import sys  
+import os.path
+import sys
 reload(sys)
 sys.setdefaultencoding('utf8')  
 import tzlocal
@@ -33,102 +36,165 @@ version="v2.0 20170103"
 B=bbmousetoken
 T=testingtoken
 mode=B
+def get_credentials():
+    """Gets valid user credentials from storage.
 
-# ###Google Calendar測試專區
+    If nothing has been stored, or if the stored credentials are invalid,
+    the OAuth2 flow is completed to obtain the new credentials.
 
-# try:
-#     import argparse
-#     flags = argparse.ArgumentParser(parents=[tools.argparser]).parse_args()
-# except ImportError:
-#     flags = None
+    Returns:
+        Credentials, the obtained credential.
+    """
+    home_dir = os.path.expanduser('~')
+    credential_dir = os.path.join(home_dir, '.credentials')
+    if not os.path.exists(credential_dir):
+        os.makedirs(credential_dir)
+    credential_path = os.path.join(credential_dir,
+                                   'calendar-python-quickstart.json')
 
-# SCOPES = 'https://www.googleapis.com/auth/calendar', 'https://www.googleapis.com/auth/calendar.readonly', 'https://www.googleapis.com/auth/plus.login'
-# CLIENT_SECRET_FILE = 'client_secret.json'
-# APPLICATION_NAME = 'Google Calendar API Python Quickstart'
-
-# def get_credentials():
-#     """Gets valid user credentials from storage.
-
-#     If nothing has been stored, or if the stored credentials are invalid,
-#     the OAuth2 flow is completed to obtain the new credentials.
-
-#     Returns:
-#         Credentials, the obtained credential.
-#     """
-#     home_dir = os.path.expanduser('~')
-#     credential_dir = os.path.join(home_dir, '.credentials')
-#     if not os.path.exists(credential_dir):
-#         os.makedirs(credential_dir)
-#     credential_path = os.path.join(credential_dir,
-#                                    'calendar-python-quickstart.json')
-
-#     store = Storage(credential_path)
-#     credentials = store.get()
-#     if not credentials or credentials.invalid:
-#         flow = client.flow_from_clientsecrets(CLIENT_SECRET_FILE, SCOPES)
-#         flow.user_agent = APPLICATION_NAME
-#         if flags:
-#             credentials = tools.run_flow(flow, store, flags)
-#         else: # Needed only for compatibility with Python 2.6
-#             credentials = tools.run(flow, store)
-#         print('Storing credentials to ' + credential_path)
-#     return credentials
+    store = Storage(credential_path)
+    credentials = store.get()
+    if not credentials or credentials.invalid:
+        flow = client.flow_from_clientsecrets(CLIENT_SECRET_FILE, SCOPES)
+        flow.user_agent = APPLICATION_NAME
+        if flags:
+            credentials = tools.run_flow(flow, store, flags)
+        else: # Needed only for compatibility with Python 2.6
+            credentials = tools.run(flow, store)
+        print('Storing credentials to ' + credential_path)
+    return credentials
 
 
+class GoogleCalendar():
+    """docstring for GoogleCalendar"""
+    def __init__(self):
+        #super(GoogleCalendar, self).__init__()
+        self.eventsummary = "嗶鼠小提醒"
+        self.eventstart= datetime.datetime.now(tz)
+        
+    def createvent(self,eventsummary,eventstart):
+        eventxxx = {
+          'summary': eventsummary,
+          'location': '',
+          'description': '嗶鼠小提醒',
+          'start': {
+            'dateTime': eventstart,
+            'timeZone': 'Asia/Taipei',
+          },
+          'end': {
+            'dateTime': eventstart,
+            'timeZone': 'Asia/Taipei',
+          },
+          
+          
+          'reminders': {
+            'useDefault': False,
+            'overrides': [
+              {'method': 'email', 'minutes': 10},
+              {'method': 'popup', 'minutes': 10},
+            ],
+          },
+        }
 
-# eventxxx = {
-#   'summary': 'Google I/O 2015',
-#   'location': '800 Howard St., San Francisco, CA 94103',
-#   'description': 'A chance to hear more about Google\'s developer products.',
-#   'start': {
-#     'dateTime': '2016-12-28T09:00:00-07:00',
-#     'timeZone': 'America/Los_Angeles',
-#   },
-#   'end': {
-#     'dateTime': '2016-12-28T17:00:00-07:00',
-#     'timeZone': 'America/Los_Angeles',
-#   },
-#   'recurrence': [
-#     'RRULE:FREQ=DAILY;COUNT=2'
-#   ],
-#   'attendees': [
-#     {'email': 'lpage@example.com'},
-#     {'email': 'sbrin@example.com'},
-#   ],
-#   'reminders': {
-#     'useDefault': False,
-#     'overrides': [
-#       {'method': 'email', 'minutes': 24 * 60},
-#       {'method': 'popup', 'minutes': 10},
-#     ],
-#   },
-# }
+        credentials = get_credentials()
+        http = credentials.authorize(httplib2.Http())
+        service=discovery.build('calendar', 'v3', http=http)
 
-# credentials = get_credentials()
-# http = credentials.authorize(httplib2.Http())
-# service=discovery.build('calendar', 'v3', http=http)
+        eventxxx = service.events().insert(calendarId='primary', body=eventxxx).execute()
+        print ("Event created: " + (eventxxx.get('htmlLink')))
+        return (eventxxx.get('htmlLink'))
 
-# now = datetime.datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
-# print('Getting the upcoming 10 events')
-# eventsResult = service.events().list(
-#     calendarId='primary', timeMin=now, maxResults=10, singleEvents=True,
-#     orderBy='startTime').execute()
-# events = eventsResult.get('items', [])
+    def listrecentevent(self):
+        credentials = get_credentials()
+        http = credentials.authorize(httplib2.Http())
+        service=discovery.build('calendar', 'v3', http=http)
 
-# if not events:
-#     print('No upcoming events found.')
-# for event in events:
-#     start = event['start'].get('dateTime', event['start'].get('date'))
-#     print(start, event['summary'])
+        now = datetime.datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
+        print (now)
+        print('Getting the upcoming 10 events')
+        eventsResult = service.events().list(
+            calendarId='primary', timeMin=now, maxResults=10, singleEvents=True,
+            orderBy='startTime').execute()
+        events = eventsResult.get('items', [])
+        recenteventlist=[]
+        if not events:
+            print('No upcoming events found.')
+        for event in events:
+            start = event['start'].get('dateTime', event['start'].get('date'))
+            #稍微修剪一下格式:
+            start=start[0:10]+" " +start[11:16]
+            print(start, event['summary'])
+            recenteventlist.append(start+" "+event['summary'])
+        return recenteventlist
 
 
+def issetremind(command):
+    if( "提醒我" in command):
+        return True
+    else:
+        return False
 
-# eventxxx = service.events().insert(calendarId='primary', body=eventxxx).execute()
-# print ("Event created: " + (eventxxx.get('htmlLink')))
+def isWantRecentEventList(command):
+    if( "有什麼行程" in command):
+        return True
+    else:
+        return False
 
-# ###測試專區
+def getTimeValue(command):
+    TimeValueHour=TimeValueMin=sec=0
 
+    if("晚上" in command or "下午" in command or "夜晚" in command):
+        AMPM="PM"
+    elif("清早" in command or "早上" in command or "上午" in command):
+        AMPM="AM"
+    else:
+        AMPM="PM" #感覺下午和晚上的行程會比較多，所以預設是PM (好像邏輯有點薄弱XD)
+    numberinchinesee=["一","二","三","四","五","六","七","八","九","十","十一","十二","十三","十四","十五","十六","十七","十八","十九","二十","二十一","二十二","二十三","二十四","二十五","二十六","二十七","二十八","二十九","三十","三十一","三十二","三十三","三十四","三十五","三十六","三十七","三十八","三十九","四十","四十一","四十二","四十三","四十四","四十五","四十六","四十七","四十八","四十九","五十","五十一","五十二","五十三","五十四","五十五","五十六","五十七","五十八","五十九","六十","六十一","六十二","六十三","六十四","六十五","六十六","六十七","六十八","六十九","七十","七十一","七十二","七十三","七十四","七十五","七十六","七十七","七十八","七十九","八十","八十一","八十二","八十三","八十四","八十五","八十六","八十七","八十八","八十九","九十","九十一","九十二","九十三","九十四","九十五","九十六","九十七","九十八","九十九","一百"
+] #因為十二和十一都包含了"十" 所以應該倒著檢測
+    numberinarabic=range(1,101)
+    for num in range(0,12): #測小時，只要一到十二就好
+        # print(num)
+        # print(numberinchinesee[11-num])
+        if (numberinchinesee[11-num] in command[command.index("點")-3:command.index("點")]):
+            command=command.replace(numberinchinesee[11-num],str(numberinarabic[11-num]))
+    for num in range(0,60): #測分鐘，要一到六十
+        if (numberinchinesee[59-num] in command[command.index("點"):command.index("點")+4]):
+            command=command.replace(numberinchinesee[59-num],str(numberinarabic[59-num]))
+        
 
+    TimeValueHour=int(re.search('\D(\d{1,2})',command[command.index("點")-3:command.index("點")]).group(1))+12*(AMPM=="PM")
+    # print(command)
+    # print(command[command.index("點")+1:command.index("點")+4])
+
+    try:
+        TimeValueMin=int(re.search('\D(\d{1,2})',command[command.index("點"):command.index("點")+4]).group(1))
+    except:
+        pass
+
+    # print (TimeValueHour)
+    # print(AccountingSentenceAnalysis_get_date(command))
+    TimeValueforGoogleCalendar= AccountingSentenceAnalysis_get_date(command) + "T" + "{hour:0>2}:{min:0>2}:{sec:0>2}".format(hour=TimeValueHour,min=TimeValueMin,sec=sec)+"+08:00"
+    print (TimeValueforGoogleCalendar)
+    return TimeValueforGoogleCalendar
+
+def CallAPIAI(command):
+    CLIENT_ACCESS_TOKEN = '7104be5d56bd495aa62f9b3c1a03d6bf'
+    ai = apiai.ApiAI(CLIENT_ACCESS_TOKEN)
+
+    request = ai.text_request()
+
+    request.lang = 'zh-TW'  # optional, default value equal 'en'
+
+    request.session_id = "123456"#"<SESSION ID, UNIQUE FOR EACH USER>"
+
+    request.query = command
+    response = request.getresponse()
+    responsestr = response.read().decode('utf-8')
+    response_obj = json.loads(responsestr)
+    #print (response.read())
+    print (response_obj["result"]["fulfillment"]["speech"])
+
+    return (response_obj["result"]["fulfillment"]["speech"])
 
 
 def auth_gss_client(path, scopes):
@@ -215,7 +281,7 @@ def AccountingSentenceAnalysis_get_date(command):
         RegularExpressDate_8digit=(re.search('[0-9]{8}', command)).group()
     except:
         RegularExpressDate_8digit=""
-        print ("無八碼")
+       #print ("無八碼")
 
     if "今天" in command or "today"  in command or "now"  in command or "剛剛"  in command  or "剛才"  in command or "我剛"  in command:
         accDate=time.strftime("%Y-%m-%d", time.gmtime(time.time()+8*60*60))                  #八小時乘上六十分鐘乘上六十秒
@@ -223,9 +289,17 @@ def AccountingSentenceAnalysis_get_date(command):
         accDate=time.strftime("%Y-%m-%d", time.gmtime(time.time()+8*60*60 -60*60*24))                  #八小時乘上六十分鐘乘上六十秒 再減一天回到昨天
     elif "前天" in command or "before yesterday"  in command  :
         accDate=time.strftime("%Y-%m-%d", time.gmtime(time.time()+8*60*60 -2*60*60*24))                  #八小時乘上六十分鐘乘上六十秒 再減二天回到前天
+
+    elif "明天" in command or "tomorrow"  in command  :
+        accDate=time.strftime("%Y-%m-%d", time.gmtime(time.time()+8*60*60 +60*60*24))                  #八小時乘上六十分鐘乘上六十秒 再加一天進到明天
+    elif "後天" in command or "after tomorrow"  in command  :
+        accDate=time.strftime("%Y-%m-%d", time.gmtime(time.time()+8*60*60 +2*60*60*24))                  #八小時乘上六十分鐘乘上六十秒 再加兩天進到後天
+
     elif "禮拜" in command or "周"  in command  or "週"  in command:
         if "上"  in command:        
             w=command.count("上")
+        elif "下" in command:
+            w=-command.count("下")
         else:
             w=0
         if "禮拜一" in command or "週一" in command or "周一" in command:
@@ -624,6 +698,21 @@ def handle(msg):
 
                 elif iscallBBMouseonly(command)==True:
                     BBMresponse_str[0]=salutation + "叫我嗎？ 我在這～(咚咚咚)"
+
+                elif issetremind(command):
+
+                    GC=GoogleCalendar()
+                    eventlink=GC.createvent(salutation+"說：" + command,getTimeValue(command))
+                    BBMresponse_str[0]="好！我記在這裡了，到時候會發email提醒！也會用手機Google Calendar APP提醒！\n"+eventlink
+                elif isWantRecentEventList(command):
+                    GC=GoogleCalendar()
+                    recenteventlist= GC.listrecentevent()
+                    BBMresponse_str[0]="未來的十項行程如下，仔細看，別漏掉囉！"
+                    for event in recenteventlist:
+                        BBMresponse_str[1]=BBMresponse_str[1]+(event+"\n")
+
+
+
     #記帳 accounting
                 elif ifaskaccounting(command):
                     #accrecord= str(command).split()
@@ -731,7 +820,7 @@ def handle(msg):
                         
     #動詞替代
                 elif ( len(command)>=4 and len(command)<=10 and (command[0:3]=="嗶鼠我")):
-                      BBMresponse_str[0]= str("哦 "+ salutation +"你" + command[3:] + '  啊不就好……嗯不是啦，是好棒！')
+                      BBMresponse_str[0]= str("哦 "+ salutation +"你" + command[3:] + ' 哇災哇災')
 
 
                 elif(isflatter(command) != True and isquestion(command)==False and len(command)>=4 and len(command)<10 and ( BBself(command[0:2])>0)):
@@ -838,7 +927,11 @@ def handle(msg):
 
                     
                 else:
-                    BBMresponse_str[0]= str( u"……嗯這句話對我來說太難了，請爸爸幫我升級智能吧！")
+                    #呼叫外部機器人 api.ai
+                    BBMresponse_str[0]= str(CallAPIAI(command)).replace("[salutation]",salutation)
+
+
+                    #BBMresponse_str[0]= str( u"……嗯這句話對我來說太難了，請爸爸幫我升級智能吧！")
                     # print ( isquestion==False and len(command)>=4 and len(command)<10 and ( BBself(command[0:2])>0))
                     # print len(command)<10
                     # print ( BBself(command[0:2])>0)
@@ -873,7 +966,7 @@ def handle(msg):
     f = open('msghistory.csv', 'rb')
     for row in csv.reader(f):
         msglist.append(row)
-        print ("row:"+str(row))
+        #print ("row:"+str(row))
         count2=count2+1
     f.close()
 
@@ -927,6 +1020,7 @@ def handle(msg):
         #             "msg":msg,  
         #         })
         if BBMresponse_str[i]<>"":
+            print(BBMresponse_str[i])
             bot.sendMessage(chat_id,BBMresponse_str[i])
             if (chat_id == 288200245):
                 bot.sendMessage(271383530, u"嗶鼠機器人向酥熊回答了: \n" + BBMresponse_str[i])
@@ -1061,6 +1155,9 @@ print ('I am listening ...')
 while 1:
     time.sleep(10)
 
+    # if datetime.datetime.now(tz).minute %2 ==0:
+    #     print ("xxxxx")
+    #     bot.sendMessage(271383530, u"(嗶鼠機器人)")
 
 
 
