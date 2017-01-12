@@ -56,13 +56,16 @@ def get_credentials():
     Returns:
         Credentials, the obtained credential.
     """
+    print("get_credentials========================")
     home_dir = os.path.expanduser('~')
     credential_dir = os.path.join(home_dir, '.credentials')
+    print("credential_dir"+credential_dir)
     if not os.path.exists(credential_dir):
+        print("get_credentials========================")
         os.makedirs(credential_dir)
     credential_path = os.path.join(credential_dir,
                                    'calendar-python-quickstart.json')
-
+    print("credential_path=========="+credential_path)
     store = Storage(credential_path)
     credentials = store.get()
     if not credentials or credentials.invalid:
