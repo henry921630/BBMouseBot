@@ -29,6 +29,7 @@ def get_credentials():
     Returns:
         Credentials, the obtained credential.
     """
+
     home_dir = os.path.expanduser('~')
     credential_dir = os.path.join(home_dir, '.credentials')
     if not os.path.exists(credential_dir):
