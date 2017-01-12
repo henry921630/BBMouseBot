@@ -4,6 +4,7 @@ from __future__ import print_function
 import re
 import ast
 import httplib2
+import urllib
 import json
 import apiai
 import os
@@ -311,12 +312,14 @@ def AccountingSentenceAnalysis_get_date(command):
         accDate=time.strftime("%Y-%m-%d", time.gmtime(time.time()+8*60*60 -60*60*24))                  #八小時乘上六十分鐘乘上六十秒 再減一天回到昨天
     elif "前天" in command or "before yesterday"  in command  :
         accDate=time.strftime("%Y-%m-%d", time.gmtime(time.time()+8*60*60 -2*60*60*24))                  #八小時乘上六十分鐘乘上六十秒 再減二天回到前天
-
+    elif "大前天" in command or "before yesterday"  in command  :
+        accDate=time.strftime("%Y-%m-%d", time.gmtime(time.time()+8*60*60 -3*60*60*24))                  #八小時乘上六十分鐘乘上六十秒 再減三天回到大前天
     elif "明天" in command or "tomorrow"  in command  :
         accDate=time.strftime("%Y-%m-%d", time.gmtime(time.time()+8*60*60 +60*60*24))                  #八小時乘上六十分鐘乘上六十秒 再加一天進到明天
     elif "後天" in command or "after tomorrow"  in command  :
         accDate=time.strftime("%Y-%m-%d", time.gmtime(time.time()+8*60*60 +2*60*60*24))                  #八小時乘上六十分鐘乘上六十秒 再加兩天進到後天
-
+    elif "大後天" in command or "before yesterday"  in command  :
+        accDate=time.strftime("%Y-%m-%d", time.gmtime(time.time()+8*60*60 +3*60*60*24))                  #八小時乘上六十分鐘乘上六十秒 再加三天進到大後天
     elif "禮拜" in command or "周"  in command  or "週"  in command:
         print('"禮拜" in command or "周"  in command  or "週"  in command')
         if "上"  in command:        
@@ -663,6 +666,48 @@ def handle(msg):
                     BBMresponse_str[0]= str( u"好的"+ salutation +"，讓我來為你Google:"+"\n https://www.google.com.tw/search?q=" + command[8:])
                 elif("智能升級" in command or "智能進化" in command  or "什麼智能" in command   or "學會了什麼" in command or "有升級嗎" in command or "新功能" in command):
                     BBMresponse_str[0]= str( "智慧毛說過：「智能沒有奇蹟，只有累積。」\n智能升級是一個漫長的路程，而且你永遠不知道就在"+ salutation +"一回頭間，小孩又學會了什麼奇怪的東西。")
+                elif("在哪" in command or "在什麼地方"):
+                    try:
+                        command=command.replace("在哪裡","")
+                    except:
+                        pass
+                    try:
+                        command=command.replace("在哪","")
+                    except:
+                        pass
+                    try:
+                        command=command.replace("在什麼地方","")
+                    except:
+                        pass
+
+                    try:
+                        command=command.replace("？","")
+                    except:
+                        pass
+
+                    try:
+                        command=command.replace("?","")
+                    except:
+                        pass
+                    BBMresponse_str[0]="我查了一下，應該是在這裡吧："
+                
+                    url="https://maps.googleapis.com//maps/api/place/textsearch/json?query="+urllib.quote(str(command))+"&key=AIzaSyB2OR9CaYyS8rObfyGKUB4cBul0meWu3k8&language=zh-TW"
+                    # print(urllib.quote(str(command)))
+                    response = urllib.urlopen(url)
+                    data = json.loads(response.read())
+                    print (data)
+                    #BBMresponse_str[1]="https://www.google.com.tw/maps/place/"+data['results'][0]['name'].replace(" ","+")
+                    if data['results']:
+                        detailurl="https://maps.googleapis.com/maps/api/place/details/json?placeid={placeid}&key=AIzaSyB2OR9CaYyS8rObfyGKUB4cBul0meWu3k8&language=zh-TW".format(placeid=data['results'][0]['place_id'])
+                        detailresponse=urllib.urlopen(detailurl)
+                        detaildata=json.loads(detailresponse.read())
+                        BBMresponse_str[1]=detaildata['result']['url']
+                        print (type(data['results']))
+                        print (data['results'])
+                        BBMresponse_str[2]=(data['results'][0]['formatted_address'])
+                    else:
+                        BBMresponse_str[0]="這是什麼東西？我在地圖上查不到耶QQ"
+                 
     #猜拳
                 elif '猜拳' in command :
                     keyboard = InlineKeyboardMarkup(inline_keyboard=[
