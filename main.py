@@ -296,28 +296,35 @@ def AccountingSentenceAnalysis_get_date(command):
         accDate=time.strftime("%Y-%m-%d", time.gmtime(time.time()+8*60*60 +2*60*60*24))                  #八小時乘上六十分鐘乘上六十秒 再加兩天進到後天
 
     elif "禮拜" in command or "周"  in command  or "週"  in command:
+        print('"禮拜" in command or "周"  in command  or "週"  in command')
         if "上"  in command:        
             w=command.count("上")
+            if("早上" in command):
+                w=w-1
         elif "下" in command:
             w=-command.count("下")
+
         else:
             w=0
-        if "禮拜一" in command or "週一" in command or "周一" in command:
+        print("W:"+str(w))
+
+        if "禮拜1" in command or "禮拜一" in command or "週一" in command or "周一" in command:
             wd=1
-        elif "禮拜二" in command or "週二" in command or "周二" in command:
+        elif "禮拜2" in command or "禮拜二" in command or "週二" in command or "周二" in command:
             wd=2
-        elif "禮拜三" in command or "週三" in command or "周三" in command:
+        elif "禮拜3" in command or "禮拜三" in command or "週三" in command or "周三" in command:
             wd=3
-        elif "禮拜四" in command or "週四" in command or "周四" in command:
+        elif "禮拜4" in command or "禮拜四" in command or "週四" in command or "周四" in command:
             wd=4
-        elif "禮拜五" in command or "週五" in command or "周五" in command:
+        elif "禮拜5" in command or "禮拜五" in command or "週五" in command or "周五" in command:
             wd=5
-        elif "禮拜六" in command or "週六" in command or "周六" in command:
+        elif "禮拜6" in command or "禮拜六" in command or "週六" in command or "周六" in command:
             wd=6
-        elif "禮拜日" in command or "週日" in command or "周日" in command:
+        elif "禮拜日" in command or  "禮拜天" in command or "週日" in command or "周日" in command:
             wd=7
         else:
             pass
+        print("wd:"+str(wd))
         #待做 先回到本週一，再減去週數，再加到指定weekday
         dt=datetime.datetime.fromtimestamp(time.mktime(time.gmtime())+60*60*8) #調整八小時時區後的現在時間(datetime)
         thisMonday=dt-datetime.timedelta(days=datetime.date.today().weekday())        
