@@ -837,7 +837,7 @@ def handle(msg):
                             # else:
                             #     accDateError=""
 
-                            if("收入" in command or "撿到錢" in command or "兼差" in command or "家教" in command or "獎金" in command or "薪水" in command or "賺了" in command ):
+                            if("收入" in commandlist[i] or "撿到錢" in commandlist[i] or "兼差" in commandlist[i] or "家教" in commandlist[i] or "獎金" in commandlist[i] or "薪水" in commandlist[i] or "賺了" in commandlist[i]  or "收回" in commandlist[i]  or "回收" in commandlist[i]):
                                 acctype="收入"
                             else:
                                 acctype="支出"
