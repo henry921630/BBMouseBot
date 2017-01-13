@@ -666,7 +666,7 @@ def handle(msg):
                     BBMresponse_str[0]= str( u"好的"+ salutation +"，讓我來為你Google:"+"\n https://www.google.com.tw/search?q=" + command[8:])
                 elif("智能升級" in command or "智能進化" in command  or "什麼智能" in command   or "學會了什麼" in command or "有升級嗎" in command or "新功能" in command):
                     BBMresponse_str[0]= str( "智慧毛說過：「智能沒有奇蹟，只有累積。」\n智能升級是一個漫長的路程，而且你永遠不知道就在"+ salutation +"一回頭間，小孩又學會了什麼奇怪的東西。")
-                elif("在哪" in command or "在什麼地方"):
+                elif("在哪" in command or "在什麼地方" in command):
                     try:
                         command=command.replace("在哪裡","")
                     except:
