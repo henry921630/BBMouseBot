@@ -667,28 +667,42 @@ def handle(msg):
                 elif("智能升級" in command or "智能進化" in command  or "什麼智能" in command   or "學會了什麼" in command or "有升級嗎" in command or "新功能" in command):
                     BBMresponse_str[0]= str( "智慧毛說過：「智能沒有奇蹟，只有累積。」\n智能升級是一個漫長的路程，而且你永遠不知道就在"+ salutation +"一回頭間，小孩又學會了什麼奇怪的東西。")
                 elif("在哪" in command or "在什麼地方" in command):
-                    try:
-                        command=command.replace("在哪裡","")
-                    except:
-                        pass
-                    try:
-                        command=command.replace("在哪","")
-                    except:
-                        pass
-                    try:
-                        command=command.replace("在什麼地方","")
-                    except:
-                        pass
+                    totalelementlist=["嗶","鼠","請問","在哪裡","在哪","在什麼地方","?","？",",","，"]
+                    for i in range(len(totalelementlist)):
+                        try:
+                            command=command.replace(totalelementlist[i],"")
+                            
+                            #print ("item:" + item+" 取代標的:")+totalelementlist[i]
+                        except:
+                            pass
+                    # try:
+                    #     command=command.replace("嗶","")
+                    # except:
+                    # try:
+                    #     command=command.replace("鼠","")
+                    # except:
+                    # try:
+                    #     command=command.replace("在哪裡","")
+                    # except:
+                    #     pass
+                    # try:
+                    #     command=command.replace("在哪","")
+                    # except:
+                    #     pass
+                    # try:
+                    #     command=command.replace("在什麼地方","")
+                    # except:
+                    #     pass
 
-                    try:
-                        command=command.replace("？","")
-                    except:
-                        pass
+                    # try:
+                    #     command=command.replace("？","")
+                    # except:
+                    #     pass
 
-                    try:
-                        command=command.replace("?","")
-                    except:
-                        pass
+                    # try:
+                    #     command=command.replace("?","")
+                    # except:
+                    #     pass
                     BBMresponse_str[0]="我查了一下，應該是在這裡吧："
                 
                     url="https://maps.googleapis.com//maps/api/place/textsearch/json?query="+urllib.quote(str(command))+"&key=AIzaSyB2OR9CaYyS8rObfyGKUB4cBul0meWu3k8&language=zh-TW"
