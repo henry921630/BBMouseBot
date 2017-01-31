@@ -164,7 +164,7 @@ def getTimeValue(command):
         AMPM="AM"
     else:
         AMPM="PM" #感覺下午和晚上的行程會比較多，所以預設是PM (好像邏輯有點薄弱XD)
-    numberinchinesee=["一","二","三","四","五","六","七","八","九","十","十一","十二","十三","十四","十五","十六","十七","十八","十九","二十","二十一","二十二","二十三","二十四","二十五","二十六","二十七","二十八","二十九","三十","三十一","三十二","三十三","三十四","三十五","三十六","三十七","三十八","三十九","四十","四十一","四十二","四十三","四十四","四十五","四十六","四十七","四十八","四十九","五十","五十一","五十二","五十三","五十四","五十五","五十六","五十七","五十八","五十九","六十","六十一","六十二","六十三","六十四","六十五","六十六","六十七","六十八","六十九","七十","七十一","七十二","七十三","七十四","七十五","七十六","七十七","七十八","七十九","八十","八十一","八十二","八十三","八十四","八十五","八十六","八十七","八十八","八十九","九十","九十一","九十二","九十三","九十四","九十五","九十六","九十七","九十八","九十九","一百"
+    numberinchinese=["一","二","三","四","五","六","七","八","九","十","十一","十二","十三","十四","十五","十六","十七","十八","十九","二十","二十一","二十二","二十三","二十四","二十五","二十六","二十七","二十八","二十九","三十","三十一","三十二","三十三","三十四","三十五","三十六","三十七","三十八","三十九","四十","四十一","四十二","四十三","四十四","四十五","四十六","四十七","四十八","四十九","五十","五十一","五十二","五十三","五十四","五十五","五十六","五十七","五十八","五十九","六十","六十一","六十二","六十三","六十四","六十五","六十六","六十七","六十八","六十九","七十","七十一","七十二","七十三","七十四","七十五","七十六","七十七","七十八","七十九","八十","八十一","八十二","八十三","八十四","八十五","八十六","八十七","八十八","八十九","九十","九十一","九十二","九十三","九十四","九十五","九十六","九十七","九十八","九十九","一百"
 ] #因為十二和十一都包含了"十" 所以應該倒著檢測
     numberinarabic=range(1,101)
 
@@ -177,12 +177,12 @@ def getTimeValue(command):
         command=command.replace("一刻","十五分")
     for num in range(0,12): #測小時，只要一到十二就好
         # print(num)
-        # print(numberinchinesee[11-num])
-        if (numberinchinesee[11-num] in command[command.index("點")-3:command.index("點")]):
-            command=command.replace(numberinchinesee[11-num],str(numberinarabic[11-num]))
+        # print(numberinchinese[11-num])
+        if (numberinchinese[11-num] in command[command.index("點")-3:command.index("點")]):
+            command=command.replace(numberinchinese[11-num],str(numberinarabic[11-num]))
     for num in range(0,60): #測分鐘，要一到六十
-        if (numberinchinesee[59-num] in command[command.index("點"):command.index("點")+4]):
-            command=command.replace(numberinchinesee[59-num],str(numberinarabic[59-num]))
+        if (numberinchinese[59-num] in command[command.index("點"):command.index("點")+4]):
+            command=command.replace(numberinchinese[59-num],str(numberinarabic[59-num]))
         
 
     TimeValueHour=int(re.search('\D(\d{1,2})',command[command.index("點")-3:command.index("點")]).group(1))+12*(AMPM=="PM")
@@ -299,13 +299,15 @@ def getseperatepoint(command):
     return seperatepoint
 
 def AccountingSentenceAnalysis_get_date(command):
-    command=command[getseperatepoint(command)+1:]
+    #command=command[getseperatepoint(command)+1:]
     try:
         RegularExpressDate_8digit=(re.search('[0-9]{8}', command)).group()
     except:
         RegularExpressDate_8digit=""
        #print ("無八碼")
-
+    print (command)
+    
+    
     if "今天" in command or "today"  in command or "now"  in command or "剛剛"  in command  or "剛才"  in command or "我剛"  in command:
         accDate=time.strftime("%Y-%m-%d", time.gmtime(time.time()+8*60*60))                  #八小時乘上六十分鐘乘上六十秒
     elif "昨" in command or "yesterday"  in command  :
@@ -321,7 +323,7 @@ def AccountingSentenceAnalysis_get_date(command):
     elif "大後天" in command or "before yesterday"  in command  :
         accDate=time.strftime("%Y-%m-%d", time.gmtime(time.time()+8*60*60 +3*60*60*24))                  #八小時乘上六十分鐘乘上六十秒 再加三天進到大後天
     elif "禮拜" in command or "周"  in command  or "週"  in command:
-        print('"禮拜" in command or "周"  in command  or "週"  in command')
+        #print('"禮拜" in command or "周"  in command  or "週"  in command')
         if "上"  in command:        
             w=command.count("上")
             if("早上" in command):
@@ -370,6 +372,85 @@ def ifaskaccounting(command):
         return True
     else:
         return False
+def isaskToDoList(command):
+    if ("待辦" in command[:12] or "todolist" in command[:12]):
+        return True
+    else:
+        return False
+def updateToDoList(command,chat_id):
+    f = open('ToDoList.txt','rb')
+    
+    TDL=f.read().split(",")
+    f.close
+    TDLmsg=""
+    TDLorder=0
+
+
+    if "完成" in command:
+        numberinchinese=["一","二","三","四","五","六","七","八","九","十","十一","十二","十三","十四","十五","十六","十七","十八","十九","二十","二十一","二十二","二十三","二十四","二十五","二十六","二十七","二十八","二十九","三十","三十一","三十二","三十三","三十四","三十五","三十六","三十七","三十八","三十九","四十","四十一","四十二","四十三","四十四","四十五","四十六","四十七","四十八","四十九","五十","五十一","五十二","五十三","五十四","五十五","五十六","五十七","五十八","五十九","六十","六十一","六十二","六十三","六十四","六十五","六十六","六十七","六十八","六十九","七十","七十一","七十二","七十三","七十四","七十五","七十六","七十七","七十八","七十九","八十","八十一","八十二","八十三","八十四","八十五","八十六","八十七","八十八","八十九","九十","九十一","九十二","九十三","九十四","九十五","九十六","九十七","九十八","九十九","一百"] 
+        #因為十二和十一都包含了"十" 所以應該倒著檢測
+        numberinarabic=range(1,101)
+        for i in range(20):#假設待辦事項不會超過二十項
+            if numberinchinese[9-i] in command:
+                command=command.replace(numberinchinese[9-i],str(numberinarabic[9-i]))
+                # command=command.replace("一","1")
+        ordercompleted=int(re.search('\D(\d{1,2})',command).group(1))
+        
+        del TDL[ordercompleted]
+
+
+        TDLline=""
+        for i in range(len(TDL)):
+            
+            TDLline=TDLline+TDL[i]+","
+            
+        f = open('ToDoList.txt','wb')
+        #為了消除結尾逗號，少取一格
+        f.write(TDLline[:-1])
+        print("TDLline")
+        print(TDLline[:-1])     
+        for i in TDL:
+            TDLmsg=TDLmsg +str(TDLorder)+":"+ i+"\n"
+            TDLorder+=1
+        if len(TDLmsg)<=3:
+            TDLmsg="現在沒有待辦事項哦～"
+        bot.sendMessage(chat_id,"目前待辦事項清單\n"+TDLmsg)
+
+    elif "新增" in command:
+        f = open('ToDoList.txt','rb')
+        command=command.replace("新增","").replace("待辦事項","").replace(" ","")
+        
+        if len(TDL[0])<4:
+            TDL[0]=command
+        else:
+            TDL.append(command)
+        TDLline=""
+        for i in range(len(TDL)):
+            
+            TDLline=TDLline+TDL[i]+","
+            
+        f = open('ToDoList.txt','wb')
+        #為了消除結尾逗號，少取一格
+        f.write(TDLline[:-1])
+        print("TDLline")
+        print(TDLline[:-1])
+        for i in TDL:
+            TDLmsg=TDLmsg +str(TDLorder)+":"+ i+"\n"
+            TDLorder+=1
+        if len(TDLmsg)<=3:
+            TDLmsg="現在沒有待辦事項哦～"
+        bot.sendMessage(chat_id,"目前待辦事項清單\n"+TDLmsg)
+
+    else:
+        for i in TDL:
+            TDLmsg=TDLmsg +str(TDLorder)+" "+ i+"\n"
+            TDLorder+=1
+        print ("len(TDLmsg)")
+        print (len(TDLmsg))
+        if len(TDLmsg)<=3:
+            TDLmsg="現在沒有待辦事項哦～"
+        bot.sendMessage(chat_id,TDLmsg)
+
 
 def confirmifaskaccounting(msg):
     content_type, chat_type, chat_id = telepot.glance(msg)
@@ -449,7 +530,7 @@ def AccountingSentenceAnalysis_get_item(command):
     timeadvlist=StrPermutation(timeadvlist1,timeadvlist2,timeadvlist3)+["前天","昨天","昨日","早上","中午","下午","晚上","今日","今天","今兒個","剛剛","剛才"]
 
     sourcelist=["華南卡","玉山卡","樂天卡","富邦卡"]
-    verblist=["用","花了","購入","吃了","喝","點了","付了","繳了","繳交","賺了",""]
+    verblist=["刷了","用","花了","購入","吃了","喝","點了","付了","繳了","繳交","賺了",""]
     advlist=["了","哦","啊","呢","喔","總共","共"]
 
     try:
@@ -667,7 +748,7 @@ def handle(msg):
                 elif("智能升級" in command or "智能進化" in command  or "什麼智能" in command   or "學會了什麼" in command or "有升級嗎" in command or "新功能" in command):
                     BBMresponse_str[0]= str( "智慧毛說過：「智能沒有奇蹟，只有累積。」\n智能升級是一個漫長的路程，而且你永遠不知道就在"+ salutation +"一回頭間，小孩又學會了什麼奇怪的東西。")
                 elif("在哪" in command or "在什麼地方" in command):
-                    totalelementlist=["嗶","鼠","請問","在哪裡","在哪","在什麼地方","?","？",",","，"]
+                    totalelementlist=["嗶","鼠","請問","你","知道","知不","嗎","在哪裡","在哪","在什麼地方","?","？",",","，"]
                     for i in range(len(totalelementlist)):
                         try:
                             command=command.replace(totalelementlist[i],"")
@@ -800,7 +881,9 @@ def handle(msg):
                         BBMresponse_str[1]=BBMresponse_str[1]+(event+"\n")
 
 
-
+                elif isaskToDoList(command):
+                    updateToDoList(command,chat_id)
+                    
     #記帳 accounting
                 elif ifaskaccounting(command):
                     #accrecord= str(command).split()
@@ -841,8 +924,6 @@ def handle(msg):
                         for i in range(len(commandlist)):
                             #print ("print (commandlist[i])"+commandlist[i])
                             accAmount=AccountingSentenceAnalysis_get_amount(commandlist[i])
-                            # print("commandlist[i]")
-                            # print(commandlist[i])
                             accItem=AccountingSentenceAnalysis_get_item(commandlist[i])
                             accDate=AccountingSentenceAnalysis_get_date(commandlist[i])
                             accSource=AccountingSentenceAnalysis_get_source(commandlist[i])
@@ -907,14 +988,14 @@ def handle(msg):
 
                         
     #動詞替代
-                elif ( len(command)>=4 and len(command)<=10 and (command[0:3]=="嗶鼠我")):
-                      BBMresponse_str[0]= str("哦 "+ salutation +"你" + command[3:] + ' 哇災哇災')
+                # elif ( len(command)>=4 and len(command)<=10 and (command[0:3]=="嗶鼠我")):
+                #       BBMresponse_str[0]= str("哦 "+ salutation +"你" + command[3:] + ' 哇災哇災')
 
 
-                elif(isflatter(command) != True and isquestion(command)==False and len(command)>=4 and len(command)<10 and ( BBself(command[0:2])>0)):
+                elif(isflatter(command) != True and isquestion(command)==False and len(command)>=4 and len(command)<10 and ( BBself(command[0:3])>0)):
                       
                       #BBMresponse_str[0]= str("嗶鼠想跟"+ salutation +"一起" + command[BBself(command[0:2]):])  #這句太不適用了
-                      BBMresponse_str[0]= str("好啊～" + command[BBself(command[0:2]):])
+                      BBMresponse_str[0]= str("好啊～" + command[BBself(command[0:3]):])
 
 
                       
@@ -999,8 +1080,8 @@ def handle(msg):
                     else:
                         BBMresponse_str[0]= str( "還不太認識耶，他是誰啊？")
 
-                elif("囉" in command):
-                     BBMresponse_str[0]="衝衝衝～"
+                # elif("下班囉" in command):
+                #      BBMresponse_str[0]="衝衝衝～"
                 elif( "謝謝" in command):      
                     BBMresponse_str[0]= str( u"小意思～"+ salutation +"不用客氣！")
                 elif( u"這個嗶鼠" in command):
@@ -1009,7 +1090,7 @@ def handle(msg):
                     BBMresponse_str[0]= str( u"哇姆災哦～")
                 
     #ECHO
-                elif( len(command)<4 ):
+                elif( len(command)<3 ):
                     BBMresponse_str[0]= str( command)
 
 
@@ -1046,25 +1127,15 @@ def handle(msg):
 
 
 
-
     msglist=[]
     count2=0
     
-
     f = open('msghistory.csv', 'rb')
     for row in csv.reader(f):
         msglist.append(row)
         #print ("row:"+str(row))
         count2=count2+1
     f.close()
-
-    # print("msglist  ")
-    # print(msglist)
-
-    # msglist.append(msg)
-    # print("after msglist  ")
-    # print(msglist)
-
 
     #with open("msghistory.csv", "ab+") as csvfile:
     csvfile=open("msghistory.csv", "wb+")
@@ -1079,17 +1150,6 @@ def handle(msg):
         #print(row)
         writer.writerow([row[0],"END"])    
     writer.writerow([msg,"END"])
-    
-    
-    #count = len(csvfile.read())
-    #print("count:"+str(count))
-    #fromquerymsg=ast.literal_eval(linecache.getline("msghistory.csv",count))
-    
-    # count = len(csvfile.read())    
-    # fromquerymsg=linecache.getline("msghistory.csv",count)
-    # print("fromquerymsg "+fromquerymsg)        
-    # count = len(csvfile.read())
-    # print("after count:"+str(count))
     csvfile.close()
 
     for i in range(len(BBMresponse_str)):
@@ -1205,10 +1265,10 @@ def isquestion(command):
         return False
 
 def BBself(sentence): #判斷嗶鼠是否被提及，在第幾個字？
-    if "嗶鼠" in sentence or "嗶嗶" in sentence or "B鼠" in sentence or "b鼠" in sentence:
-        return 2
-    elif "嗶嗶鼠" in sentence or "BB鼠" in sentence:
+    if "嗶嗶鼠" in sentence or "BB鼠" in sentence:
         return 3
+    elif "嗶鼠" in sentence or "嗶嗶" in sentence or "B鼠" in sentence or "b鼠" in sentence:
+        return 2
     else:
         return 0
 def iscurse(command):
