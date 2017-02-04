@@ -419,7 +419,7 @@ def updateToDoList(command,chat_id):
     elif "新增" in command:
         f = open('ToDoList.txt','rb')
         command=command.replace("新增","").replace("待辦事項","").replace("待辦","").replace(" ","")
-        commandlist=getcommandlistbyeachline #add todolist in batch
+        commandlist=getcommandlistbyeachline(command) #add todolist in batch
         if len(TDL[0])<4:
             TDL[0]=command
         else:
