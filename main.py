@@ -33,7 +33,7 @@ from telepot.namedtuple import InlineKeyboardMarkup, InlineKeyboardButton
 
 bbmousetoken='293749176:AAFUwX1PMi-FtFnorDJga3l3vKRcCBuwHTo'
 testingtoken='290645324:AAGhpIzNqzDejvhQSPR4-FIqmy4WbtLPzVI'
-version="v2.0 20170113"
+version="v2.0 20170204"
 B=bbmousetoken
 T=testingtoken
 mode=B
@@ -419,11 +419,14 @@ def updateToDoList(command,chat_id):
     elif "新增" in command:
         f = open('ToDoList.txt','rb')
         command=command.replace("新增","").replace("待辦事項","").replace("待辦","").replace(" ","")
-        
+        commandlist=getcommandlistbyeachline #add todolist in batch
         if len(TDL[0])<4:
             TDL[0]=command
         else:
-            TDL.append(command)
+            for i in commandlist:
+                TDL.append(commandlist[i])
+
+
         TDLline=""
         for i in range(len(TDL)):
             
