@@ -469,7 +469,7 @@ def confirmifaskaccounting(msg):
         yesorno(msg)
         return True
     else:
-        pass
+        return False
 
 def yesorno(msg):
     content_type, chat_type, chat_id = telepot.glance(msg)
@@ -1225,9 +1225,6 @@ def on_callback_query(msg):
         #     except:
         #         fromquerymsg=ast.literal_eval(linecache.getline("msghistory.csv",count-3))
 
-
-
-
         msglist=[]
         count2=0
         
@@ -1250,6 +1247,24 @@ def on_callback_query(msg):
     elif query_data=='no':
         result="原來不是啊，誤會誤會～"
 
+        msglist=[]
+        count2=0
+        
+        f = open('msghistory.csv', 'rb')
+        for row in csv.reader(f):
+            msglist.append(row)
+            #print ("row:"+str(row))
+            count2=count2+1
+        f.close()
+        print("msglist[len(msglist)-1]")
+        print(msglist[len(msglist)-1])
+        fromquerymsg=msglist[len(msglist)-1]
+
+
+        #fromquerymsg={linecache.getline("msghistory.csv",count-1)}
+        bot.answerCallbackQuery(query_id, text=result)
+        handle(fromquerymsg[0])
+ 
 
 
     elif query_data=='scissors':
