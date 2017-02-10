@@ -372,6 +372,93 @@ def ifaskaccounting(command):
         return True
     else:
         return False
+def isaskShoppingList(command):
+    if ("購物清單" in command[:12] or "shoppinglist" in command[:12] or "採購清單" in command[:12] or "待購" in command[:12]):
+        return True
+    else:
+        return False
+def updateShoppingList(command,chat_id):
+    f = open('ShoppingList.txt','rb')
+    
+    SL=f.read().split(",") #SL stands for Shopping List
+    f.close
+    SLmsg=""
+    SLorder=0
+
+
+    if "買了" in command:
+        numberinchinese=["一","二","三","四","五","六","七","八","九","十","十一","十二","十三","十四","十五","十六","十七","十八","十九","二十","二十一","二十二","二十三","二十四","二十五","二十六","二十七","二十八","二十九","三十","三十一","三十二","三十三","三十四","三十五","三十六","三十七","三十八","三十九","四十","四十一","四十二","四十三","四十四","四十五","四十六","四十七","四十八","四十九","五十","五十一","五十二","五十三","五十四","五十五","五十六","五十七","五十八","五十九","六十","六十一","六十二","六十三","六十四","六十五","六十六","六十七","六十八","六十九","七十","七十一","七十二","七十三","七十四","七十五","七十六","七十七","七十八","七十九","八十","八十一","八十二","八十三","八十四","八十五","八十六","八十七","八十八","八十九","九十","九十一","九十二","九十三","九十四","九十五","九十六","九十七","九十八","九十九","一百"] 
+        #因為十二和十一都包含了"十" 所以應該倒著檢測
+        numberinarabic=range(1,101)
+        for i in range(20):#假設待辦事項不會超過二十項
+            if numberinchinese[9-i] in command:
+                command=command.replace(numberinchinese[9-i],str(numberinarabic[9-i]))
+                # command=command.replace("一","1")
+        ordercompleted=int(re.search('\D(\d{1,2})',command).group(1))
+        
+        del SL[ordercompleted]
+
+
+        SLline=""
+        for i in range(len(SL)):
+            
+            SLline=SLline+SL[i]+","
+            
+        f = open('ShoppingList.txt','wb')
+        #為了消除結尾逗號，少取一格
+        f.write(SLline[:-1])
+        print("SLline")
+        print(SLline[:-1])     
+        for i in SL:
+            SLmsg=SLmsg +str(SLorder)+":"+ i+"\n"
+            SLorder+=1
+        if len(SLmsg)<=3:
+            SLmsg="現在待購清單沒有要買的東西哦～"
+        bot.sendMessage(chat_id,"待購事項清單\n"+SLmsg)
+
+    elif "新增" in command:
+        f = open('ShoppingList.txt','rb')
+        command=command.replace("新增","").replace("待購","").replace("待購項目","").replace(" ","")
+        commandlist=getcommandlistbyeachline(command) #add Shoppinglist in batch
+        if len(SL[0])<4: #如果原本待辦事項是空的話，要把第一個空值刪掉
+            SL[0]=command
+            for i in range(len(commandlist)):
+                SL.append(commandlist[i])
+                print("SL")
+                print(SL)
+            del SL[0]
+        else:
+            for i in range(len(commandlist)):
+                
+                SL.append(commandlist[i])
+                print("SL")
+                print(SL)
+        SLline=""
+        for i in range(len(SL)):
+            
+            SLline=SLline+SL[i]+","
+            
+        f = open('ShoppingList.txt','wb')
+        #為了消除結尾逗號，少取一格
+        f.write(SLline[:-1])
+        print("SLline")
+        print(SLline[:-1])
+        for i in SL:
+            SLmsg=SLmsg +str(SLorder)+":"+ i+"\n"
+            SLorder+=1
+        if len(SLmsg)<=3:
+            SLmsg="現在待購清單沒有要買的東西哦～"
+        bot.sendMessage(chat_id,"待購事項清單\n"+SLmsg)
+
+    else:
+        for i in SL:
+            SLmsg=SLmsg +str(SLorder)+" "+ i+"\n"
+            SLorder+=1
+        print ("len(SLmsg)")
+        print (len(SLmsg))
+        if len(SLmsg)<=3:
+            SLmsg="現在待購清單沒有要買的東西哦～"
+        bot.sendMessage(chat_id,SLmsg)
 def isaskToDoList(command):
     if ("待辦" in command[:12] or "todolist" in command[:12]):
         return True
@@ -418,7 +505,7 @@ def updateToDoList(command,chat_id):
 
     elif "新增" in command:
         f = open('ToDoList.txt','rb')
-        command=command.replace("新增","").replace("待辦事項","").replace("待辦","").replace(" ","")
+        command=command.replace("新增","").replace("待辦","").replace("待辦事項","").replace(" ","")
         commandlist=getcommandlistbyeachline(command) #add todolist in batch
         if len(TDL[0])<4: #如果原本待辦事項是空的話，要把第一個空值刪掉
             TDL[0]=command
@@ -969,6 +1056,8 @@ def handle(msg):
                     BBMresponse_str[0]="好了，我已經幫" + salutation + "記好了：\n"+totalrecord+"\n記帳紀錄可以看這裡： https://goo.gl/OI2LXx "
             elif isaskToDoList(command):
                 updateToDoList(command,chat_id)
+            elif isaskShoppingList(command):
+                updateShoppingList(command,chat_id)
 #深度問題
             elif("無聊" in command or "有趣的" in command  or "你會思考" in command   or "智能測試" in command or "智能問答" in command):
                 n=random.randint(1,len(dq))
