@@ -1109,11 +1109,11 @@ def handle(msg):
             # elif ( len(command)>=4 and len(command)<=10 and (command[0:3]=="嗶鼠我")):
             #       BBMresponse_str[0]= str("哦 "+ salutation +"你" + command[3:] + ' 哇災哇災')
 
-
-            elif(isflatter(command) != True and isquestion(command)==False and len(command)>=4 and len(command)<10 and ( BBself(command[0:3])>0)):
+            #決定改到API.AI來處理 20170214
+            # elif(isflatter(command) != True and isquestion(command)==False and len(command)>=4 and len(command)<10 and ( BBself(command[0:3])>0)):
                   
-                  #BBMresponse_str[0]= str("嗶鼠想跟"+ salutation +"一起" + command[BBself(command[0:2]):])  #這句太不適用了
-                  BBMresponse_str[0]= str("好啊～" + command[BBself(command[0:3]):])
+            #       #BBMresponse_str[0]= str("嗶鼠想跟"+ salutation +"一起" + command[BBself(command[0:2]):])  #這句太不適用了
+            #       BBMresponse_str[0]= str("好啊～" + command[BBself(command[0:3]):])
 
 
                   
