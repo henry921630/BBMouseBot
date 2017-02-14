@@ -370,7 +370,7 @@ def AccountingSentenceAnalysis_get_date(command):
 def ifaskaccounting(command):
     if ("記" in command[:12] and "帳" in command[:12]):
         return True
-    elif("accounting" in command[:10]):
+    elif("accounting" in command[:11]):
         return True
     else:
         return False
