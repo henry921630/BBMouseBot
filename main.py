@@ -1161,8 +1161,9 @@ def handle(msg):
                     BBMresponse_str[0]= str( u"哇姆災哦～～")
                 else:
                     BBMresponse_str[0]= str("咦 真的嗎！？" + command.replace("嗶鼠你","我").replace("嗶鼠是","我是") + '？')
-            elif(isflatter(command)==True and BBself>0):
-                BBMresponse_str[0]= str( "(抓頭)這樣稱讚我，我會不好意思啦～")
+            #移到API.AI處理 20170215
+            # elif(isflatter(command)==True and BBself>0):
+            #     BBMresponse_str[0]= str( "(抓頭)這樣稱讚我，我會不好意思啦～")
                 
 
 
@@ -1408,9 +1409,9 @@ def iscallBBMouseonly(command): #判斷是否在呼叫嗶鼠
     if command=="嗶" or command=="嗶嗶" or command=="嗶嗶鼠" or command=="嗶鼠" or command=="嗶仔" or command=="嗶嗶鼠仔" or command=="阿嗶" or command=="bb鼠" or command=="b鼠":
         return True
 
-def isflatter(command):
-    if "可愛" in command or "太強" in command or  "厲害" in command or "好棒" in command or "有大棒棒" in command or "聰明" in command or "智能好" in command or "乖" in command:
-        return True
+# def isflatter(command):
+#     if "可愛" in command or "太強" in command or  "厲害" in command or "好棒" in command or "有大棒棒" in command or "聰明" in command or "智能好" in command or "乖" in command:
+#         return True
 
 #def group(msg):
     
