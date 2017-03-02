@@ -329,7 +329,7 @@ def AccountingSentenceAnalysis_get_date(command):
             if("早上" in command):
                 w=w-1
         elif "下" in command:
-            w=-command.count("下")-command.count("下午")-command.count("下班")
+            w=-(command.count("下")-command.count("下午")-command.count("下班"))
 
         else:
             w=0
