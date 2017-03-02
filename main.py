@@ -33,7 +33,7 @@ from telepot.namedtuple import InlineKeyboardMarkup, InlineKeyboardButton
 
 bbmousetoken='293749176:AAFUwX1PMi-FtFnorDJga3l3vKRcCBuwHTo'
 testingtoken='290645324:AAGhpIzNqzDejvhQSPR4-FIqmy4WbtLPzVI'
-version="v2.0 20170204"
+version="v2.0 20170302"
 B=bbmousetoken
 T=testingtoken
 mode=B
@@ -325,11 +325,11 @@ def AccountingSentenceAnalysis_get_date(command):
     elif "禮拜" in command or "周"  in command  or "週"  in command:
         #print('"禮拜" in command or "周"  in command  or "週"  in command')
         if "上"  in command:        
-            w=command.count("上")
+            w=command.count("上")-command.count("上午")-command.count("早上")-command.count("上班")
             if("早上" in command):
                 w=w-1
         elif "下" in command:
-            w=-command.count("下")
+            w=-command.count("下")-command.count("下午")-command.count("下班")
 
         else:
             w=0
