@@ -1017,6 +1017,7 @@ def handle(msg):
 #MEMO
             elif isaskmemo(command):
                 
+                bot.sendMessage(chat_id,"且讓我掏出嗶鼠備忘小本子來抄錄～\n(嗶鼠在小本子上專心抄寫中)\n(稍等一下，先別吵嗶鼠)")
                 commandlist=getcommandlistbyeachline(command)
                 for i in range(len(commandlist)):
                     print ("commandlist[" + str(i) +"]   " + commandlist[i])
@@ -1074,9 +1075,9 @@ def handle(msg):
             elif isaskShoppingList(command):
                 updateShoppingList(command,chat_id)
 #深度問題
-            elif("無聊" in command or "有趣的" in command  or "你會思考" in command   or "智能測試" in command or "智能問答" in command):
-                n=random.randint(1,len(dq))
-                BBMresponse_str[0]= str( str(dq[n]) + "\n\n(" + str(n) + "/" + str(len(dq)) + ")" )
+            # elif("無聊" in command or "有趣的" in command  or "你會思考" in command   or "智能測試" in command or "智能問答" in command):
+            #     n=random.randint(1,len(dq))
+            #     BBMresponse_str[0]= str( str(dq[n]) + "\n\n(" + str(n) + "/" + str(len(dq)) + ")" )
 
 
 #嗶鼠報時
