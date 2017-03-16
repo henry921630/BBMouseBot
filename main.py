@@ -260,6 +260,16 @@ def BBMouseAccounting(chat_id,salutation,date, item,source, price,acctype,comman
     
     sheet.insert_row([salutation,date,item,source,price,acctype,command], 2)
 
+def BBMouseMemo(chat_id,date, item,command):
+    auth_json_path = 'BBMouseGS.json'
+    gss_scopes = ['https://spreadsheets.google.com/feeds']
+    gss_client = auth_gss_client(auth_json_path, gss_scopes)
+    wks = gss_client.open_by_key("1eWwA5Ds2tOC9rwiH4RPJ_9qxW2MOKNvx-Zcw4rPBSEY") #嗶鼠備忘小本子
+    sheet = wks.sheet1
+    
+    sheet.insert_row([date,item,command], 2)
+
+
 def StrPermutation(list1,list2,list3):
     list0=[]
     for x in range(len(list1)):
@@ -374,6 +384,13 @@ def ifaskaccounting(command):
         return True
     else:
         return False
+
+def isaskmemo(command):
+    if ("備忘" in command[:5] or "記事" in command[:5] or "note" in command[:5] or "memo" in command[:5]):
+        return True
+    else:
+        return False
+
 def isaskShoppingList(command):
     if ("購物清單" in command[:12] or "shoppinglist" in command[:12] or "採購清單" in command[:12] or "待購" in command[:12]):
         return True
@@ -997,24 +1014,20 @@ def handle(msg):
                 BBMresponse_str[0]="未來的十項行程如下，仔細看，別漏掉囉！"
                 for event in recenteventlist:
                     BBMresponse_str[1]=BBMresponse_str[1]+(event+"\n")
-
-
+#MEMO
+            elif isaskmemo(command):
+                
+                commandlist=getcommandlistbyeachline(command)
+                for i in range(len(commandlist)):
+                    print ("commandlist[" + str(i) +"]   " + commandlist[i])
+                Date=time.strftime("%Y-%m-%d", time.gmtime(time.time()+8*60*60)) #Today
+                for i in range(len(commandlist)):
+                    BBMouseAccounting(chat_id,salutation,Date,commandlist[i])
 
                 
 #記帳 accounting
             elif ifaskaccounting(command):
-                #accrecord= str(command).split()
-                #orderofDate=1 #日期設在split的第2位
-                #orderofAmount=3 #金額設在split的第四位   把多餘的字符消掉，以純數字記錄
-#處理日期格式
-                
-                # if accrecord[orderofDate]=="今天" or accrecord[orderofDate]=="today" or accrecord[orderofDate]=="now":
-                #     accDate=time.strftime("%Y-%m-%d", time.gmtime(time.time()+8*60*60))                  #八小時乘上六十分鐘乘上六十秒
-                # elif isVaildDate(accrecord[orderofDate]) == True:
-                #     accDate=accrecord[orderofDate][:4] + "-" + accrecord[orderofDate][4:6] +"-" +accrecord[orderofDate][6:]
-                # else:
-                #     accDate="日期格式記錯了"
-                #     accDateError="日期格式記錯了"
+
 
                 #如果記帳的command有換行的話，每一行視作一筆單獨的記帳紀錄
                 commandlist=getcommandlistbyeachline(command)
@@ -1054,7 +1067,7 @@ def handle(msg):
                         else:
                             acctype="支出"
                         BBMouseAccounting(chat_id,salutation,accDate,accItem,accSource,accAmount,acctype,command)
-                        totalrecord=totalrecord+ "日期： " + str(accDate)+ "   項目： "+str(accItem)+ "   金額： "+acctype+"NT" +accAmount +"\n"
+                        totalrecord=totalrecord+ "日期： " + str(accDate)+ "   項目： "+str(accItem)+ "\n"+accSource+" "+acctype+"NT" +accAmount +"\n"
                     BBMresponse_str[0]="好了，我已經幫" + salutation + "記好了：\n"+totalrecord+"\n記帳紀錄可以看這裡： https://goo.gl/OI2LXx "
             elif isaskToDoList(command):
                 updateToDoList(command,chat_id)
@@ -1074,7 +1087,7 @@ def handle(msg):
                 elif datetime.datetime.now(tz).hour <6:
                     BBMresponse_str[1]= str(""+ salutation +"這麼早叫我有事嗎？現在才幾點～我還在發育中，是很需要充足睡眠的！")
                 elif datetime.datetime.now(tz).hour <11:
-                    BBMresponse_str[1]= str(""+ salutation +"早安～"+ salutation +"早安～"+ salutation +"早安！"+ salutation +"要記得吃早餐～")
+                    BBMresponse_str[1]= str(""+ salutation +"早安～"+ salutation +"早安～"+ salutation +"早安！"+ salutation +"要記得吃早餐～\n嗯……其實好像也不一定要吃早餐了\n https://www.thenewslens.com/article/62625 ")
                 elif datetime.datetime.now(tz).hour <13:
                     BBMresponse_str[1]= str(""+ salutation +"午安～午餐要多吃一點！不然會變瘦哦！小心被逐出矮胖國！")
                 elif datetime.datetime.now(tz).hour <15:
