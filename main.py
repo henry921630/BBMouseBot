@@ -36,7 +36,7 @@ testingtoken='290645324:AAGhpIzNqzDejvhQSPR4-FIqmy4WbtLPzVI'
 version="v2.0 20170316"
 B=bbmousetoken
 T=testingtoken
-mode=T
+mode=B
 
 #Google Clanlendar
 try:
