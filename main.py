@@ -1025,7 +1025,7 @@ def handle(msg):
                 Date=time.strftime("%Y-%m-%d", time.gmtime(time.time()+8*60*60)) #Today
                 for i in range(len(commandlist)):
                     BBMouseMemo(chat_id,salutation,Date,commandlist[i])
-                BBMresponse_str[0]="好了，我已經幫" + salutation + "記好了：\n"+totalrecord+"\n備忘錄可以看這裡： https://goo.gl/SJPds7 "
+                BBMresponse_str[0]="好了，我已經幫" + salutation + "記好了\n備忘錄可以看這裡： https://goo.gl/SJPds7 "
                 
 #記帳 accounting
             elif ifaskaccounting(command):
