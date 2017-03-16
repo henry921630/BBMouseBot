@@ -36,7 +36,7 @@ testingtoken='290645324:AAGhpIzNqzDejvhQSPR4-FIqmy4WbtLPzVI'
 version="v2.0 20170316"
 B=bbmousetoken
 T=testingtoken
-mode=B
+mode=T
 
 #Google Clanlendar
 try:
@@ -214,8 +214,8 @@ def CallAPIAI(command):
     response = request.getresponse()
     responsestr = response.read().decode('utf-8')
     response_obj = json.loads(responsestr)
-    #print (response.read())
-    print (response_obj["result"]["fulfillment"]["speech"])
+    # print (response_obj)
+    # print (response_obj["result"]["fulfillment"]["speech"])
 
     return (response_obj["result"]["fulfillment"]["speech"])
 
@@ -802,17 +802,17 @@ def handle(msg):
             
             if (chat_id == 288200245):
                 bot.sendMessage(271383530, u"酥熊跟嗶鼠機器人說了: \n" + str(msg['text']))
-            #lrsy就是戀人絮語的意思
-            lrsy = {1:"V: 請用一個字來形容我！ H: 好！",\
-                    2:"V：聽說埃及沒有郵局，如果埃及的人民想要寄信，必須出埃及寄。\nH：聽說有舌頭味覺不靈光的人，如果想要得嚐美食，必須服用利味劑。",\
-                    3:"[神魔之塔轉珠中]H: 別人轉珠都好強喔！\nV: 所以別人是神轉珠，你是豬轉珠囉～\nH: 甚麼！好歹說我是神豬轉珠吧！\nV: 神豬轉珠不就是神豬他爸轉珠嗎～哈哈哈哈！",\
-                    4:"V: 那些蛋糕看起來都好好吃，我要吃一百個！ \nH: 蛤…妳要不要改成吃95個就好，妳都那麼胖了…",\
-                    5:"[在床上翻來翻去的小酥餅]\nV: 睡不著耶\nH: 對不起～我太吵了嗎？都是我在心中不斷的大叫「我愛小酥餅」！",\
-                    6:"我在浴室，小羴羊敲了敲門才走進來。\nV: 小羴羊都會敲門才進來耶，真有禮貌。\nH: 我怕打到小酥餅的頭嘛。\nV: (暗自竊喜，老公真疼我)\nH: 其實我不怕打到酥餅的頭，我是怕酥餅罵我。",\
-                    7:"爺爺揹著小酥熊，走到山上來看猴，猴子哭了叫"+ salutation +"，就被爺爺揹回家。 \nhttps://youtu.be/HDL1Ivz55N0",\
-                    8:"「生氣的酥熊」\n「來把牠進化吧」\n「變成更生氣的酥熊」\nhttps://youtu.be/yxg06yebRd0",\
-                    9:"(叭叭叭 媽媽擤鼻涕中)\n羊：有人在跟妳呼應，一起擤鼻涕\n熊：這是我們康巴族的鼓語\n羊：那妳跟他說了什麼？\n熊：我叫他趕快出來，我要大便；他回不要不要\n羊：酥熊用康巴族鼓語讓對方不要不要的\n",\
-                    }
+            #lrsy就是戀人絮語的意思 20170316 轉至API.AI
+            # lrsy = {1:"V: 請用一個字來形容我！ H: 好！",\
+            #         2:"V：聽說埃及沒有郵局，如果埃及的人民想要寄信，必須出埃及寄。\nH：聽說有舌頭味覺不靈光的人，如果想要得嚐美食，必須服用利味劑。",\
+            #         3:"[神魔之塔轉珠中]H: 別人轉珠都好強喔！\nV: 所以別人是神轉珠，你是豬轉珠囉～\nH: 甚麼！好歹說我是神豬轉珠吧！\nV: 神豬轉珠不就是神豬他爸轉珠嗎～哈哈哈哈！",\
+            #         4:"V: 那些蛋糕看起來都好好吃，我要吃一百個！ \nH: 蛤…妳要不要改成吃95個就好，妳都那麼胖了…",\
+            #         5:"[在床上翻來翻去的小酥餅]\nV: 睡不著耶\nH: 對不起～我太吵了嗎？都是我在心中不斷的大叫「我愛小酥餅」！",\
+            #         6:"我在浴室，小羴羊敲了敲門才走進來。\nV: 小羴羊都會敲門才進來耶，真有禮貌。\nH: 我怕打到小酥餅的頭嘛。\nV: (暗自竊喜，老公真疼我)\nH: 其實我不怕打到酥餅的頭，我是怕酥餅罵我。",\
+            #         7:"爺爺揹著小酥熊，走到山上來看猴，猴子哭了叫"+ salutation +"，就被爺爺揹回家。 \nhttps://youtu.be/HDL1Ivz55N0",\
+            #         8:"「生氣的酥熊」\n「來把牠進化吧」\n「變成更生氣的酥熊」\nhttps://youtu.be/yxg06yebRd0",\
+            #         9:"(叭叭叭 媽媽擤鼻涕中)\n羊：有人在跟妳呼應，一起擤鼻涕\n熊：這是我們康巴族的鼓語\n羊：那妳跟他說了什麼？\n熊：我叫他趕快出來，我要大便；他回不要不要\n羊：酥熊用康巴族鼓語讓對方不要不要的\n",\
+            #         }
 
 
 
@@ -864,10 +864,10 @@ def handle(msg):
 #版本宣告 version
             #command 已針對group訊息 刪除字首的斜線了
 
-            if command[:6] == '/story' or (chat_type=="group" and  command[:5] == 'story'):
-                n=random.randint(1,len(lrsy))
-                BBMresponse_str[0]= str( u"讓嗶鼠我來講笑話給"+ salutation +"舔舔： \n" + str(lrsy[n]) + "\n\n(" + str(n) + "/" + str(len(lrsy)) + ")" )
-            elif command[:6] == '/start' or (chat_type=="group" and  command[:5] == 'start'):
+            # if command[:6] == '/story' or (chat_type=="group" and  command[:5] == 'story'):
+            #     n=random.randint(1,len(lrsy))
+            #     BBMresponse_str[0]= str( u"讓嗶鼠我來講笑話給"+ salutation +"舔舔： \n" + str(lrsy[n]) + "\n\n(" + str(n) + "/" + str(len(lrsy)) + ")" )
+            if command[:6] == '/start' or (chat_type=="group" and  command[:5] == 'start'):
                 BBMresponse_str[0]= str( u"嗨！"+ salutation +"！我是嗶嗶鼠機器人"+ version+"版！智能大概是嗶嗶鼠的二十π分之一。")
             elif command[:8] == '/bbmouse' or (chat_type=="group" and command[:7] == 'bbmouse'):
                 n=random.randint(1,len(bbmousescripts))
@@ -1018,13 +1018,14 @@ def handle(msg):
             elif isaskmemo(command):
                 
                 bot.sendMessage(chat_id,"且讓我掏出嗶鼠備忘小本子來抄錄～\n(嗶鼠在小本子上專心抄寫中)\n(稍等一下，先別吵嗶鼠)")
+                command=command[command.find(" "):]
                 commandlist=getcommandlistbyeachline(command)
                 for i in range(len(commandlist)):
                     print ("commandlist[" + str(i) +"]   " + commandlist[i])
                 Date=time.strftime("%Y-%m-%d", time.gmtime(time.time()+8*60*60)) #Today
                 for i in range(len(commandlist)):
-                    BBMouseAccounting(chat_id,salutation,Date,commandlist[i])
-
+                    BBMouseMemo(chat_id,salutation,Date,commandlist[i])
+                BBMresponse_str[0]="好了，我已經幫" + salutation + "記好了：\n"+totalrecord+"\n備忘錄可以看這裡： https://goo.gl/SJPds7 "
                 
 #記帳 accounting
             elif ifaskaccounting(command):
@@ -1232,13 +1233,14 @@ def handle(msg):
                 
             else:
                 #呼叫外部機器人 api.ai
-                BBMresponse_str[0]= str(CallAPIAI(command)).replace("[salutation]",salutation)
+                BBMresponse_str[0]= str(CallAPIAI(command)).replace("[salutation]",salutation).replace("\\n","\n")
+                # BBMresponse_str[1]= CallAPIAI(command)
+                # print (type(CallAPIAI(command)))
+                # print (CallAPIAI(command))
+                # print()
+                # print(BBMresponse_str[0])
+                # print(BBMresponse_str[1])
 
-
-                #BBMresponse_str[0]= str( u"……嗯這句話對我來說太難了，請爸爸幫我升級智能吧！")
-                # print ( isquestion==False and len(command)>=4 and len(command)<10 and ( BBself(command[0:2])>0))
-                # print len(command)<10
-                # print ( BBself(command[0:2])>0)
     
 
         if ("我愛嗶" in command or "我喜歡嗶" in command):
