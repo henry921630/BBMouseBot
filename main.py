@@ -315,7 +315,7 @@ def AccountingSentenceAnalysis_get_date(command):
     except:
         RegularExpressDate_8digit=""
        #print ("無八碼")
-    print (command)
+    # print (command)
     
     
     if "今天" in command or "today"  in command or "now"  in command or "剛剛"  in command  or "剛才"  in command or "我剛"  in command:
@@ -364,9 +364,20 @@ def AccountingSentenceAnalysis_get_date(command):
         print("wd:"+str(wd))
         #待做 先回到本週一，再減去週數，再加到指定weekday
         dt=datetime.datetime.fromtimestamp(time.mktime(time.gmtime())+60*60*8) #調整八小時時區後的現在時間(datetime)
-        thisMonday=dt-datetime.timedelta(days=datetime.date.today().weekday())        
+        if datetime.date.today().weekday()==6: #Monday is 0, Sunday is 6
+            thisMonday=(datetime.timedelta(days=7))+dt-datetime.timedelta(days=datetime.date.today().weekday())
+        else:
+            thisMonday=dt-datetime.timedelta(days=datetime.date.today().weekday())
+
+        print(datetime.date.today().weekday())
+        print("===thisMonday==")        
+        print(thisMonday)        
         lastMonday=thisMonday-datetime.timedelta(7*w)
+        print("===lastMonday==")        
+        print(lastMonday)         
         lastSomeday=lastMonday+ datetime.timedelta(wd-1)
+        print("===lastSomeday==")        
+        print(lastSomeday)         
         timetuple=lastSomeday.timetuple()
         accDate=time.strftime("%Y-%m-%d", timetuple)          
     elif isVaildDate( RegularExpressDate_8digit) == True:
@@ -574,12 +585,34 @@ def needconfirmifaskaccounting(msg):
         amount=re.search('\D(\d{1,4})',command).group(1)
     except:
         amount=""
-    print ("command in confirm:" + command)
+    print ("command in confirm:" )
     print ("command in confirm:" + amount)
     if not("記" in command and "帳" in command) and ("元" in command or "$" in command) and amount<>"":
         bot.sendMessage(chat_id,"是要記帳的意思嗎？")
         yesorno(msg)
         
+        msglist=[]
+        count2=0
+        
+        f = open('msghistory.csv', 'rb')
+        for row in csv.reader(f):
+            msglist.append(row)
+            #print ("row:"+str(row))
+            count2=count2+1
+        f.close()
+
+        csvfile=open("msghistory.csv", "wb+")
+        print("writing history in msghistory.csv")
+        print (msg)
+        writer = csv.writer(csvfile)
+
+        for row in msglist:        
+            #print(row)
+            writer.writerow([row[0],"END"])    
+        writer.writerow([msg,"END"])
+        csvfile.close()
+
+
         print("exit")
         sys.exit()
     else:
@@ -598,12 +631,14 @@ def AccountingSentenceAnalysis_get_source(command):
         source="悠遊卡"
     elif "玉山" in command and "卡" in command:
         source="玉山信用卡"
-    elif "華南" in command and "卡" in command:
+    elif "華南" in command and "卡" in command and "旅鑽" in command:
         source="華南旅鑽卡"
     elif "富邦" in command and "卡" in command:
         source="富邦信用卡"
     elif "樂天" in command and "卡" in command:
         source="樂天信用卡"
+    elif "華南" in command and "卡" in command and "夢時代" in command:
+        source="華南夢時代卡"
     elif "用" in command :
 
 
@@ -637,7 +672,7 @@ def AccountingSentenceAnalysis_get_item(command):
     # else:
     #     command=command
 
-    print("AccountingSentenceAnalysis_get_item command:" + command)
+    # print("AccountingSentenceAnalysis_get_item command:" + command)
     
     subjectlist=["我","爸爸","媽媽","他","她","嗶","鼠","你"," "]
 
@@ -670,12 +705,12 @@ def AccountingSentenceAnalysis_get_item(command):
         except:
             pass
             #print ("No this subject."+ totalelementlist[i])
-    print (item)
+    # print (item)
     return item
 
 def AccountingSentenceAnalysis_get_amount(command):
 
-    print("AccountingSentenceAnalysis_get_amount"+command)
+    # print("AccountingSentenceAnalysis_get_amount"+command)
     amount=0
 
     if "元" in  command and type(int(command[command.index("元")-1]))==int:
@@ -793,7 +828,7 @@ def handle(msg):
         print ("")
         print (msg)
         printx = 'Got command: %s' % command    
-        print (printx)
+        # print (printx)
         if (command[0:2] == "/v" ):
             bot.sendMessage(288200245, msg['text'][3:])
             bot.sendMessage(271383530, msg['text'][3:])
@@ -1033,8 +1068,8 @@ def handle(msg):
 
                 #如果記帳的command有換行的話，每一行視作一筆單獨的記帳紀錄
                 commandlist=getcommandlistbyeachline(command)
-                for i in range(len(commandlist)):
-                    print ("commandlist[" + str(i) +"]   " + commandlist[i])
+                # for i in range(len(commandlist)):
+                #     print ("commandlist[" + str(i) +"]   " + commandlist[i])
 
 
                 # if len(accrecord)<4 or len(accrecord)>5 or len(accDate)<>10: #如果格式不太合
@@ -1226,13 +1261,15 @@ def handle(msg):
                 BBMresponse_str[0]= str( u"哇姆災哦～")
             
 #ECHO
-            elif( len(command)<3 ):
-                BBMresponse_str[0]= str( command)
+            # elif( len(command)<3 ):
+            #     BBMresponse_str[0]= str( command)
 
 
                 
             else:
                 #呼叫外部機器人 api.ai
+                print("===else===")
+                print(command)
                 BBMresponse_str[0]= str(CallAPIAI(command)).replace("[salutation]",salutation).replace("\\n","\n")
                 # BBMresponse_str[1]= CallAPIAI(command)
                 # print (type(CallAPIAI(command)))
@@ -1305,7 +1342,7 @@ def handle(msg):
         #             "msg":msg,  
         #         })
         if BBMresponse_str[i]<>"":
-            print(BBMresponse_str[i])
+            # print(BBMresponse_str[i])
             bot.sendMessage(chat_id,BBMresponse_str[i])
             if (chat_id == 288200245):
                 bot.sendMessage(271383530, u"嗶鼠機器人向酥熊回答了: \n" + BBMresponse_str[i])
@@ -1350,17 +1387,31 @@ def on_callback_query(msg):
             #print ("row:"+str(row))
             count2=count2+1
         f.close()
-        print("msglist[-1]")
-        print(msglist[-1])
+        # print("msglist[-1]")
+        # print(msglist[-1])
+        # msglist[-1][0]=msglist[-1][0].replace("'text': ","'isaccount': 'True','text': ")
+        # print("msglist[-1][0]")
+        # print(msglist[-1][0])
+        # print(type(msglist[-1][0]))
+        # msginjson = json.loads(msglist[-1][0])
+        # msginjson["text"]="記帳"+msginjson["text"]
+        # msglist[-1][0]=str(msginjson)
+        # # msglist[-1][0]["text"]="記帳"+msglist[-1][0]["text"]
+        # print(msglist[-1])
         msglist[-1][0]=msglist[-1][0].replace("'text': ","'isaccount': 'True','text': ")
-        
-        msglist[-1]["text"]="記帳"+msglist[-1]["text"]
-        print(msglist[-1])
+        positionoftext=msglist[-1][0].index('text')
+        print("=B==msglist[-1][0]===")
+        print(msglist[-1][0])
+        msglist[-1][0]=msglist[-1][0][:positionoftext+9] +u"記帳 " + msglist[-1][0][positionoftext+9:]
+        print("=A==msglist[-1][0]===")
+        print(msglist[-1][0]) 
+        # print(msglist)
         fromquerymsg=msglist[-1]
 
 
         #fromquerymsg={linecache.getline("msghistory.csv",count-1)}
         bot.answerCallbackQuery(query_id, text="好的！")
+
         print("fromquerymsg[0]")
         print(fromquerymsg[0])
         handle(fromquerymsg[0])
