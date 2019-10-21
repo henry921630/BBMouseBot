@@ -14,4 +14,4 @@ telepot==10.2
 tzlocal==1.3
 uniout==0.3.7
 uritemplate==3.0.0
-urllib3==1.19.1
+urllib3==1.24.2
